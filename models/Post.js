@@ -15,6 +15,34 @@ const PostSchema = new Schema({
   avatar: {
     type: String
   },
+  title: {
+    type: String
+  },
+  description: {
+    type: String
+  },
+  location: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true
+    }
+  },
+  availability: {
+    type: String
+  },
+  sport: {
+    type: String
+  },
+  expLevel: {
+    type: Number,
+    min: 0,
+    max: 10
+  },
   likes: [
     {
       user: {
