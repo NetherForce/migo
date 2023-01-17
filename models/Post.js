@@ -15,28 +15,17 @@ const PostSchema = new Schema({
   avatar: {
     type: String
   },
-  title: {
-    type: String
-  },
   description: {
     type: String
   },
   location: {
-    type: {
-      type: String,
-      enum: ['Point'],
-      required: true
-    },
-    coordinates: {
-      type: [Number],
-      required: true
-    }
+    type: String
   },
   availability: {
     type: String
   },
   sport: {
-    type: String
+    type: Schema.Types.ObjectId
   },
   expLevel: {
     type: Number,

@@ -6,15 +6,7 @@ const ProfileSchema = new mongoose.Schema({
     ref: 'user'
   },
   location: {
-    type: {
-      type: String,
-      enum: ['Point'],
-      required: true
-    },
-    coordinates: {
-      type: [Number],
-      required: true
-    }
+    type: String
   },
   status: {
     type: String
@@ -29,19 +21,11 @@ const ProfileSchema = new mongoose.Schema({
         required: true
       },
       sport: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
       },
       location: {
-        type: {
-          type: String,
-          enum: ['Point'],
-          required: true
-        },
-        coordinates: {
-          type: [Number],
-          required: true
-        }
+        type: String
       },
       club: {
         type: String
