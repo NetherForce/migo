@@ -30,11 +30,9 @@ router.post(
         name: user.name,
         avatar: user.avatar,
         user: req.user.id,
-        description: description,
         location: location,
         availability: availability,
-        sport: sport,
-        expLevel: expLevel
+        sport: sport
       });
 
       const post = await newPost.save();

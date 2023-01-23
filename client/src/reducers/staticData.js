@@ -3,7 +3,7 @@ import {
   } from '../actions/types';
   
   const initialState = {
-    sports: undefined
+    sports: {}
   };
   
   function staticDataReducer(state = initialState, action) {

@@ -24,6 +24,11 @@ const ProfileSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true
       },
+      expLevel: {
+        type: Number,
+        min: 0,
+        max: 10
+      },
       location: {
         type: String
       },

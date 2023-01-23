@@ -15,9 +15,6 @@ const PostSchema = new Schema({
   avatar: {
     type: String
   },
-  description: {
-    type: String
-  },
   location: {
     type: String
   },
@@ -26,11 +23,6 @@ const PostSchema = new Schema({
   },
   sport: {
     type: Schema.Types.ObjectId
-  },
-  expLevel: {
-    type: Number,
-    min: 0,
-    max: 10
   },
   likes: [
     {

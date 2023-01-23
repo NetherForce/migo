@@ -2,43 +2,102 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
+import SportsAutocomplete from '../sports/SportsAutocomplete';
 
-const PostForm = ({ addPost }) => {
-  const [text, setText] = useState('');
+const initialState = {
+  text: '',
+  availability: '',
+  location: '',
+  sport: '',
+};
+
+const PostForm = ({
+  addPost
+}) => {
+  const [formData, setFormData] = useState(initialState);
+
+  // const navigate = useNavigate();
+
+  const {
+    text,
+    availability,
+    location,
+    sport,
+  } = formData;
+
+  const onChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    addPost({ text, availability, sport, location });
+    setFormData('');
+  };
 
   return (
-    <div className='post-form'>
-      <div className='bg-primary p'>
-        <h3>Say Something...</h3>
-      </div>
-      <form
-        className='form my-1'
-        onSubmit={e => {
-          e.preventDefault();
-          addPost({ text });
-          setText('');
-        }}
-      >
-        <textarea
-          name='text'
-          cols='30'
-          rows='5'
-          placeholder='Create a post'
-          value={text}
-          onChange={e => setText(e.target.value)}
-          required
-        />
-        <input type='submit' className='btn btn-dark my-1' value='Submit' />
+    <section className="container">
+      <p className="lead">
+        <i className="fas fa-user" />
+        Give some information for your post
+      </p>
+      <form className="form" onSubmit={onSubmit}>
+      <div className='post-form'>
+            <textarea
+            name='text'
+            cols='30'
+            rows='5'
+            placeholder="Description"
+            value={text}
+            onChange={onChange}
+            required
+            />
+            <small className="form-text">
+                What is your post about
+          </small>
+        </div>
+        <div className="autocomplete form-group">
+          <SportsAutocomplete sportChanged={(sportId)=>setFormData({ ...formData, ["sport"]: sportId })} />
+          <small className="form-text">
+            Which sport do you want to do
+          </small>
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Availability"
+            name="availability"
+            value={availability}
+            onChange={onChange}
+          />
+          <small className="form-text">
+            Say when you have time to do the sport
+          </small>
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Location"
+            name="location"
+            value={location}
+            onChange={onChange}
+          />
+          <small className="form-text">
+            City and name of the place
+          </small>
+        </div>
+
+        <button type="submit" className="btn btn-primary my-1"  onClick={onSubmit}>submit</button>
       </form>
-    </div>
+    </section>
   );
 };
 
 PostForm.propTypes = {
-  addPost: PropTypes.func.isRequired
-};
+    addPost: PropTypes.func.isRequired
+  };
 
-export default connect(
-  null,
-  { addPost }
-)(PostForm);
+const mapStateToProps = (state) => ({
+});
+
+export default connect(mapStateToProps, { addPost })(PostForm);

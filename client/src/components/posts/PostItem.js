@@ -10,7 +10,8 @@ const PostItem = ({
   removeLike,
   deletePost,
   auth,
-  post: { _id, text, name, avatar, user, likes, comments, date },
+  sports,
+  post: { _id, text, name, avatar, user, likes, comments, date, location, availability, sport },
   showActions
 }) => (
   <div className="post bg-white p-1 my-1">
@@ -21,12 +22,19 @@ const PostItem = ({
       </Link>
     </div>
     <div>
-      <p className="my-1">{text}</p>
+      <p className="my-1"><span className="" style={{color: "var(--primary-color)"}}>Description: </span>{text ? text : "there is no description"}</p>
+      <p className="my-1"><span className="" style={{color: "var(--primary-color)"}}>Availability: </span>{availability ? availability : "not specified"}</p>
       <p className="post-date">Posted on {formatDate(date)}</p>
+
+    </div>
+    <div>
+      
+      <p className="my-1"><span className="" style={{color: "var(--primary-color)"}}>Sport: </span>{sport && sports && sports[sport] ? sports[sport].name : "not specified"}</p>
+      <p className="my-1"><span className="" style={{color: "var(--primary-color)"}}>Location: </span>{location ? location : "not specified"}</p>
 
       {showActions && (
         <Fragment>
-          <button
+          {/* <button
             onClick={() => addLike(_id)}
             type="button"
             className="btn btn-light"
@@ -38,14 +46,11 @@ const PostItem = ({
             onClick={() => removeLike(_id)}
             type="button"
             className="btn btn-light"
-          >
+          > 
             <i className="fas fa-thumbs-down" />
-          </button>
+          </button> */}
           <Link to={`/posts/${_id}`} className="btn btn-primary">
-            Discussion{' '}
-            {comments.length > 0 && (
-              <span className="comment-count">{comments.length}</span>
-            )}
+            Message
           </Link>
           {!auth.loading && user === auth.user._id && (
             <button
@@ -69,6 +74,7 @@ PostItem.defaultProps = {
 PostItem.propTypes = {
   post: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
+  sports: PropTypes.object.isRequired,
   addLike: PropTypes.func.isRequired,
   removeLike: PropTypes.func.isRequired,
   deletePost: PropTypes.func.isRequired,
@@ -76,9 +82,8 @@ PostItem.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  auth: state.auth
+  auth: state.auth,
+  sports: state.staticData.sports
 });
 
-export default connect(mapStateToProps, { addLike, removeLike, deletePost })(
-  PostItem
-);
+export default connect(mapStateToProps, { addLike, removeLike, deletePost })(PostItem);

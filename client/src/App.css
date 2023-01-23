@@ -460,9 +460,9 @@ button {
 }
 
 .post {
-  display: grid;
-  grid-template-columns: 1fr 4fr;
-  grid-gap: 2rem;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
   align-items: center;
 }
 

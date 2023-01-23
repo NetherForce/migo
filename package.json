@@ -1,7 +1,7 @@
 {
-  "name": "devconnector",
+  "name": "migo",
   "version": "1.0.0",
-  "description": "Social network for developers",
+  "description": "Social network for people who look for partners in certain sports",
   "main": "server.js",
   "scripts": {
     "start": "node server",
