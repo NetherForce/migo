@@ -3,27 +3,47 @@ import { Link, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addExperience } from '../../actions/profile';
+import SportsAutocomplete from '../sports/SportsAutocomplete';
 
-const AddExperience = ({ addExperience }) => {
+const AddExperience = ({ addExperience, sports }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    company: '',
     title: '',
+    sport: '',
+    expLevel: 'BEGINNER',
     location: '',
+    club: '',
     from: '',
     to: '',
-    current: false,
+    main: false,
     description: ''
   });
+  
+  const options = sports
+    ? Object.keys(sports).map((key) => {
+        return { ...sports[key], id: key, key: key };
+      })
+    : [];
+  options.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+  let i = 0;
+  while (i < options.length - 1) {
+    if (options[i].name === options[i + 1].name) {
+      options.splice(i + 1, 1);
+    } else {
+      i++;
+    }
+  }
 
-  const { company, title, location, from, to, current, description } = formData;
+  const onSportChange = (newValue) => {
+    setFormData({ ...formData, "sport": newValue });
+  }
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   return (
     <section className="container">
-      <h1 className="large text-primary">Add An Experience</h1>
+      <h1 className="large text-primary">Add Experience</h1>
       <p className="lead">
         <i className="fas fa-code-branch" /> Add any developer/programming
         positions that you have had in the past
@@ -39,48 +59,47 @@ const AddExperience = ({ addExperience }) => {
         <div className="form-group">
           <input
             type="text"
-            placeholder="* Job Title"
+            placeholder="* Title"
             name="title"
-            value={title}
+            value={formData.title}
             onChange={onChange}
             required
           />
         </div>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="* Company"
-            name="company"
-            value={company}
-            onChange={onChange}
-            required
+        <div className="autocomplete form-group">
+          <SportsAutocomplete
+            options={options}
+            value={formData.sport}
+            onChange = {onSportChange}
+            label="Sport"
           />
+          <small className="form-text">Which sport do you want to do</small>
         </div>
         <div className="form-group">
           <input
             type="text"
             placeholder="Location"
             name="location"
-            value={location}
+            value={formData.location}
             onChange={onChange}
           />
         </div>
         <div className="form-group">
           <h4>From Date</h4>
-          <input type="date" name="from" value={from} onChange={onChange} />
+          <input type="date" name="from" value={formData.from} onChange={onChange} />
         </div>
         <div className="form-group">
           <p>
             <input
               type="checkbox"
-              name="current"
-              checked={current}
-              value={current}
+              name="main"
+              checked={formData.main}
+              value={formData.main}
               onChange={() => {
-                setFormData({ ...formData, current: !current });
+                setFormData({ ...formData, main: !formData.main });
               }}
             />{' '}
-            Current Job
+            Main Job
           </p>
         </div>
         <div className="form-group">
@@ -88,9 +107,8 @@ const AddExperience = ({ addExperience }) => {
           <input
             type="date"
             name="to"
-            value={to}
+            value={formData.to}
             onChange={onChange}
-            disabled={current}
           />
         </div>
         <div className="form-group">
@@ -99,7 +117,7 @@ const AddExperience = ({ addExperience }) => {
             cols="30"
             rows="5"
             placeholder="Job Description"
-            value={description}
+            value={formData.description}
             onChange={onChange}
           />
         </div>
@@ -113,7 +131,12 @@ const AddExperience = ({ addExperience }) => {
 };
 
 AddExperience.propTypes = {
-  addExperience: PropTypes.func.isRequired
+  addExperience: PropTypes.func.isRequired,
+  sports: PropTypes.object
 };
 
-export default connect(null, { addExperience })(AddExperience);
+const mapStateToProps = (state) => ({
+  sports: state.staticData.sports
+});
+
+export default connect(mapStateToProps, { addExperience })(AddExperience);

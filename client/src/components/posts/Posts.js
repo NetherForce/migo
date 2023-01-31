@@ -16,7 +16,7 @@ const Posts = ({ getPosts, post: { posts } }) => {
       <h1 className="large text-primary">Posts</h1>
       <p className="lead">
         <i className="fas fa-user" /> Welcome to the community
-        <Link to="/create-post" className="btn btn-primary">
+        <Link to="/create-post" className="btn btn-primary right">
           Add Post
         </Link>
       </p>
