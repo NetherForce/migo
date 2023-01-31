@@ -38,7 +38,6 @@ router.get('/me', auth, async (req, res) => {
 router.post(
   '/',
   auth,
-  check('skills', 'Skills is required').notEmpty(),
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -61,13 +60,6 @@ router.post(
     // build a profile
     const profileFields = {
       user: req.user.id,
-      website:
-        website && website !== ''
-          ? normalize(website, { forceHttps: true })
-          : '',
-      skills: Array.isArray(skills)
-        ? skills
-        : skills.split(',').map((skill) => ' ' + skill.trim()),
       ...rest
     };
 

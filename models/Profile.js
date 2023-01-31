@@ -1,5 +1,11 @@
 const mongoose = require('mongoose');
 
+const EXPERIENCE_LEVELS = {
+  BEGINNER: 'BEGINNER',
+  INTERMEDIATE: 'INTERMEDIATE',
+  EXPERT: 'EXPERT'
+}
+
 const ProfileSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -25,9 +31,9 @@ const ProfileSchema = new mongoose.Schema({
         required: true
       },
       expLevel: {
-        type: Number,
-        min: 0,
-        max: 10
+        type: String,
+        enum: Object.values(EXPERIENCE_LEVELS),
+        default: EXPERIENCE_LEVELS.BEGINNER
       },
       location: {
         type: String
