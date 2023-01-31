@@ -24,7 +24,11 @@ import store from './store';
 import { loadUser } from './actions/auth';
 import setAuthToken from './utils/setAuthToken';
 
-import './App.css';
+import './style/App.css';
+import './style/Landing.css';
+import './style/Navbar.css';
+import './style/Posts.css';
+import './style/Profile.css';
 
 const App = () => {
   useEffect(() => {
