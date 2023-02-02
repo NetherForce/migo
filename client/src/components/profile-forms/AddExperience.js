@@ -7,18 +7,19 @@ import SportsAutocomplete from '../sports/SportsAutocomplete';
 
 const AddExperience = ({ addExperience, sports }) => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
+  const initialState = {
     title: '',
     sport: '',
-    expLevel: 'BEGINNER',
+    expLevel: 'Beginner',
     location: '',
     club: '',
     from: '',
     to: '',
     main: false,
     description: ''
-  });
-  
+  };
+  const [formData, setFormData] = useState(initialState);
+
   const options = sports
     ? Object.keys(sports).map((key) => {
         return { ...sports[key], id: key, key: key };
@@ -36,7 +37,7 @@ const AddExperience = ({ addExperience, sports }) => {
 
   const onSportChange = (newValue) => {
     setFormData({ ...formData, "sport": newValue });
-  }
+  };
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -45,48 +46,98 @@ const AddExperience = ({ addExperience, sports }) => {
     <section className="container">
       <h1 className="large text-primary">Add Experience</h1>
       <p className="lead">
-        <i className="fas fa-code-branch" /> Add any developer/programming
-        positions that you have had in the past
+        <i className="fas fa-code-branch" /> Add any sport that you have done in the past or are still doing
       </p>
-      <small>* = required field</small>
       <form
         className="form"
         onSubmit={(e) => {
           e.preventDefault();
-          addExperience(formData, navigate);
+          addExperience({...formData, "sport": formData.sport._id }, navigate);
+          console.log(formData);
+          setFormData(initialState);
         }}
       >
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="* Title"
-            name="title"
-            value={formData.title}
-            onChange={onChange}
-            required
-          />
-        </div>
+      <div className="form-group">
+        <textarea
+          name="description"
+          cols="30"
+          rows="5"
+          placeholder="Job Description"
+          value={formData.description || ''}
+          onChange={onChange}
+        />
+      </div>
         <div className="autocomplete form-group">
           <SportsAutocomplete
             options={options}
             value={formData.sport}
-            onChange = {onSportChange}
+            onChange={onSportChange}
             label="Sport"
+            required
           />
           <small className="form-text">Which sport do you want to do</small>
+        </div>
+        <div className="form-group">
+          <h4>How good are you at the sport</h4>
+          <label>
+            <input
+              type="radio"
+              name="expLevel"
+              value="Beginner"
+              checked={formData.expLevel === 'Beginner'}
+              onChange={onChange}
+            />
+            Beginner
+          </label><br/>
+          <label>
+            <input
+              type="radio"
+              name="expLevel"
+              value="Intermediate"
+              checked={formData.expLevel === 'Intermediate'}
+              onChange={onChange}
+            />
+            Intermediate
+          </label><br/>
+          <label>
+            <input
+              type="radio"
+              name="expLevel"
+              value="Expert"
+              checked={formData.expLevel === 'Expert'}
+              onChange={onChange}
+            />
+            Expert
+          </label>
         </div>
         <div className="form-group">
           <input
             type="text"
             placeholder="Location"
             name="location"
-            value={formData.location}
+            value={formData.location || ''}
             onChange={onChange}
           />
+          <small className="form-text">Where have you done the sport</small>
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Club"
+            name="club"
+            value={formData.club || ''}
+            onChange={onChange}
+          />
+          <small className="form-text">Were or are you associated with a club</small>
         </div>
         <div className="form-group">
           <h4>From Date</h4>
-          <input type="date" name="from" value={formData.from} onChange={onChange} />
+          <input
+            type="date"
+            name="from"
+            value={formData.from}
+            onChange={onChange}
+          />
         </div>
         <div className="form-group">
           <p>
@@ -99,7 +150,7 @@ const AddExperience = ({ addExperience, sports }) => {
                 setFormData({ ...formData, main: !formData.main });
               }}
             />{' '}
-            Main Job
+            Main Sport
           </p>
         </div>
         <div className="form-group">
@@ -108,16 +159,6 @@ const AddExperience = ({ addExperience, sports }) => {
             type="date"
             name="to"
             value={formData.to}
-            onChange={onChange}
-          />
-        </div>
-        <div className="form-group">
-          <textarea
-            name="description"
-            cols="30"
-            rows="5"
-            placeholder="Job Description"
-            value={formData.description}
             onChange={onChange}
           />
         </div>

@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const EXPERIENCE_LEVELS = {
-  BEGINNER: 'BEGINNER',
-  INTERMEDIATE: 'INTERMEDIATE',
-  EXPERT: 'EXPERT'
+  BEGINNER: 'Beginner',
+  INTERMEDIATE: 'Intermediate',
+  EXPERT: 'Expert'
 }
 
 const ProfileSchema = new mongoose.Schema({
@@ -22,10 +22,6 @@ const ProfileSchema = new mongoose.Schema({
   },
   experience: [
     {
-      title: {
-        type: String,
-        required: true
-      },
       sport: {
         type: mongoose.Schema.Types.ObjectId,
         required: true

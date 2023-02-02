@@ -4,14 +4,16 @@ import { connect } from 'react-redux';
 import { deleteExperience } from '../../actions/profile';
 import formatDate from '../../utils/formatDate';
 
-const Experience = ({ experience, deleteExperience }) => {
+const Experience = ({ experience, deleteExperience, sports }) => {
   const experiences = experience.map((exp) => (
     <tr key={exp._id}>
-      <td>{exp.company}</td>
-      <td className="hide-sm">{exp.title}</td>
+      <td>{sports[exp.sport].name}</td>
+      <td className="hide-sm">{exp.description || "No description"}</td>
       <td>
         {formatDate(exp.from)} - {exp.to ? formatDate(exp.to) : 'Now'}
       </td>
+      <td>{exp.location || "No location"}</td>
+      <td>{exp.club || "No club"}</td>
       <td>
         <button
           onClick={() => deleteExperience(exp._id)}
@@ -29,9 +31,11 @@ const Experience = ({ experience, deleteExperience }) => {
       <table className="table">
         <thead>
           <tr>
-            <th>Company</th>
-            <th className="hide-sm">Title</th>
+            <th>Sport</th>
+            <th className="hide-sm">Description</th>
             <th className="hide-sm">Years</th>
+            <th className="hide-sm">Location</th>
+            <th className="hide-sm">Club</th>
             <th />
           </tr>
         </thead>
@@ -42,8 +46,13 @@ const Experience = ({ experience, deleteExperience }) => {
 };
 
 Experience.propTypes = {
+  sports: PropTypes.object,
   experience: PropTypes.array.isRequired,
   deleteExperience: PropTypes.func.isRequired
 };
 
-export default connect(null, { deleteExperience })(Experience);
+const mapStateToProps = (state) => ({
+  sports: state.staticData.sports
+});
+
+export default connect(mapStateToProps, { deleteExperience })(Experience);

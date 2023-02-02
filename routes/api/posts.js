@@ -14,6 +14,8 @@ router.post(
   '/',
   auth,
   check('text', 'Text is required').notEmpty(),
+  check('sport', 'Sport is required').notEmpty(),
+  checkObjectId('sport'),
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

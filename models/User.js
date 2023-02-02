@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
 
+const PERMISSIONS = {
+  USER: 'User',
+  ADMIN: 'Admin'
+}
+
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -19,7 +24,8 @@ const UserSchema = new mongoose.Schema({
   },
   permission: {
     type: String,
-    default: "user"
+    enum: Object.values(PERMISSIONS),
+    default: PERMISSIONS.USER
   },
   date: {
     type: Date,

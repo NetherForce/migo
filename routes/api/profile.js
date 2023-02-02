@@ -151,7 +151,6 @@ router.delete('/', auth, async (req, res) => {
 router.put(
   '/experience',
   auth,
-  check('title', 'Title is required').notEmpty(),
   check('sport', 'Sport is required').notEmpty(),
   checkObjectId('sport'),
   check('from', 'From date is required and needs to be from the past')

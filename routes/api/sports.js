@@ -17,7 +17,7 @@ const Sports = require('../../models/Sports');
 router.post(
   '/add',
   auth,
-  checkPermission('admin'),
+  checkPermission('Admin'),
   check('name', 'Name is required').notEmpty(),
   async (req, res) => {
     const errors = validationResult(req);
@@ -46,7 +46,7 @@ router.post(
 router.post(
   '/add/all',
   auth,
-  checkPermission('admin'),
+  checkPermission('Admin'),
   check('array', 'Name is required').notEmpty(),
   async (req, res) => {
     const errors = validationResult(req);

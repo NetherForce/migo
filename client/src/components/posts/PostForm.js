@@ -30,10 +30,6 @@ const PostForm = ({ addPost, sports }) => {
     }
   }
 
-  // const navigate = useNavigate();
-
-  const { text, availability, location, sport } = formData;
-
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -44,7 +40,7 @@ const PostForm = ({ addPost, sports }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addPost({ text, availability, sport, location });
+    addPost({ ...formData, "sport": formData.sport.id });
     setFormData('');
   };
 
