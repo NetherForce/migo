@@ -12,10 +12,8 @@ const ProfileAbout = ({
       <Fragment>
         <h2 className='text-primary'>{name.trim().split(' ')[0]}s Bio</h2>
         <p>{bio}</p>
-        <div className='line' />
       </Fragment>
     )}
-    <h2 className='text-primary'>Skill Set</h2>
   </div>
 );
 

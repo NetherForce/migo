@@ -6,10 +6,9 @@ import Spinner from '../layout/Spinner';
 import ProfileTop from './ProfileTop';
 import ProfileAbout from './ProfileAbout';
 import ProfileExperience from './ProfileExperience';
-import ProfileGithub from './ProfileGithub';
 import { getProfileById } from '../../actions/profile';
 
-const Profile = ({ getProfileById, profile: { profile }, auth }) => {
+const Profile = ({ getProfileById, profile: { profile }, auth, sports }) => {
   const { id } = useParams();
   useEffect(() => {
     getProfileById(id);
@@ -42,6 +41,7 @@ const Profile = ({ getProfileById, profile: { profile }, auth }) => {
                     <ProfileExperience
                       key={experience._id}
                       experience={experience}
+                      sports={sports}
                     />
                   ))}
                 </Fragment>
@@ -49,10 +49,6 @@ const Profile = ({ getProfileById, profile: { profile }, auth }) => {
                 <h4>No experience credentials</h4>
               )}
             </div>
-
-            {profile.githubusername && (
-              <ProfileGithub username={profile.githubusername} />
-            )}
           </div>
         </Fragment>
       )}
@@ -63,12 +59,14 @@ const Profile = ({ getProfileById, profile: { profile }, auth }) => {
 Profile.propTypes = {
   getProfileById: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  sports: PropTypes.object
 };
 
 const mapStateToProps = (state) => ({
   profile: state.profile,
-  auth: state.auth
+  auth: state.auth,
+  sports: state.staticData.sports
 });
 
 export default connect(mapStateToProps, { getProfileById })(Profile);
