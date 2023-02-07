@@ -8,6 +8,7 @@ const Experience = ({ experience, deleteExperience, sports }) => {
   const experiences = experience.map((exp) => (
     <tr key={exp._id}>
       <td>{sports[exp.sport].name}</td>
+      <td>{exp.expLevel}</td>
       <td className="hide-sm">{exp.description || "No description"}</td>
       <td>
         {formatDate(exp.from)} - {exp.to ? formatDate(exp.to) : 'Now'}
@@ -31,7 +32,8 @@ const Experience = ({ experience, deleteExperience, sports }) => {
       <table className="table">
         <thead>
           <tr>
-            <th>Sport</th>
+            <th className="hide-sm">Sport</th>
+            <th className="hide-sm">Level</th>
             <th className="hide-sm">Description</th>
             <th className="hide-sm">Years</th>
             <th className="hide-sm">Location</th>
