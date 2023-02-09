@@ -15,6 +15,7 @@ import Post from './components/post/Post';
 import PostForm from './components/posts/PostForm';
 import NotFound from './components/layout/NotFound';
 import PrivateRoute from './components/routing/PrivateRoute';
+import Chat from './components/chat/Chat';
 import { LOGOUT } from './actions/types';
 
 // Redux
@@ -28,6 +29,7 @@ import './style/Landing.css';
 import './style/Navbar.css';
 import './style/Posts.css';
 import './style/Profile.css';
+import './style/Chat.css';
 
 const App = () => {
   useEffect(() => {
@@ -78,6 +80,10 @@ const App = () => {
           <Route
             path="create-post"
             element={<PrivateRoute component={PostForm} />}
+          />
+          <Route
+            path="chat"
+            element={<PrivateRoute component={Chat} />}
           />
           <Route path="/*" element={<NotFound />} />
         </Routes>

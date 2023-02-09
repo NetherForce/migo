@@ -12,7 +12,7 @@ ReactDOM.render(<App />, document.getElementById('root'));
 //API sport
 async function load() {
     const res = await api.get('/sports');
-
+    
     store.dispatch({
         type: SET_SPORTS,
         payload: res.data

@@ -29,6 +29,10 @@ const ChatSchema = new Schema({
     avatar: {
       type: String
     }
+  },
+  name: {
+    type: String,
+    required: true
   }
 });
 

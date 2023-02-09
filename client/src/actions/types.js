@@ -24,3 +24,16 @@ export const ADD_POST = 'ADD_POST';
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const REMOVE_COMMENT = 'REMOVE_COMMENT';
 export const SET_SPORTS = 'SET_SPORTS';
+
+
+export const GET_CHATS = 'GET_CHATS';
+export const CREATE_CHAT = 'CREATE_CHAT';
+export const DELETE_CHAT = 'DELETE_CHAT';
+export const ADD_USER_TO_CHAT = 'ADD_USER_TO_CHAT';
+export const REMOVE_USER_FROM_CHAT = 'REMOVE_USER_FROM_CHAT';
+export const CHAT_ERROR = 'CHAT_ERROR';
+
+export const GET_MESSAGES = 'GET_MESSAGES';
+export const SEND_MESSAGE = 'SEND_MESSAGE';
+export const DELETE_MESSAGE = 'DELETE_MESSAGE';
+export const MESSAGE_ERROR = 'MESSAGE_ERROR';
