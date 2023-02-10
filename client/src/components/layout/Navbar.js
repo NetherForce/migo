@@ -11,15 +11,16 @@ const Navbar = ({ auth: { isAuthenticated }, logout }) => {
         <Link to="/posts">Posts</Link>
       </li>
       <li>
+        <Link to="/meetups">Meetups</Link>
+      </li>
+      <li>
         <Link to="/chat">
-          <i className="fas fa-comment" />{' '}
-          <span className="hide-sm">Chat</span>
+          <i className="fas fa-comment" /> <span className="hide-sm">Chat</span>
         </Link>
       </li>
       <li>
         <Link to="/dashboard">
-          <i className="fas fa-user" />{' '}
-          <span className="hide-sm">Profile</span>
+          <i className="fas fa-user" /> <span className="hide-sm">Profile</span>
         </Link>
       </li>
       <li>
@@ -37,10 +38,15 @@ const Navbar = ({ auth: { isAuthenticated }, logout }) => {
         <Link to="/posts">Posts</Link>
       </li>
       <li>
+        <Link to="/meetups">Meetups</Link>
+      </li>
+      <li>
         <Link to="/register">Register</Link>
       </li>
       <li>
-        <Link to="/login">Login</Link>
+        <Link to="/login">
+          <i className="fas fa-user" /> <span className="hide-sm">Login</span>
+        </Link>
       </li>
     </ul>
   );

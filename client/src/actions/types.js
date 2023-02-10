@@ -21,10 +21,14 @@ export const POST_ERROR = 'POST_ERROR';
 export const UPDATE_LIKES = 'UPDATE_LIKES';
 export const DELETE_POST = 'DELETE_POST';
 export const ADD_POST = 'ADD_POST';
+export const GET_MEETUPS = 'GET_MEETUPS';
+export const GET_MEETUP = 'GET_MEETUP';
+export const MEETUP_ERROR = 'MEETUP_ERROR';
+export const DELETE_MEETUP = 'DELETE_MEETUP';
+export const ADD_MEETUP = 'ADD_MEETUP';
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const REMOVE_COMMENT = 'REMOVE_COMMENT';
 export const SET_SPORTS = 'SET_SPORTS';
-
 
 export const GET_CHATS = 'GET_CHATS';
 export const CREATE_CHAT = 'CREATE_CHAT';
