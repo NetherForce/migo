@@ -38,14 +38,15 @@ const Navbar = ({ auth: { isAuthenticated }, logout }) => {
         <Link to="/posts">Posts</Link>
       </li>
       <li>
-        <Link to="/meetups">Meetups</Link>
-      </li>
-      <li>
-        <Link to="/register">Register</Link>
+        <Link to="/register">
+          <i class="fas fa-pen-alt"></i>
+          <span className="hide-sm"> Register</span>
+        </Link>
       </li>
       <li>
         <Link to="/login">
-          <i className="fas fa-user" /> <span className="hide-sm">Login</span>
+          <i className="fas fa-sign-in-alt" />{' '}
+          <span className="hide-sm">Login</span>
         </Link>
       </li>
     </ul>

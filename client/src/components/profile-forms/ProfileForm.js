@@ -51,15 +51,8 @@ const ProfileForm = ({
     }
   }, [loading, getCurrentProfile, profile]);
 
-  const {
-    location,
-    bio,
-    twitter,
-    facebook,
-    linkedin,
-    youtube,
-    instagram
-  } = formData;
+  const { location, bio, twitter, facebook, linkedin, youtube, instagram } =
+    formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -77,10 +70,9 @@ const ProfileForm = ({
       <p className="lead">
         <i className="fas fa-user" />
         {creatingProfile
-          ? ` Let's get some information to make your`
+          ? ` Let's get some info`
           : ' Add some changes to your profile'}
       </p>
-      <small>* = required field</small>
       <form className="form" onSubmit={onSubmit}>
         <div className="form-group">
           <input
@@ -96,7 +88,7 @@ const ProfileForm = ({
         </div>
         <div className="form-group">
           <textarea
-            placeholder="A short bio of yourself"
+            placeholder="A short bio of yourself and your sports related experience"
             name="bio"
             value={bio}
             onChange={onChange}

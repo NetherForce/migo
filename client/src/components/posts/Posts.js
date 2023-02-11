@@ -17,7 +17,7 @@ const Posts = ({ getPosts, post: { posts } }) => {
       <p className="lead">
         <i className="fas fa-user" /> Welcome to the community
         <Link to="/create-post" className="btn btn-primary right">
-          Add Post
+          Create Post
         </Link>
       </p>
       <div className="posts">
