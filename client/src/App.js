@@ -30,6 +30,7 @@ import './style/Navbar.css';
 import './style/Posts.css';
 import './style/Profile.css';
 import './style/Chat.css';
+import './style/Message.css';
 
 const App = () => {
   useEffect(() => {
