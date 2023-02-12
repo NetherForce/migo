@@ -17,7 +17,7 @@ const Meetups = ({ getMeetups, meetup: { meetups } }) => {
       <p className="lead">
         <i className="fas fa-user" /> Welcome to the community
         <Link to="/create-meetup" className="btn btn-primary right">
-          Add Meetup
+          Organize Meetup
         </Link>
       </p>
       <div className="meetups">
