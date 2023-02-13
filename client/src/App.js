@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
+import Map from './components/layout/Map';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Alert from './components/layout/Alert';
@@ -60,6 +61,7 @@ const App = () => {
         <Alert />
         <Routes>
           <Route path="/" element={<Landing />} />
+          <Route path="/open-map" element={<Map />} />
           <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
           <Route path="profiles" element={<Profiles />} />
