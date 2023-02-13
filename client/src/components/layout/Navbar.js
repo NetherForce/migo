@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
 
 const Navbar = ({ auth: { isAuthenticated }, logout }) => {
+  console.log(process.env.JWT_SECRET);
   const authLinks = (
     <>
       <ul>
