@@ -11,15 +11,16 @@ const Navbar = ({ auth: { isAuthenticated }, logout }) => {
         <Link to="/posts">Posts</Link>
       </li>
       <li>
+        <Link to="/meetups">Meetups</Link>
+      </li>
+      <li>
         <Link to="/chat">
-          <i className="fas fa-comment" />{' '}
-          <span className="hide-sm">Chat</span>
+          <i className="fas fa-comment" /> <span className="hide-sm">Chat</span>
         </Link>
       </li>
       <li>
         <Link to="/dashboard">
-          <i className="fas fa-user" />{' '}
-          <span className="hide-sm">Profile</span>
+          <i className="fas fa-user" /> <span className="hide-sm">Profile</span>
         </Link>
       </li>
       <li>
@@ -37,10 +38,16 @@ const Navbar = ({ auth: { isAuthenticated }, logout }) => {
         <Link to="/posts">Posts</Link>
       </li>
       <li>
-        <Link to="/register">Register</Link>
+        <Link to="/register">
+          <i className="fas fa-pen-alt"></i>
+          <span className="hide-sm"> Register</span>
+        </Link>
       </li>
       <li>
-        <Link to="/login">Login</Link>
+        <Link to="/login">
+          <i className="fas fa-sign-in-alt" />{' '}
+          <span className="hide-sm">Login</span>
+        </Link>
       </li>
     </ul>
   );
@@ -48,9 +55,7 @@ const Navbar = ({ auth: { isAuthenticated }, logout }) => {
   return (
     <nav className="navbar bg-dark">
       <h1>
-        <Link to="/">
-          <i className="fas fa-code" /> MIGO
-        </Link>
+        <Link to="/">MIGO</Link>
       </h1>
       <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
     </nav>

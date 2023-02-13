@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addPost } from '../../actions/post';
+import { addMeetup } from '../../actions/meetup';
 import SportsAutocomplete from '../sports/SportsAutocomplete';
 import { Link } from 'react-router-dom';
 
 const initialState = {
   text: '',
-  availability: '',
+  date: '',
   location: '',
   sport: ''
 };
 
-const PostForm = ({ addPost, sports }) => {
+const MeetupForm = ({ addMeetup, sports }) => {
   const [formData, setFormData] = useState(initialState);
 
   const options = sports
@@ -40,19 +40,19 @@ const PostForm = ({ addPost, sports }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addPost({ ...formData, sport: formData.sport.id });
+    addMeetup({ ...formData, sport: formData.sport.id });
     setFormData('');
   };
 
   return (
     <section className="container">
-      <h1 className="large text-primary">Create Post</h1>
+      <h1 className="large text-primary">Create Meetup</h1>
       <p className="lead">
         <i className="fas fa-user" />
-        Give some information for your post
+        Give some information for your meetup
       </p>
       <form className="form" onSubmit={onSubmit}>
-        <div className="post-form">
+        <div className="meetup-form">
           <textarea
             name="text"
             cols="30"
@@ -62,7 +62,7 @@ const PostForm = ({ addPost, sports }) => {
             onChange={onChange}
             required
           />
-          <small className="form-text">What is your post about</small>
+          <small className="form-text">What is your meetup about</small>
         </div>
         <div className="autocomplete form-group">
           <SportsAutocomplete
@@ -75,15 +75,13 @@ const PostForm = ({ addPost, sports }) => {
         </div>
         <div className="form-group">
           <input
-            type="text"
-            placeholder="Availability"
-            name="availability"
-            value={formData.availability || ''}
+            type="date"
+            placeholder="Date"
+            name="date"
+            value={formData.date || ''}
             onChange={onChange}
           />
-          <small className="form-text">
-            Say when you have time to do the sport
-          </small>
+          <small className="form-text">Choose a day</small>
         </div>
         <div className="form-group">
           <input
@@ -103,7 +101,7 @@ const PostForm = ({ addPost, sports }) => {
         >
           Submit
         </button>
-        <Link className="btn btn-light my-1" to="/posts">
+        <Link className="btn btn-light my-1" to="/meetups">
           Go Back
         </Link>
       </form>
@@ -111,13 +109,13 @@ const PostForm = ({ addPost, sports }) => {
   );
 };
 
-PostForm.propTypes = {
+MeetupForm.propTypes = {
   sports: PropTypes.object,
-  addPost: PropTypes.func.isRequired
+  addMeetup: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
   sports: state.staticData.sports
 });
 
-export default connect(mapStateToProps, { addPost })(PostForm);
+export default connect(mapStateToProps, { addMeetup })(MeetupForm);

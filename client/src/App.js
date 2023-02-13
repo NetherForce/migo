@@ -13,6 +13,9 @@ import Profile from './components/profile/Profile';
 import Posts from './components/posts/Posts';
 import Post from './components/post/Post';
 import PostForm from './components/posts/PostForm';
+import Meetups from './components/meetups/Meetups';
+import Meetup from './components/meetup/Meetup';
+import MeetupForm from './components/meetups/MeetupForm';
 import NotFound from './components/layout/NotFound';
 import PrivateRoute from './components/routing/PrivateRoute';
 import Chat from './components/chat/Chat';
@@ -28,6 +31,7 @@ import './style/App.css';
 import './style/Landing.css';
 import './style/Navbar.css';
 import './style/Posts.css';
+import './style/Meetups.css';
 import './style/Profile.css';
 import './style/Chat.css';
 import './style/Message.css';
@@ -82,9 +86,18 @@ const App = () => {
             path="create-post"
             element={<PrivateRoute component={PostForm} />}
           />
+          <Route path="chat" element={<PrivateRoute component={Chat} />} />
           <Route
-            path="chat"
-            element={<PrivateRoute component={Chat} />}
+            path="meetups"
+            element={<PrivateRoute component={Meetups} />}
+          />
+          <Route
+            path="meetups/:id"
+            element={<PrivateRoute component={Meetup} />}
+          />
+          <Route
+            path="create-meetup"
+            element={<PrivateRoute component={MeetupForm} />}
           />
           <Route path="/*" element={<NotFound />} />
         </Routes>

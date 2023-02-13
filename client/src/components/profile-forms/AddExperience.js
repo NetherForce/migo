@@ -36,7 +36,7 @@ const AddExperience = ({ addExperience, sports }) => {
   }
 
   const onSportChange = (newValue) => {
-    setFormData({ ...formData, "sport": newValue });
+    setFormData({ ...formData, sport: newValue });
   };
 
   const onChange = (e) =>
@@ -46,27 +46,28 @@ const AddExperience = ({ addExperience, sports }) => {
     <section className="container">
       <h1 className="large text-primary">Add Experience</h1>
       <p className="lead">
-        <i className="fas fa-code-branch" /> Add any sport that you have done in the past or are still doing
+        <i className="fas fa-running" /> Add any sport that you have done in the
+        past or are still doing
       </p>
       <form
         className="form"
         onSubmit={(e) => {
           e.preventDefault();
-          addExperience({...formData, "sport": formData.sport._id }, navigate);
+          addExperience({ ...formData, sport: formData.sport._id }, navigate);
           console.log(formData);
           setFormData(initialState);
         }}
       >
-      <div className="form-group">
-        <textarea
-          name="description"
-          cols="30"
-          rows="5"
-          placeholder="Job Description"
-          value={formData.description || ''}
-          onChange={onChange}
-        />
-      </div>
+        <div className="form-group">
+          <textarea
+            name="description"
+            cols="30"
+            rows="5"
+            placeholder="Relation to the sport"
+            value={formData.description || ''}
+            onChange={onChange}
+          />
+        </div>
         <div className="autocomplete form-group">
           <SportsAutocomplete
             options={options}
@@ -88,7 +89,8 @@ const AddExperience = ({ addExperience, sports }) => {
               onChange={onChange}
             />
             Beginner
-          </label><br/>
+          </label>
+          <br />
           <label>
             <input
               type="radio"
@@ -98,7 +100,8 @@ const AddExperience = ({ addExperience, sports }) => {
               onChange={onChange}
             />
             Intermediate
-          </label><br/>
+          </label>
+          <br />
           <label>
             <input
               type="radio"
@@ -128,7 +131,9 @@ const AddExperience = ({ addExperience, sports }) => {
             value={formData.club || ''}
             onChange={onChange}
           />
-          <small className="form-text">Were or are you associated with a club</small>
+          <small className="form-text">
+            Were or are you associated with a club
+          </small>
         </div>
         <div className="form-group">
           <h4>From Date</h4>
@@ -136,6 +141,15 @@ const AddExperience = ({ addExperience, sports }) => {
             type="date"
             name="from"
             value={formData.from}
+            onChange={onChange}
+          />
+        </div>
+        <div className="form-group">
+          <h4>To Date</h4>
+          <input
+            type="date"
+            name="to"
+            value={formData.to}
             onChange={onChange}
           />
         </div>
@@ -152,15 +166,6 @@ const AddExperience = ({ addExperience, sports }) => {
             />{' '}
             Main Sport
           </p>
-        </div>
-        <div className="form-group">
-          <h4>To Date</h4>
-          <input
-            type="date"
-            name="to"
-            value={formData.to}
-            onChange={onChange}
-          />
         </div>
         <input type="submit" className="btn btn-primary my-1" />
         <Link className="btn btn-light my-1" to="/dashboard">

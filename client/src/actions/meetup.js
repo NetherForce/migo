@@ -1,28 +1,28 @@
 import api from '../utils/api';
 import { setAlert } from './alert';
 import {
-  GET_POSTS,
-  POST_ERROR,
+  GET_MEETUPS,
+  MEETUP_ERROR,
   UPDATE_LIKES,
-  DELETE_POST,
-  ADD_POST,
-  GET_POST,
+  DELETE_MEETUP,
+  ADD_MEETUP,
+  GET_MEETUP,
   ADD_COMMENT,
   REMOVE_COMMENT
 } from './types';
 
-// Get posts
-export const getPosts = () => async (dispatch) => {
+// Get meetups
+export const getMeetups = () => async (dispatch) => {
   try {
-    const res = await api.get('/posts');
+    const res = await api.get('/meetups');
 
     dispatch({
-      type: GET_POSTS,
+      type: GET_MEETUPS,
       payload: res.data
     });
   } catch (err) {
     dispatch({
-      type: POST_ERROR,
+      type: MEETUP_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
@@ -31,7 +31,7 @@ export const getPosts = () => async (dispatch) => {
 // Add like
 export const addLike = (id) => async (dispatch) => {
   try {
-    const res = await api.put(`/posts/like/${id}`);
+    const res = await api.put(`/meetups/like/${id}`);
 
     dispatch({
       type: UPDATE_LIKES,
@@ -39,7 +39,7 @@ export const addLike = (id) => async (dispatch) => {
     });
   } catch (err) {
     dispatch({
-      type: POST_ERROR,
+      type: MEETUP_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
@@ -48,7 +48,7 @@ export const addLike = (id) => async (dispatch) => {
 // Remove like
 export const removeLike = (id) => async (dispatch) => {
   try {
-    const res = await api.put(`/posts/unlike/${id}`);
+    const res = await api.put(`/meetups/unlike/${id}`);
 
     dispatch({
       type: UPDATE_LIKES,
@@ -56,71 +56,71 @@ export const removeLike = (id) => async (dispatch) => {
     });
   } catch (err) {
     dispatch({
-      type: POST_ERROR,
+      type: MEETUP_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
 };
 
-// Delete post
-export const deletePost = (id) => async (dispatch) => {
+// Delete meetup
+export const deleteMeetup = (id) => async (dispatch) => {
   try {
-    await api.delete(`/posts/${id}`);
+    await api.delete(`/meetups/${id}`);
 
     dispatch({
-      type: DELETE_POST,
+      type: DELETE_MEETUP,
       payload: id
     });
 
-    dispatch(setAlert('Post Removed', 'success'));
+    dispatch(setAlert('Meetup Removed', 'success'));
   } catch (err) {
     dispatch({
-      type: POST_ERROR,
+      type: MEETUP_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
 };
 
-// Add post
-export const addPost = (formData) => async (dispatch) => {
+// Add meetup
+export const addMeetup = (formData) => async (dispatch) => {
   try {
-    const res = await api.post('/posts', formData);
+    const res = await api.post('/meetups', formData);
 
     dispatch({
-      type: ADD_POST,
+      type: ADD_MEETUP,
       payload: res.data
     });
 
-    dispatch(setAlert('Post Created', 'success'));
+    dispatch(setAlert('Meetup Created', 'success'));
   } catch (err) {
     dispatch({
-      type: POST_ERROR,
+      type: MEETUP_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
 };
 
-// Get post
-export const getPost = (id) => async (dispatch) => {
+// Get meetup
+export const getMeetup = (id) => async (dispatch) => {
   try {
-    const res = await api.get(`/posts/${id}`);
+    const res = await api.get(`/meetup/${id}`);
 
     dispatch({
-      type: GET_POST,
+      type: GET_MEETUP,
       payload: res.data
     });
   } catch (err) {
     dispatch({
-      type: POST_ERROR,
+      type: MEETUP_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
 };
 
 // Add comment
-export const addComment = (postId, formData) => async (dispatch) => {
+export const addComment = (meetupId, formData) => async (dispatch) => {
   try {
-    const res = await api.post(`/posts/comment/${postId}`, formData);
+    const res = await api.post(`/meetups/comment/${meetupId}`, formData);
 
     dispatch({
       type: ADD_COMMENT,
@@ -130,16 +130,16 @@ export const addComment = (postId, formData) => async (dispatch) => {
     dispatch(setAlert('Comment Added', 'success'));
   } catch (err) {
     dispatch({
-      type: POST_ERROR,
+      type: MEETUP_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
 };
 
 // Delete comment
-export const deleteComment = (postId, commentId) => async (dispatch) => {
+export const deleteComment = (meetupId, commentId) => async (dispatch) => {
   try {
-    await api.delete(`/posts/comment/${postId}/${commentId}`);
+    await api.delete(`/meetups/comment/${meetupId}/${commentId}`);
 
     dispatch({
       type: REMOVE_COMMENT,
@@ -149,7 +149,7 @@ export const deleteComment = (postId, commentId) => async (dispatch) => {
     dispatch(setAlert('Comment Removed', 'success'));
   } catch (err) {
     dispatch({
-      type: POST_ERROR,
+      type: MEETUP_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
