@@ -23,10 +23,36 @@ router.get('/', auth, async (req, res) => {
 
     for (let index in usertochat) {
       let currChat = await Chat.findById(usertochat[index].chat);
-      if(currChat && currChat !== null) chats.push(currChat);
+      if (currChat && currChat !== null) chats.push(currChat);
     }
 
     res.json(chats);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    GET api/chats/:id
+// @desc     Get user chat
+// @access   Private
+router.get('/:id', [auth, checkObjectId('id')], async (req, res) => {
+  try {
+    const usertochat = await UserToChat.find({
+      user: req.user.id,
+      chat: req.params.id
+    });
+
+    if (!usertochat) {
+      return res.status(404).json({ msg: 'Chat not found' });
+    }
+
+    const chat = await Chat.findById(req.params.id);
+    if (!chat) {
+      return res.status(404).json({ msg: 'Chat not found' });
+    }
+
+    res.json(chat);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -48,9 +74,8 @@ router.post(
     try {
       let adminUser = await User.findById(req.user.id).select('-password');
       let admin = {
-        id: adminUser._id,
-        name: adminUser.name,
-        avatar: adminUser.avatar
+        ...adminUser,
+        id: adminUser._id
       };
 
       let users = [];
@@ -59,7 +84,7 @@ router.post(
       for (let index in userIds) {
         if (!mongoose.Types.ObjectId.isValid(userIds[index])) continue;
         let currUser = await User.findById(userIds[index]).select('-password');
-        users.push(currUser);
+        users.push({ ...currUser, id: currUser._id });
       }
 
       if (users.length <= 1)
@@ -159,6 +184,8 @@ router.post(
       });
 
       await usertochat.save();
+
+      return res.json(user);
     } catch (err) {
       console.error(err.message);
       return res.status(500).send('Server Error');
@@ -256,32 +283,36 @@ router.put('/:chatId', [auth, checkObjectId('chatId')], async (req, res) => {
 // @route    PUT api/chats/:chatId
 // @desc     Change chat name
 // @access   Private
-router.put('/:chatId/name/:newName', [auth, checkObjectId('chatId')], async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  try {
-    let chat = await Chat.findById(req.params.chatId);
-    if (!chat) {
-      return res.status(404).json({ msg: 'Chat not found' });
+router.put(
+  '/:chatId/name/:newName',
+  [auth, checkObjectId('chatId')],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
-    // Check user
-    if (chat.admin.id.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'User not authorized' });
+    try {
+      let chat = await Chat.findById(req.params.chatId);
+      if (!chat) {
+        return res.status(404).json({ msg: 'Chat not found' });
+      }
+
+      // Check user
+      if (chat.admin.id.toString() !== req.user.id) {
+        return res.status(401).json({ msg: 'User not authorized' });
+      }
+
+      chat.name = req.params.newName;
+
+      await chat.save();
+
+      res.json({ msg: 'Successfully changed chat name' });
+    } catch (err) {
+      console.error(err.message);
+      return res.status(500).send('Server Error');
     }
-
-    chat.name = req.params.newName;
-
-    await chat.save();
-
-    res.json({ msg: 'Successfully changed chat name' });
-  } catch (err) {
-    console.error(err.message);
-    return res.status(500).send('Server Error');
   }
-});
+);
 
 module.exports = router;

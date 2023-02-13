@@ -6,15 +6,12 @@ import { getChats } from '../../actions/chat';
 import ChatList from './ChatList';
 import ChatDisplay from './ChatDisplay';
 
-const Chat = ({ getChats, chats }) => {
-    useEffect(() => {
-      getChats();
-    }, [getChats]);
-
+const Chat = ({ getChats }) => {
+  useEffect(() => {
+    getChats();
+  }, [getChats]);
   return (
     <section className="chatConteiner height-100">
-      {/* messages and chats */}
-
       <section className="bg-white width-30 height-100">
         <ChatList />
       </section>

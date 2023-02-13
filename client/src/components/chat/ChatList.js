@@ -1,13 +1,9 @@
-import React, { useEffect } from 'react';
+import React, {  } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ChatItem from './ChatItem';
 
 const ChatList = ({ chat: { chats } }) => {
-//   useEffect(() => {
-//     getPosts();
-//   }, [getPosts]);
-// should be get chats
   return (
     <section className="container">
         <div className="">
