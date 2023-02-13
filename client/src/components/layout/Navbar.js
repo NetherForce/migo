@@ -39,7 +39,7 @@ const Navbar = ({ auth: { isAuthenticated }, logout }) => {
       </li>
       <li>
         <Link to="/register">
-          <i class="fas fa-pen-alt"></i>
+          <i className="fas fa-pen-alt"></i>
           <span className="hide-sm"> Register</span>
         </Link>
       </li>

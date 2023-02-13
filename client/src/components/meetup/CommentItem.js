@@ -20,7 +20,7 @@ const CommentItem = ({
     </div>
     <div>
       <p className="my-1">{text}</p>
-      <p className="meetup-date">Posted on {formatDate(date)}</p>
+      <p className="post-date">Posted on {formatDate(date)}</p>
       {!auth.loading && user === auth.user._id && (
         <button
           onClick={() => deleteComment(meetupId, _id)}

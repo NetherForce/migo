@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const initialState = {
   text: '',
-  availability: '',
+  date: '',
   location: '',
   sport: ''
 };
@@ -75,15 +75,13 @@ const MeetupForm = ({ addMeetup, sports }) => {
         </div>
         <div className="form-group">
           <input
-            type="text"
-            placeholder="Availability"
-            name="availability"
-            value={formData.availability || ''}
+            type="date"
+            placeholder="Date"
+            name="date"
+            value={formData.date || ''}
             onChange={onChange}
           />
-          <small className="form-text">
-            Say when you have time to do the sport
-          </small>
+          <small className="form-text">Choose a day</small>
         </div>
         <div className="form-group">
           <input

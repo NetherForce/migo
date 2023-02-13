@@ -20,7 +20,12 @@ const MeetupSchema = new Schema({
   },
   date: {
     type: Date,
-    min: Date.now
+    min: Date.now,
+    required: true
+  },
+  postDate: {
+    type: Date,
+    default: Date.now
   },
   sport: {
     type: Schema.Types.ObjectId

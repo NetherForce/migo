@@ -35,18 +35,18 @@ const PostForm = ({ addPost, sports }) => {
   };
 
   const onSportChange = (newValue) => {
-    setFormData({ ...formData, "sport": newValue });
-  }
+    setFormData({ ...formData, sport: newValue });
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addPost({ ...formData, "sport": formData.sport.id });
+    addPost({ ...formData, sport: formData.sport.id });
     setFormData('');
   };
 
   return (
     <section className="container">
-    <h1 className="large text-primary">Create Post</h1>
+      <h1 className="large text-primary">Create Post</h1>
       <p className="lead">
         <i className="fas fa-user" />
         Give some information for your post
@@ -68,7 +68,7 @@ const PostForm = ({ addPost, sports }) => {
           <SportsAutocomplete
             options={options}
             value={formData.sport}
-            onChange = {onSportChange}
+            onChange={onSportChange}
             label="Sport"
           />
           <small className="form-text">Which sport do you want to do</small>

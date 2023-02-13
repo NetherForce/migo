@@ -20,6 +20,7 @@ const MeetupItem = ({
     likes,
     comments,
     date,
+    postDate,
     location,
     availability,
     sport
@@ -42,11 +43,13 @@ const MeetupItem = ({
       </p>
       <p className="my-1">
         <span className="" style={{ color: 'var(--primary-color)' }}>
-          Availability:{' '}
+          Date:{' '}
         </span>
-        {availability ? availability : 'not specified'}
+        {date ? formatDate(date) : 'not specified'}
       </p>
-      <p className="meetup-date">Posted on {formatDate(date)}</p>
+      <p className="post-date">
+        Posted on {postDate ? formatDate(postDate) : 'not specified'}
+      </p>
     </div>
     <div>
       <p className="my-1">
@@ -104,7 +107,7 @@ MeetupItem.defaultProps = {
 };
 
 MeetupItem.propTypes = {
-  Meetup: PropTypes.object.isRequired,
+  meetup: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   sports: PropTypes.object.isRequired,
   addLike: PropTypes.func.isRequired,
