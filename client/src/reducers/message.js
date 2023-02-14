@@ -17,7 +17,6 @@ function messageReducer(state = initialState, action) {
   
   switch (type) {
     case SET_CHAT:
-      console.log("SET_CHAT", payload);
       return {
         ...state,
         currChat: payload

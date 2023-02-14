@@ -64,6 +64,8 @@ const App = () => {
           <Route path="login" element={<Login />} />
           <Route path="profiles" element={<Profiles />} />
           <Route path="profile/:id" element={<Profile />} />
+          <Route path="posts" element={<Posts />} />
+          <Route path="posts/:id" element={<Post />} />
           <Route
             path="dashboard"
             element={<PrivateRoute component={Dashboard} />}
@@ -80,8 +82,6 @@ const App = () => {
             path="add-experience"
             element={<PrivateRoute component={AddExperience} />}
           />
-          <Route path="posts" element={<PrivateRoute component={Posts} />} />
-          <Route path="posts/:id" element={<PrivateRoute component={Post} />} />
           <Route
             path="create-post"
             element={<PrivateRoute component={PostForm} />}
@@ -94,6 +94,10 @@ const App = () => {
           <Route
             path="meetups/:id"
             element={<PrivateRoute component={Meetup} />}
+          />
+          <Route
+            path="meetups/create/:id"
+            element={<PrivateRoute component={MeetupForm} />}
           />
           <Route
             path="create-meetup"

@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getMessages } from '../../actions/message';
 
 import DateItem from './DateItem';
 
 const MessageItem = ({ message, isMine }) => {
-  const { from, to, date, text, name, avatar, shouldHaveDate } = message;
+  const { date, text, name, avatar, shouldHaveDate } = message;
 
   return (
     <section>

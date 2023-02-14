@@ -73,10 +73,7 @@ router.post(
 
     try {
       let adminUser = await User.findById(req.user.id).select('-password');
-      let admin = {
-        ...adminUser,
-        id: adminUser._id
-      };
+      let admin = { "name": adminUser.name, "avatar": adminUser.avatar, "id": adminUser._id };
 
       let users = [];
       const userIds = req.body.userIds;
@@ -84,7 +81,7 @@ router.post(
       for (let index in userIds) {
         if (!mongoose.Types.ObjectId.isValid(userIds[index])) continue;
         let currUser = await User.findById(userIds[index]).select('-password');
-        users.push({ ...currUser, id: currUser._id });
+        users.push({ "name": currUser.name, "avatar": currUser.avatar, "id": currUser._id });
       }
 
       if (users.length <= 1)

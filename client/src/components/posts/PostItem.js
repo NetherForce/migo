@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import formatDate from '../../utils/formatDate';
@@ -6,14 +6,16 @@ import { connect } from 'react-redux';
 import { addLike, removeLike, deletePost } from '../../actions/post';
 
 const PostItem = ({
-  addLike,
-  removeLike,
   deletePost,
   auth,
   sports,
-  post: { _id, text, name, avatar, user, likes, comments, date, location, availability, sport },
+  post: { _id, text, name, avatar, user, date, location, availability, sport },
   showActions
-}) => (
+}) => {
+  useEffect(()=>{
+    console.log(auth);
+  });
+  return (
   <div className="post bg-white p-1 my-1">
     <div>
       <Link to={`/profile/${user}`}>
@@ -22,15 +24,35 @@ const PostItem = ({
       </Link>
     </div>
     <div>
-      <p className="my-1"><span className="" style={{color: "var(--primary-color)"}}>Description: </span>{text ? text : "there is no description"}</p>
-      <p className="my-1"><span className="" style={{color: "var(--primary-color)"}}>Availability: </span>{availability ? availability : "not specified"}</p>
+      <p className="my-1">
+        <span className="" style={{ color: 'var(--primary-color)' }}>
+          Description:{' '}
+        </span>
+        {text ? text : 'there is no description'}
+      </p>
+      <p className="my-1">
+        <span className="" style={{ color: 'var(--primary-color)' }}>
+          Availability:{' '}
+        </span>
+        {availability ? availability : 'not specified'}
+      </p>
       <p className="post-date">Posted on {formatDate(date)}</p>
-
     </div>
     <div>
-      
-      <p className="my-1"><span className="" style={{color: "var(--primary-color)"}}>Sport: </span>{sport && sports && sports[sport] ? sports[sport].name : "not specified"}</p>
-      <p className="my-1"><span className="" style={{color: "var(--primary-color)"}}>Location: </span>{location ? location : "not specified"}</p>
+      <p className="my-1">
+        <span className="" style={{ color: 'var(--primary-color)' }}>
+          Sport:{' '}
+        </span>
+        {sport && sports && sports[sport]
+          ? sports[sport].name
+          : 'not specified'}
+      </p>
+      <p className="my-1">
+        <span className="" style={{ color: 'var(--primary-color)' }}>
+          Location:{' '}
+        </span>
+        {location ? location : 'not specified'}
+      </p>
 
       {showActions && (
         <Fragment>
@@ -49,10 +71,10 @@ const PostItem = ({
           > 
             <i className="fas fa-thumbs-down" />
           </button> */}
-          <Link to={`/posts/${_id}`} className="btn btn-primary">
-            Message
-          </Link>
-          {!auth.loading && user === auth.user._id && (
+          {auth.isAuthenticated && (<Link to={`/posts/${_id}`} className="btn btn-primary">
+            Meet
+          </Link>)}
+          {auth.isAuthenticated && !auth.loading && user === auth.user._id && (
             <button
               onClick={() => deletePost(_id)}
               type="button"
@@ -65,7 +87,7 @@ const PostItem = ({
       )}
     </div>
   </div>
-);
+);};
 
 PostItem.defaultProps = {
   showActions: true
@@ -86,4 +108,6 @@ const mapStateToProps = (state) => ({
   sports: state.staticData.sports
 });
 
-export default connect(mapStateToProps, { addLike, removeLike, deletePost })(PostItem);
+export default connect(mapStateToProps, { addLike, removeLike, deletePost })(
+  PostItem
+);
