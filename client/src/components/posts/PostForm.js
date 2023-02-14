@@ -89,7 +89,7 @@ const PostForm = ({ addPost, sports }) => {
           <input
             type="text"
             placeholder="Longitude"
-            name="longitude"
+            name="location.longitude"
             value={formData.location.longitude || ''}
             onChange={onChange}
           />
@@ -99,7 +99,7 @@ const PostForm = ({ addPost, sports }) => {
           <input
             type="text"
             placeholder="Latitude"
-            name="latitude"
+            name="location.latitude"
             value={formData.location.latitude || ''}
             onChange={onChange}
           />
