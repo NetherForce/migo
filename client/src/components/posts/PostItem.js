@@ -90,7 +90,7 @@ const PostItem = ({
             <i className="fas fa-thumbs-down" />
           </button> */}
             {auth.isAuthenticated && (
-              <Link to={`/posts/${_id}`} className="btn btn-primary">
+              <Link to={`/meetups/create/${_id}`} className="btn btn-primary">
                 Meet
               </Link>
             )}
