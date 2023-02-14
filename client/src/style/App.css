@@ -209,6 +209,25 @@ img {
   opacity: 0.8;
 }
 
+.btn-map {
+  background: #333;
+  color: var(--light-color);
+}
+
+.navbar ul:first-of-type {
+  position: absolute;
+  left: 50%;
+
+  top: 12px;
+}
+
+.navbar ul:first-of-type li {
+  position: absolute;
+  width: 150px;
+  left: -75px;
+  margin-bottom: 20px;
+}
+
 .bg-light,
 .badge-light {
   border: #ccc solid 1px;
@@ -325,6 +344,15 @@ button {
     display: block;
     width: 100%;
     margin-bottom: 0.2rem;
+  }
+
+  .navbar ul:first-of-type {
+    position: static;
+  }
+
+  .navbar ul:first-of-type li {
+    position: static;
+    width: auto;
   }
 }
 

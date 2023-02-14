@@ -5,3 +5,5 @@ client/build
 client/.eslintcache
 package-lock.json
 client/package-lock.json
+client/yarn.lock
+.env
