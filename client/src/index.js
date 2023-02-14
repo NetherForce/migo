@@ -7,8 +7,6 @@ import { SET_SPORTS } from './actions/types';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
-const dotenv = require('dotenv').config();
-
 //API sport
 async function load() {
   const res = await api.get('/sports');
