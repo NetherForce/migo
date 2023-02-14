@@ -141,7 +141,7 @@ const PostForm = ({ addPost, sports }) => {
             value={
               currentLocation
                 ? currentLocation.longitude || 'Latitude'
-                : 'Longitude (Read only)'
+                : 'Longitude (read-only)'
             }
             disabled
           />
@@ -153,7 +153,7 @@ const PostForm = ({ addPost, sports }) => {
             value={
               currentLocation
                 ? currentLocation.latitude || 'Latitude'
-                : 'Latitude (Read only)'
+                : 'Latitude (read-only)'
             }
             disabled
           />
