@@ -24,9 +24,8 @@ const MapPopup = ({
       <Marker
         longitude={location.longitude}
         latitude={location.latitude}
-        anchor="bottom"
         onClick={() => handleMarkerClick(_id)}
-        style={{ cursor: 'pointer', zIndex: '1000' }}
+        style={{ cursor: 'pointer' }}
       ></Marker>
       {_id === currentPlaceId && (
         <Popup

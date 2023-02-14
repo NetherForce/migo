@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { getPosts } from '../../actions/post';
 import Map, { Marker, Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { getPosts } from '../../actions/post';
 import MapPopup from './MapPopup';
 
 const MapPage = ({ getPosts, post: { posts } }) => {
@@ -24,11 +24,11 @@ const MapPage = ({ getPosts, post: { posts } }) => {
         width: '100vw',
         height: '100vh',
         overflow: 'hidden',
-        marginTop: '60px',
-        cursor: 'point'
+        marginTop: '60px'
       }}
       mapStyle="mapbox://styles/mapbox/outdoors-v12"
       mapboxAccessToken="pk.eyJ1IjoicGFuY2FrZWJveSIsImEiOiJjbGUyajU0dncxbXo3M3BwNmdkYXNwZzdlIn0.v1N4CI0aULZ7M6S12iW5Kg"
+      cursor="auto"
     >
       {posts.map((post) => {
         return (
