@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
 import SportsAutocomplete from '../sports/SportsAutocomplete';
 import { Link } from 'react-router-dom';
+import Map, { Marker, Popup } from 'react-map-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 const initialState = {
   text: '',
@@ -41,7 +43,7 @@ const PostForm = ({ addPost, sports }) => {
   const onLocationChange = (e) => {
     setFormData({
       ...formData,
-      location: { ...formData.location, [e.target.name]: e.target.value }
+      location: { ...currentLocation, [e.target.name]: e.target.value }
     });
   };
 
@@ -49,6 +51,15 @@ const PostForm = ({ addPost, sports }) => {
     e.preventDefault();
     addPost({ ...formData, sport: formData.sport.id });
     setFormData('');
+  };
+
+  const [currentLocation, setCurrentLocation] = useState(null);
+
+  const handleAddClick = (e) => {
+    setCurrentLocation({
+      latitude: e.lngLat.lat,
+      longitude: e.lngLat.lng
+    });
   };
 
   return (
@@ -60,6 +71,7 @@ const PostForm = ({ addPost, sports }) => {
       </p>
       <form className="form" onSubmit={onSubmit}>
         <div className="post-form">
+          <small className="form-text">What is your post about</small>
           <textarea
             name="text"
             cols="30"
@@ -69,18 +81,22 @@ const PostForm = ({ addPost, sports }) => {
             onChange={onChange}
             required
           />
-          <small className="form-text">What is your post about</small>
         </div>
         <div className="autocomplete form-group">
-          <SportsAutocomplete
-            options={options}
-            value={formData.sport}
-            onChange={onSportChange}
-            label="Sport"
-          />
           <small className="form-text">Which sport do you want to do</small>
+          <div style={{ marginTop: '-15px' }}>
+            <SportsAutocomplete
+              options={options}
+              value={formData.sport}
+              onChange={onSportChange}
+              label="Sport"
+            />
+          </div>
         </div>
         <div className="form-group">
+          <small className="form-text">
+            Say when you have time to do the sport
+          </small>
           <input
             type="text"
             placeholder="Availability"
@@ -88,35 +104,65 @@ const PostForm = ({ addPost, sports }) => {
             value={formData.availability || ''}
             onChange={onChange}
           />
-          <small className="form-text">
-            Say when you have time to do the sport
-          </small>
+        </div>
+        <div className="form-group">
+          <small className="form-text">Location</small>
+          <div>
+            <Map
+              initialViewState={{
+                longitude: 23.3219,
+                latitude: 42.6977,
+                zoom: 7
+              }}
+              style={{
+                width: '70vw',
+                height: '40vh',
+                overflow: 'hidden'
+              }}
+              mapStyle="mapbox://styles/mapbox/outdoors-v12"
+              mapboxAccessToken="pk.eyJ1IjoicGFuY2FrZWJveSIsImEiOiJjbGUyajU0dncxbXo3M3BwNmdkYXNwZzdlIn0.v1N4CI0aULZ7M6S12iW5Kg"
+              cursor="auto"
+              onClick={handleAddClick}
+            >
+              {currentLocation && (
+                <Marker
+                  longitude={currentLocation.longitude}
+                  latitude={currentLocation.latitude}
+                  style={{ cursor: 'auto' }}
+                ></Marker>
+              )}
+            </Map>
+          </div>
         </div>
         <div className="form-group">
           <input
             type="text"
-            placeholder="Longitude"
             name="longitude"
-            value={formData.location ? formData.location.longitude || '' : ''}
-            onChange={onLocationChange}
+            value={
+              currentLocation
+                ? currentLocation.longitude || 'Latitude'
+                : 'Longitude (Read only)'
+            }
+            disabled
           />
-          <small className="form-text">Longitude</small>
         </div>
         <div className="form-group">
           <input
             type="text"
-            placeholder="Latitude"
             name="latitude"
-            value={formData.location ? formData.location.latitude || '' : ''}
-            onChange={onLocationChange}
+            value={
+              currentLocation
+                ? currentLocation.latitude || 'Latitude'
+                : 'Latitude (Read only)'
+            }
+            disabled
           />
-          <small className="form-text">Latitude</small>
         </div>
 
         <button
           type="submit"
           className="btn btn-primary my-1"
-          onClick={onSubmit}
+          onClick={(onSubmit, onLocationChange)}
         >
           Submit
         </button>
