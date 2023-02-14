@@ -38,6 +38,10 @@ const PostForm = ({ addPost, sports }) => {
     setFormData({ ...formData, sport: newValue });
   };
 
+  const onLocationChange = (e) => {
+    setFormData({ ...formData, location: { ...formData.location, [e.target.name]:  e.target.value } });
+  }
+
   const onSubmit = (e) => {
     e.preventDefault();
     addPost({ ...formData, sport: formData.sport.id });
@@ -89,9 +93,9 @@ const PostForm = ({ addPost, sports }) => {
           <input
             type="text"
             placeholder="Longitude"
-            name="location.longitude"
+            name="longitude"
             value={formData.location.longitude || ''}
-            onChange={onChange}
+            onChange={onLocationChange}
           />
           <small className="form-text">Longitude</small>
         </div>
@@ -99,9 +103,9 @@ const PostForm = ({ addPost, sports }) => {
           <input
             type="text"
             placeholder="Latitude"
-            name="location.latitude"
+            name="latitude"
             value={formData.location.latitude || ''}
-            onChange={onChange}
+            onChange={onLocationChange}
           />
           <small className="form-text">Latitude</small>
         </div>
