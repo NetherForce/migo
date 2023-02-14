@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import Map, { Marker, Popup } from 'react-map-gl';
 
 const MapPopup = ({
+  sports,
   post: { _id, text, name, avatar, location, availability, sport },
   showActions
 }) => (
@@ -13,15 +14,24 @@ const MapPopup = ({
     longitude={location.longitude}
     latitude={location.latitude}
     closeOnClick={false}
+    closeButton={true}
     anchor="top"
-    onClose={() => setShowPopup(false)}
   >
-    <div>
-      <label>${sport}</label>
-      <label>${availability}</label>
-      <label>Created by ${name}</label>
-      <Link to={`/posts/${_id}`}>Go to post</Link>
-    </div>
+    <>
+      <details className="unselectable">
+        <summary>View details</summary>
+
+        <label>{sports[sport].name}</label>
+        <br></br>
+        <label>{availability}</label>
+        <br></br>
+        <label>Created by {name}</label>
+        <br></br>
+      </details>
+      <Link className="unselectable" to={`/posts/${_id}`}>
+        Go to post
+      </Link>
+    </>
   </Popup>
 );
 
