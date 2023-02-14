@@ -1,121 +1,67 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { Link, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addMeetup } from '../../actions/meetup';
-import SportsAutocomplete from '../sports/SportsAutocomplete';
-import { Link } from 'react-router-dom';
+import Spinner from '../layout/Spinner';
+import { Button } from '@mui/material';
 
-const initialState = {
-  text: '',
-  date: '',
-  location: '',
-  sport: ''
-};
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-const MeetupForm = ({ addMeetup, sports }) => {
-  const [formData, setFormData] = useState(initialState);
+import MeetupItem from './MeetupItem';
+import PostItem from '../posts/PostItem';
+import { getMeetups, addMeetup } from '../../actions/meetup';
+import { getPost } from '../../actions/post';
 
-  const options = sports
-    ? Object.keys(sports).map((key) => {
-        return { ...sports[key], id: key, key: key };
-      })
-    : [];
-  options.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-  let i = 0;
-  while (i < options.length - 1) {
-    if (options[i].name === options[i + 1].name) {
-      options.splice(i + 1, 1);
-    } else {
-      i++;
-    }
-  }
+const Post = ({ getMeetups, addMeetup, meetup: { meetups }, getPost, post: { post, loading } }) => {
+  const { id } = useParams();
+  useEffect(() => {
+    getMeetups();
+    getPost(id);
+  }, [getMeetups, getPost, id]);
 
-  const onChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const [date, setDate] = useState('');
 
-  const onSportChange = (newValue) => {
-    setFormData({ ...formData, sport: newValue });
-  };
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    addMeetup({ ...formData, sport: formData.sport.id });
-    setFormData('');
-  };
-
-  return (
+  return loading || post === null ? (
+    <Spinner />
+  ) : (
     <section className="container">
-      <h1 className="large text-primary">Create Meetup</h1>
-      <p className="lead">
-        <i className="fas fa-user" />
-        Give some information for your meetup
-      </p>
-      <form className="form" onSubmit={onSubmit}>
-        <div className="meetup-form">
-          <textarea
-            name="text"
-            cols="30"
-            rows="5"
-            placeholder="Description"
-            value={formData.text || ''}
-            onChange={onChange}
-            required
-          />
-          <small className="form-text">What is your meetup about</small>
-        </div>
-        <div className="autocomplete form-group">
-          <SportsAutocomplete
-            options={options}
-            value={formData.sport}
-            onChange={onSportChange}
-            label="Sport"
-          />
-          <small className="form-text">Which sport do you want to do</small>
-        </div>
-        <div className="form-group">
-          <input
-            type="date"
-            placeholder="Date"
-            name="date"
-            value={formData.date || ''}
-            onChange={onChange}
-          />
-          <small className="form-text">Choose a day</small>
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Location"
-            name="location"
-            value={formData.location || ''}
-            onChange={onChange}
-          />
-          <small className="form-text">City and name of the place</small>
-        </div>
+      <Link to="/posts" className="btn">
+        Back To Posts
+      </Link>
+      <PostItem post={post} showActions={false} />
 
-        <button
-          type="submit"
-          className="btn btn-primary my-1"
-          onClick={onSubmit}
-        >
-          Submit
-        </button>
-        <Link className="btn btn-light my-1" to="/meetups">
-          Go Back
-        </Link>
-      </form>
+      <section className="container">
+    <DatePicker
+      selected={date}
+      onChange={(newDate) => setDate(newDate)}
+      showTimeSelect
+      dateFormat="MMMM d, yyyy h:mm aa"
+    />
+
+        <button className="btn btn-primary" onClick={() => { addMeetup({...post, date: date, location: ""}); }}>Create meet</button>
+      </section>
+
+      <div className="comments">
+        {meetups.map((meetup) => (
+          <MeetupItem key={meetup._id} meetup={meetup} />
+        ))}
+      </div>
     </section>
   );
 };
 
-MeetupForm.propTypes = {
-  sports: PropTypes.object,
+Post.propTypes = {
+  getMeetups: PropTypes.func.isRequired,
+  meetup: PropTypes.object.isRequired,
+  getPost: PropTypes.func.isRequired,
+  post: PropTypes.object.isRequired,
   addMeetup: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
-  sports: state.staticData.sports
+  meetup: state.meetup,
+  post: state.post
 });
 
-export default connect(mapStateToProps, { addMeetup })(MeetupForm);
+export default connect(mapStateToProps, { getMeetups, getPost, addMeetup })(Post);

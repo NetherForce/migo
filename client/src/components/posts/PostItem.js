@@ -25,7 +25,7 @@ const PostItem = ({
   showActions
 }) => {
   useEffect(() => {
-    console.log(auth);
+    // console.log(auth);
   });
   return (
     <div className="post bg-white p-1 my-1">

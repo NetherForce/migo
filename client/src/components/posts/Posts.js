@@ -22,7 +22,6 @@ const Posts = ({ getPosts, post: { posts } }) => {
       </p>
       <div className="posts">
         {posts.map((post) => {
-          console.log(post);
           return <PostItem key={post._id} post={post} />;
         })}
       </div>

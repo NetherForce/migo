@@ -16,7 +16,7 @@ import Post from './components/post/Post';
 import PostForm from './components/posts/PostForm';
 import Meetups from './components/meetups/Meetups';
 import Meetup from './components/meetup/Meetup';
-import MeetupJoin from './components/meetups/MeetupJoin';
+import MeetupForm from './components/meetups/MeetupForm';
 import NotFound from './components/layout/NotFound';
 import PrivateRoute from './components/routing/PrivateRoute';
 import Chat from './components/chat/Chat';
@@ -99,12 +99,8 @@ const App = () => {
           />
           <Route
             path="meetups/create/:id"
-            element={<PrivateRoute component={MeetupJoin} />}
-          />
-          {/* <Route
-            path="create-meetup"
             element={<PrivateRoute component={MeetupForm} />}
-          /> */}
+          />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </Router>

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 const SportsAutocomplete = (props) => {
@@ -27,10 +26,6 @@ const SportsAutocomplete = (props) => {
       renderInput={(params) => <TextField {...params} label={props.label} />}
     />
   );
-};
-
-SportsAutocomplete.propTypes = {
-  sportChanged: PropTypes.func
 };
 
 const mapStateToProps = (state) => ({});
