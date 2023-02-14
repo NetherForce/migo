@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 const initialState = {
   text: '',
   availability: '',
-  location: '',
+  location: { longitude: '', latitude: '' },
   sport: ''
 };
 
@@ -88,12 +88,22 @@ const PostForm = ({ addPost, sports }) => {
         <div className="form-group">
           <input
             type="text"
-            placeholder="Location"
-            name="location"
-            value={formData.location || ''}
+            placeholder="Longitude"
+            name="longitude"
+            value={formData.location.longitude || ''}
             onChange={onChange}
           />
-          <small className="form-text">City and name of the place</small>
+          <small className="form-text">Longitude</small>
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Latitude"
+            name="latitude"
+            value={formData.location.latitude || ''}
+            onChange={onChange}
+          />
+          <small className="form-text">Latitude</small>
         </div>
 
         <button

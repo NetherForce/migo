@@ -16,7 +16,12 @@ const PostSchema = new Schema({
     type: String
   },
   location: {
-    type: String
+    longitude: {
+      type: String
+    },
+    latitude: {
+      type: String
+    }
   },
   availability: {
     type: String

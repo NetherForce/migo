@@ -11,7 +11,19 @@ const PostItem = ({
   deletePost,
   auth,
   sports,
-  post: { _id, text, name, avatar, user, likes, comments, date, location, availability, sport },
+  post: {
+    _id,
+    text,
+    name,
+    avatar,
+    user,
+    likes,
+    comments,
+    date,
+    location,
+    availability,
+    sport
+  },
   showActions
 }) => (
   <div className="post bg-white p-1 my-1">
@@ -22,15 +34,41 @@ const PostItem = ({
       </Link>
     </div>
     <div>
-      <p className="my-1"><span className="" style={{color: "var(--primary-color)"}}>Description: </span>{text ? text : "there is no description"}</p>
-      <p className="my-1"><span className="" style={{color: "var(--primary-color)"}}>Availability: </span>{availability ? availability : "not specified"}</p>
+      <p className="my-1">
+        <span className="" style={{ color: 'var(--primary-color)' }}>
+          Description:{' '}
+        </span>
+        {text ? text : 'there is no description'}
+      </p>
+      <p className="my-1">
+        <span className="" style={{ color: 'var(--primary-color)' }}>
+          Availability:{' '}
+        </span>
+        {availability ? availability : 'not specified'}
+      </p>
       <p className="post-date">Posted on {formatDate(date)}</p>
-
     </div>
     <div>
-      
-      <p className="my-1"><span className="" style={{color: "var(--primary-color)"}}>Sport: </span>{sport && sports && sports[sport] ? sports[sport].name : "not specified"}</p>
-      <p className="my-1"><span className="" style={{color: "var(--primary-color)"}}>Location: </span>{location ? location : "not specified"}</p>
+      <p className="my-1">
+        <span className="" style={{ color: 'var(--primary-color)' }}>
+          Sport:{' '}
+        </span>
+        {sport && sports && sports[sport]
+          ? sports[sport].name
+          : 'not specified'}
+      </p>
+      <p className="my-1">
+        <span className="" style={{ color: 'var(--primary-color)' }}>
+          Longitude:{' '}
+        </span>
+        {location.longitude ? location.longitude : 'not specified'}
+      </p>
+      <p className="my-1">
+        <span className="" style={{ color: 'var(--primary-color)' }}>
+          Latitude:{' '}
+        </span>
+        {location.latitude ? location.latitude : 'not specified'}
+      </p>
 
       {showActions && (
         <Fragment>
@@ -86,4 +124,6 @@ const mapStateToProps = (state) => ({
   sports: state.staticData.sports
 });
 
-export default connect(mapStateToProps, { addLike, removeLike, deletePost })(PostItem);
+export default connect(mapStateToProps, { addLike, removeLike, deletePost })(
+  PostItem
+);
