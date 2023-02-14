@@ -5,10 +5,9 @@ import PropTypes from 'prop-types';
 import Map, { Marker, Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { getPosts } from '../../actions/post';
+import MapPopup from './MapPopup';
 
 const MapPage = ({ getPosts, post: { posts } }) => {
-  const [showPopup, setShowPopup] = React.useState(true);
-
   useEffect(() => {
     getPosts();
   }, [getPosts]);
@@ -24,20 +23,11 @@ const MapPage = ({ getPosts, post: { posts } }) => {
       mapStyle="mapbox://styles/mapbox/outdoors-v12"
       mapboxAccessToken="pk.eyJ1IjoicGFuY2FrZWJveSIsImEiOiJjbGUyajU0dncxbXo3M3BwNmdkYXNwZzdlIn0.v1N4CI0aULZ7M6S12iW5Kg"
     >
-      {/* {posts.map((post) => (
-        <MapMarker key={post._id} post={post} />
-      ))} */}
-      {showPopup && (
-        <Popup
-          longitude={23.3219}
-          latitude={42.6977}
-          closeOnClick={false}
-          anchor="top"
-          onClose={() => setShowPopup(false)}
-        >
-          <Link to="/">MIGO</Link>
-        </Popup>
-      )}
+      <div className="posts">
+        {posts.map((post) => {
+          return <MapPopup key={post._id} post={post} />;
+        })}
+      </div>
     </Map>
   );
 };

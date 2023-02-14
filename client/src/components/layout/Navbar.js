@@ -8,7 +8,7 @@ const Navbar = ({ auth: { isAuthenticated }, logout }) => {
   const authLinks = (
     <>
       <ul>
-        <li>
+        <li className="btn-text unselectable">
           <Link to="/open-map" className="btn btn-map">
             View map
           </Link>
@@ -46,7 +46,7 @@ const Navbar = ({ auth: { isAuthenticated }, logout }) => {
   const guestLinks = (
     <>
       <ul>
-        <li>
+        <li className="btn-text unselectable">
           <Link to="/open-map" className="btn btn-map">
             View map
           </Link>
@@ -75,7 +75,9 @@ const Navbar = ({ auth: { isAuthenticated }, logout }) => {
   return (
     <nav className="navbar bg-dark">
       <h1>
-        <Link to="/">MIGO</Link>
+        <Link className="unselectable" to="/">
+          MIGO
+        </Link>
       </h1>
       <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
     </nav>
