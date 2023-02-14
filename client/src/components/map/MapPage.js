@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -10,8 +10,9 @@ import MapPopup from './MapPopup';
 const MapPage = ({ getPosts, post: { posts } }) => {
   useEffect(() => {
     getPosts();
-  }, [getPosts]);
+  }, []);
 
+  const [currentPlaceId, setCurrentPlaceId] = useState(null);
   return (
     <Map
       initialViewState={{
@@ -19,15 +20,26 @@ const MapPage = ({ getPosts, post: { posts } }) => {
         latitude: 42.6977,
         zoom: 12
       }}
-      style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}
+      style={{
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+        marginTop: '60px',
+        cursor: 'point'
+      }}
       mapStyle="mapbox://styles/mapbox/outdoors-v12"
       mapboxAccessToken="pk.eyJ1IjoicGFuY2FrZWJveSIsImEiOiJjbGUyajU0dncxbXo3M3BwNmdkYXNwZzdlIn0.v1N4CI0aULZ7M6S12iW5Kg"
     >
-      <div className="posts">
-        {posts.map((post) => {
-          return <MapPopup key={post._id} post={post} />;
-        })}
-      </div>
+      {posts.map((post) => {
+        return (
+          <MapPopup
+            key={post._id}
+            post={post}
+            currentPlaceId={currentPlaceId}
+            setCurrentPlaceId={setCurrentPlaceId}
+          />
+        );
+      })}
     </Map>
   );
 };
