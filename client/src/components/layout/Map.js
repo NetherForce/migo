@@ -1,12 +1,18 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Map, { Marker, Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import PostForm from '../posts/PostForm';
+import { getPosts } from '../../actions/post';
 
-const MapPage = ({ isAuthenticated }) => {
+const MapPage = ({ getPosts, post: { posts } }) => {
   const [showPopup, setShowPopup] = React.useState(true);
+
+  useEffect(() => {
+    getPosts();
+  }, [getPosts]);
 
   return (
     <Map
@@ -19,6 +25,9 @@ const MapPage = ({ isAuthenticated }) => {
       mapStyle="mapbox://styles/mapbox/outdoors-v12"
       mapboxAccessToken="pk.eyJ1IjoicGFuY2FrZWJveSIsImEiOiJjbGUyajU0dncxbXo3M3BwNmdkYXNwZzdlIn0.v1N4CI0aULZ7M6S12iW5Kg"
     >
+      {posts.map((post) => (
+        <MapMarker key={post._id} post={post} />
+      ))}
       <Marker longitude={23.3219} latitude={42.6977}></Marker>
       {showPopup && (
         <Popup
@@ -36,11 +45,12 @@ const MapPage = ({ isAuthenticated }) => {
 };
 
 MapPage.propTypes = {
-  isAuthenticated: PropTypes.bool
+  getPosts: PropTypes.func.isRequired,
+  post: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated
+  post: state.post
 });
 
-export default connect(mapStateToProps)(MapPage);
+export default connect(mapStateToProps, { getPosts })(MapPage);
