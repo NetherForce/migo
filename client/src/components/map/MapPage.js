@@ -3,7 +3,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getPosts } from '../../actions/post';
-import Map, { Marker, Popup } from 'react-map-gl';
+import Map from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapPopup from './MapPopup';
 

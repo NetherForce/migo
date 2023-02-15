@@ -1,12 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import formatDate from '../../utils/formatDate';
+
 import { connect } from 'react-redux';
-import Map, { Marker, Popup, Image } from 'react-map-gl';
+import { Marker, Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { color } from '@mui/system';
-import { red } from '@mui/material/colors';
 
 const MapPopup = ({
   sports,
