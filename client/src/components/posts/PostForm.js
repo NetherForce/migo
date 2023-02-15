@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import Map, { Marker, NavigationControl } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box } from '@mui/material';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
 const initialState = {
   text: '',
@@ -62,6 +64,21 @@ const PostForm = ({ addPost, sports }) => {
       longitude: e.lngLat.lng
     });
   };
+
+  const MAPBOX_TOKEN =
+    'pk.eyJ1IjoicGFuY2FrZWJveSIsImEiOiJjbGUyajU0dncxbXo3M3BwNmdkYXNwZzdlIn0.v1N4CI0aULZ7M6S12iW5Kg';
+
+  var geocoder = new MapboxGeocoder({
+    accessToken: { MAPBOX_TOKEN },
+    localGeocoderOnly: true
+  });
+
+  geocoder.options.localGeocoder = 'new york';
+  geocoder.on('result', function (e) {
+    console.log(e.result.center);
+  });
+
+  console.log(geocoder);
 
   return (
     <section className="container">
@@ -125,7 +142,7 @@ const PostForm = ({ addPost, sports }) => {
                   overflow: 'hidden'
                 }}
                 mapStyle="mapbox://styles/mapbox/outdoors-v12"
-                mapboxAccessToken="pk.eyJ1IjoicGFuY2FrZWJveSIsImEiOiJjbGUyajU0dncxbXo3M3BwNmdkYXNwZzdlIn0.v1N4CI0aULZ7M6S12iW5Kg"
+                mapboxAccessToken={MAPBOX_TOKEN}
                 cursor="auto"
                 onClick={handleAddClick}
               >
