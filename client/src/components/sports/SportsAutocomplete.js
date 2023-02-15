@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 const SportsAutocomplete = (props) => {
-  // console.log(Object.keys(sports).length != 0 ? Object.values(sports).map(object => object.name).map((element) => {return {"label": element}}) : []);
   const defaultProps = {
     options: props.options,
     getOptionLabel: (option) => option.name
@@ -16,7 +15,6 @@ const SportsAutocomplete = (props) => {
   };
 
   return (
-    // <TextInput options={Object.keys(sports).length != 0 ? Object.values(sports).map(object => object.name) : []} />
     <Autocomplete
       {...defaultProps}
       value={props.value || null}

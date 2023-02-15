@@ -21,11 +21,9 @@ const Posts = ({ getPosts, post: { posts } }) => {
         </Link>
       </p>
       <div className="posts">
-        {posts.map((post) => {
-          console.log(post);
-          return (
+        {posts.map((post) => (
           <PostItem key={post._id} post={post} />
-        );})}
+        ))}
       </div>
     </section>
   );

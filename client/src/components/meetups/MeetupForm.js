@@ -1,121 +1,111 @@
-import React, { useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { addMeetup } from '../../actions/meetup';
-import SportsAutocomplete from '../sports/SportsAutocomplete';
 import { Link } from 'react-router-dom';
+import formatDate from '../../utils/formatDate';
+import { connect } from 'react-redux';
+import { addLike, removeLike, deletePost } from '../../actions/post';
 
-const initialState = {
-  text: '',
-  date: '',
-  location: '',
-  sport: ''
-};
-
-const MeetupForm = ({ addMeetup, sports }) => {
-  const [formData, setFormData] = useState(initialState);
-
-  const options = sports
-    ? Object.keys(sports).map((key) => {
-        return { ...sports[key], id: key, key: key };
-      })
-    : [];
-  options.sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
-  let i = 0;
-  while (i < options.length - 1) {
-    if (options[i].name === options[i + 1].name) {
-      options.splice(i + 1, 1);
-    } else {
-      i++;
-    }
-  }
-
-  const onChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const onSportChange = (newValue) => {
-    setFormData({ ...formData, sport: newValue });
-  };
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    addMeetup({ ...formData, sport: formData.sport.id });
-    setFormData('');
-  };
-
-  return (
-    <section className="container">
-      <h1 className="large text-primary">Create Meetup</h1>
-      <p className="lead">
-        <i className="fas fa-user" />
-        Give some information for your meetup
+const PostItem = ({
+  deletePost,
+  auth,
+  sports,
+  post: { _id, text, name, avatar, user, date, location, availability, sport },
+  showActions
+}) => (
+  <div className="post bg-white p-1 my-1">
+    <div>
+      <Link to={`/profile/${user}`}>
+        <img className="round-img" src={avatar} alt="" />
+        <h4>{name}</h4>
+      </Link>
+    </div>
+    <div>
+      <p className="my-1">
+        <span className="" style={{ color: 'var(--primary-color)' }}>
+          Description:{' '}
+        </span>
+        {text ? text : 'there is no description'}
       </p>
-      <form className="form" onSubmit={onSubmit}>
-        <div className="meetup-form">
-          <textarea
-            name="text"
-            cols="30"
-            rows="5"
-            placeholder="Description"
-            value={formData.text || ''}
-            onChange={onChange}
-            required
-          />
-          <small className="form-text">What is your meetup about</small>
-        </div>
-        <div className="autocomplete form-group">
-          <SportsAutocomplete
-            options={options}
-            value={formData.sport}
-            onChange={onSportChange}
-            label="Sport"
-          />
-          <small className="form-text">Which sport do you want to do</small>
-        </div>
-        <div className="form-group">
-          <input
-            type="date"
-            placeholder="Date"
-            name="date"
-            value={formData.date || ''}
-            onChange={onChange}
-          />
-          <small className="form-text">Choose a day</small>
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            placeholder="Location"
-            name="location"
-            value={formData.location || ''}
-            onChange={onChange}
-          />
-          <small className="form-text">City and name of the place</small>
-        </div>
+      <p className="my-1">
+        <span className="" style={{ color: 'var(--primary-color)' }}>
+          Availability:{' '}
+        </span>
+        {availability ? availability : 'not specified'}
+      </p>
+      <p className="post-date">Posted on {formatDate(date)}</p>
+    </div>
+    <div>
+      <p className="my-1">
+        <span className="" style={{ color: 'var(--primary-color)' }}>
+          Sport:{' '}
+        </span>
+        {sport && sports && sports[sport]
+          ? sports[sport].name
+          : 'not specified'}
+      </p>
+      <p className="my-1">
+        <span className="" style={{ color: 'var(--primary-color)' }}>
+          Location:{' '}
+        </span>
+        {location ? location : 'not specified'}
+      </p>
 
-        <button
-          type="submit"
-          className="btn btn-primary my-1"
-          onClick={onSubmit}
-        >
-          Submit
-        </button>
-        <Link className="btn btn-light my-1" to="/meetups">
-          Go Back
-        </Link>
-      </form>
-    </section>
-  );
+      {showActions && (
+        <Fragment>
+          {/* <button
+            onClick={() => addLike(_id)}
+            type="button"
+            className="btn btn-light"
+          >
+            <i className="fas fa-thumbs-up" />{' '}
+            <span>{likes.length > 0 && <span>{likes.length}</span>}</span>
+          </button>
+          <button
+            onClick={() => removeLike(_id)}
+            type="button"
+            className="btn btn-light"
+          > 
+            <i className="fas fa-thumbs-down" />
+          </button> */}
+          {auth.isAuthenticated && (
+            <Link to={`/posts/${_id}`} className="btn btn-primary">
+              Meet
+            </Link>
+          )}
+          {auth.isAuthenticated && !auth.loading && user === auth.user._id && (
+            <button
+              onClick={() => deletePost(_id)}
+              type="button"
+              className="btn btn-danger"
+            >
+              <i className="fas fa-times" />
+            </button>
+          )}
+        </Fragment>
+      )}
+    </div>
+  </div>
+);
+
+PostItem.defaultProps = {
+  showActions: true
 };
 
-MeetupForm.propTypes = {
-  sports: PropTypes.object,
-  addMeetup: PropTypes.func.isRequired
+PostItem.propTypes = {
+  post: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  sports: PropTypes.object.isRequired,
+  addLike: PropTypes.func.isRequired,
+  removeLike: PropTypes.func.isRequired,
+  deletePost: PropTypes.func.isRequired,
+  showActions: PropTypes.bool
 };
 
 const mapStateToProps = (state) => ({
+  auth: state.auth,
   sports: state.staticData.sports
 });
 
-export default connect(mapStateToProps, { addMeetup })(MeetupForm);
+export default connect(mapStateToProps, { addLike, removeLike, deletePost })(
+  PostItem
+);

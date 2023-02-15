@@ -11,11 +11,7 @@ const PostItem = ({
   sports,
   post: { _id, text, name, avatar, user, date, location, availability, sport },
   showActions
-}) => {
-  useEffect(()=>{
-    console.log(auth);
-  });
-  return (
+}) => (
   <div className="post bg-white p-1 my-1">
     <div>
       <Link to={`/profile/${user}`}>
@@ -71,9 +67,11 @@ const PostItem = ({
           > 
             <i className="fas fa-thumbs-down" />
           </button> */}
-          {auth.isAuthenticated && (<Link to={`/posts/${_id}`} className="btn btn-primary">
-            Meet
-          </Link>)}
+          {auth.isAuthenticated && (
+            <Link to={`/posts/${_id}`} className="btn btn-primary">
+              Meet
+            </Link>
+          )}
           {auth.isAuthenticated && !auth.loading && user === auth.user._id && (
             <button
               onClick={() => deletePost(_id)}
@@ -87,7 +85,7 @@ const PostItem = ({
       )}
     </div>
   </div>
-);};
+);
 
 PostItem.defaultProps = {
   showActions: true
