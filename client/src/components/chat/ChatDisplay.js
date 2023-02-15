@@ -37,7 +37,8 @@ const ChatDisplay = ({
   }, [updateChat, getMessages, currChat]);
   const [text, setText] = useState('');
 
-  const onSend = () => {
+  const onSend = (e) => {
+    e.preventDefault();
     if (text.length === 0 || !currChat || !currChat._id) return;
     sendMessage(currChat._id, text);
     setText('');
@@ -80,8 +81,7 @@ const ChatDisplay = ({
             value={text || ''}
             onKeyDown={(e) => {
               if(e.keyCode === 13 && e.shiftKey === false) {
-                e.preventDefault();
-                onSend();
+                onSend(e);
               }
             }}
             onChange={(e) => {

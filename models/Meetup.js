@@ -61,6 +61,10 @@ const MeetupSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  chatId: {
+    type: Schema.Types.ObjectId,
+    required: true
   }
 });
 

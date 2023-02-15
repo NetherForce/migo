@@ -12,8 +12,9 @@ import MeetupItem from './MeetupItem';
 import PostItem from '../posts/PostItem';
 import { getMeetups, addMeetup } from '../../actions/meetup';
 import { getPost } from '../../actions/post';
+import { createChat } from '../../actions/chat';
 
-const Post = ({ getMeetups, addMeetup, meetup: { meetups }, getPost, post: { post, loading } }) => {
+const Post = ({ getMeetups, addMeetup, createChat, meetup: { meetups }, getPost, post: { post, loading } }) => {
   const { id } = useParams();
   useEffect(() => {
     getMeetups();
@@ -21,6 +22,11 @@ const Post = ({ getMeetups, addMeetup, meetup: { meetups }, getPost, post: { pos
   }, [getMeetups, getPost, id]);
 
   const [date, setDate] = useState('');
+
+  const onClick = async () => {
+    const chatId = await createChat([post.user], "lol");
+    addMeetup({...post, date: date, location: "", chatId: chatId});
+  }
 
   return loading || post === null ? (
     <Spinner />
@@ -39,7 +45,7 @@ const Post = ({ getMeetups, addMeetup, meetup: { meetups }, getPost, post: { pos
       dateFormat="MMMM d, yyyy h:mm aa"
     />
 
-        <button className="btn btn-primary" onClick={() => { addMeetup({...post, date: date, location: ""}); }}>Create meet</button>
+        <button className="btn btn-primary" onClick={onClick}>Create meet</button>
       </section>
 
       <div className="comments">
@@ -56,7 +62,8 @@ Post.propTypes = {
   meetup: PropTypes.object.isRequired,
   getPost: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
-  addMeetup: PropTypes.func.isRequired
+  addMeetup: PropTypes.func.isRequired,
+  createChat: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
@@ -64,4 +71,4 @@ const mapStateToProps = (state) => ({
   post: state.post
 });
 
-export default connect(mapStateToProps, { getMeetups, getPost, addMeetup })(Post);
+export default connect(mapStateToProps, { getMeetups, getPost, addMeetup, createChat })(Post);

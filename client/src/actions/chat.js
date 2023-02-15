@@ -36,6 +36,8 @@ export const updateChat = (id) => async (dispatch) => {
       type: UPDATE_CHAT,
       payload: res.data
     });
+
+    return res.data;
   } catch (err) {
     dispatch({
       type: CHAT_ERROR,
@@ -55,6 +57,8 @@ export const createChat = (userIds, name) => async (dispatch) => {
     });
 
     dispatch(setAlert('Chat Created', 'success'));
+
+    return res.data._id;
   } catch (err) {
     dispatch({
       type: CHAT_ERROR,

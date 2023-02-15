@@ -15,7 +15,9 @@ router.post(
   auth,
   check('text', 'Text is required').notEmpty(),
   check('sport', 'Sport is required').notEmpty(),
+  check('chatId', 'Chat id is required').notEmpty(),
   checkObjectId('sport'),
+  checkObjectId('chatId'),
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -25,7 +27,7 @@ router.post(
     try {
       const user = await User.findById(req.user.id).select('-password');
 
-      const { description, location, date, sport, expLevel } = req.body;
+      const { description, location, date, sport, expLevel, chatId } = req.body;
 
       const newMeetup = new Meetup({
         text: req.body.text,
@@ -34,7 +36,8 @@ router.post(
         user: req.user.id,
         location: location,
         date: date,
-        sport: sport
+        sport: sport,
+        chatId: chatId
       });
 
       const meetup = await newMeetup.save();
