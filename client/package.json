@@ -9,7 +9,7 @@
     "@material-ui/icons": "^4.11.3",
     "@material-ui/lab": "*",
     "@mui/lab": "^5.0.0-alpha.120",
-    "@mui/material": "^5.11.5",
+    "@mui/material": "^5.11.9",
     "@mui/x-date-pickers": "^5.0.18",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",

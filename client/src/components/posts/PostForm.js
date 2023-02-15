@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
 import SportsAutocomplete from '../sports/SportsAutocomplete';
 import { Link } from 'react-router-dom';
-import Map, { Marker } from 'react-map-gl';
+import Map, { Marker, NavigationControl } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { Box } from '@mui/material';
 
 const initialState = {
   text: '',
@@ -108,30 +109,36 @@ const PostForm = ({ addPost, sports }) => {
         <div className="form-group">
           <small className="form-text">Location</small>
           <div>
-            <Map
-              initialViewState={{
-                longitude: 23.3219,
-                latitude: 42.6977,
-                zoom: 7
-              }}
-              style={{
+            <Box
+              sx={{
                 width: '70vw',
-                height: '40vh',
-                overflow: 'hidden'
+                height: '40vh'
               }}
-              mapStyle="mapbox://styles/mapbox/outdoors-v12"
-              mapboxAccessToken="pk.eyJ1IjoicGFuY2FrZWJveSIsImEiOiJjbGUyajU0dncxbXo3M3BwNmdkYXNwZzdlIn0.v1N4CI0aULZ7M6S12iW5Kg"
-              cursor="auto"
-              onClick={handleAddClick}
             >
-              {currentLocation && (
-                <Marker
-                  longitude={currentLocation.longitude}
-                  latitude={currentLocation.latitude}
-                  style={{ cursor: 'auto' }}
-                ></Marker>
-              )}
-            </Map>
+              <Map
+                initialViewState={{
+                  longitude: 23.3219,
+                  latitude: 42.6977,
+                  zoom: 7
+                }}
+                style={{
+                  overflow: 'hidden'
+                }}
+                mapStyle="mapbox://styles/mapbox/outdoors-v12"
+                mapboxAccessToken="pk.eyJ1IjoicGFuY2FrZWJveSIsImEiOiJjbGUyajU0dncxbXo3M3BwNmdkYXNwZzdlIn0.v1N4CI0aULZ7M6S12iW5Kg"
+                cursor="auto"
+                onClick={handleAddClick}
+              >
+                {currentLocation && (
+                  <Marker
+                    longitude={currentLocation.longitude}
+                    latitude={currentLocation.latitude}
+                    style={{ cursor: 'auto' }}
+                  ></Marker>
+                )}
+                <NavigationControl position="top-left"></NavigationControl>
+              </Map>
+            </Box>
           </div>
         </div>
         <div className="form-group">
