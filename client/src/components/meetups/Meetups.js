@@ -16,9 +16,6 @@ const Meetups = ({ getMeetups, meetup: { meetups } }) => {
       <h1 className="large text-primary">Meetups</h1>
       <p className="lead">
         <i className="fas fa-user" /> Welcome to the community
-        <Link to="/create-meetup" className="btn btn-primary right">
-          Organize Meetup
-        </Link>
       </p>
       <div className="meetups">
         {meetups.map((meetup) => (

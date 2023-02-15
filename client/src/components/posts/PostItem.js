@@ -9,50 +9,72 @@ const PostItem = ({
   deletePost,
   auth,
   sports,
-  post: { _id, text, name, avatar, user, date, location, availability, sport },
+  post: {
+    _id,
+    text,
+    name,
+    avatar,
+    user,
+    likes,
+    comments,
+    date,
+    location,
+    availability,
+    sport
+  },
   showActions
-}) => (
-  <div className="post bg-white p-1 my-1">
-    <div>
-      <Link to={`/profile/${user}`}>
-        <img className="round-img" src={avatar} alt="" />
-        <h4>{name}</h4>
-      </Link>
-    </div>
-    <div>
-      <p className="my-1">
-        <span className="" style={{ color: 'var(--primary-color)' }}>
-          Description:{' '}
-        </span>
-        {text ? text : 'there is no description'}
-      </p>
-      <p className="my-1">
-        <span className="" style={{ color: 'var(--primary-color)' }}>
-          Availability:{' '}
-        </span>
-        {availability ? availability : 'not specified'}
-      </p>
-      <p className="post-date">Posted on {formatDate(date)}</p>
-    </div>
-    <div>
-      <p className="my-1">
-        <span className="" style={{ color: 'var(--primary-color)' }}>
-          Sport:{' '}
-        </span>
-        {sport && sports && sports[sport]
-          ? sports[sport].name
-          : 'not specified'}
-      </p>
-      <p className="my-1">
-        <span className="" style={{ color: 'var(--primary-color)' }}>
-          Location:{' '}
-        </span>
-        {location ? location : 'not specified'}
-      </p>
+}) => {
+  useEffect(() => {
+    // console.log(auth);
+  });
+  return (
+    <div className="post bg-white p-1 my-1">
+      <div>
+        <Link to={`/profile/${user}`}>
+          <img className="round-img" src={avatar} alt="" />
+          <h4 className="">{name}</h4>
+        </Link>
+      </div>
+      <div>
+        <p className="my-1">
+          <span className="" style={{ color: 'var(--primary-color)' }}>
+            Description:{' '}
+          </span>
+          {text ? text : 'there is no description'}
+        </p>
+        <p className="my-1">
+          <span className="" style={{ color: 'var(--primary-color)' }}>
+            Availability:{' '}
+          </span>
+          {availability ? availability : 'not specified'}
+        </p>
+        <p className="post-date">Posted on {formatDate(date)}</p>
+      </div>
+      <div>
+        <p className="my-1">
+          <span className="" style={{ color: 'var(--primary-color)' }}>
+            Sport:{' '}
+          </span>
+          {sport && sports && sports[sport]
+            ? sports[sport].name
+            : 'not specified'}
+        </p>
+        <p className="my-1">
+          <span className="" style={{ color: 'var(--primary-color)' }}>
+            Longitude:{' '}
+          </span>
+          {location.longitude ? location.longitude : 'not specified'}
+        </p>
+        <p className="my-1">
+          <span className="" style={{ color: 'var(--primary-color)' }}>
+            Latitude:{' '}
+          </span>
+          {location.latitude ? location.latitude : 'not specified'}
+        </p>
 
-      {showActions && (
-        <Fragment>
-          {/* <button
+        {showActions && (
+          <Fragment>
+            {/* <button
             onClick={() => addLike(_id)}
             type="button"
             className="btn btn-light"
@@ -67,25 +89,28 @@ const PostItem = ({
           > 
             <i className="fas fa-thumbs-down" />
           </button> */}
-          {auth.isAuthenticated && (
-            <Link to={`/posts/${_id}`} className="btn btn-primary">
-              Meet
-            </Link>
-          )}
-          {auth.isAuthenticated && !auth.loading && user === auth.user._id && (
-            <button
-              onClick={() => deletePost(_id)}
-              type="button"
-              className="btn btn-danger"
-            >
-              <i className="fas fa-times" />
-            </button>
-          )}
-        </Fragment>
-      )}
+            {auth.isAuthenticated && (
+              <Link to={`/meetups/create/${_id}`} className="btn btn-primary">
+                Meet
+              </Link>
+            )}
+            {auth.isAuthenticated &&
+              !auth.loading &&
+              user === auth.user._id && (
+                <button
+                  onClick={() => deletePost(_id)}
+                  type="button"
+                  className="btn btn-danger"
+                >
+                  <i className="fas fa-times" />
+                </button>
+              )}
+          </Fragment>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 PostItem.defaultProps = {
   showActions: true

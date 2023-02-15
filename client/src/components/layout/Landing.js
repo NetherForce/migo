@@ -12,9 +12,9 @@ const Landing = ({ isAuthenticated }) => {
     <section className="landing">
       <div className="dark-overlay">
         <div className="landing-inner">
-          <h1 className="x-large">MIGO</h1>
+          <h1 className="x-large unselectable">MIGO</h1>
           <p className="lead">Find parters for your favourite sports!</p>
-          <div className="buttons">
+          <div className="btn-text unselectable">
             <Link to="/register" className="btn btn-primary">
               Sign Up
             </Link>

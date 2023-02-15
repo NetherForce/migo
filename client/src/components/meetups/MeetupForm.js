@@ -1,111 +1,67 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import formatDate from '../../utils/formatDate';
+import { Link, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { addLike, removeLike, deletePost } from '../../actions/post';
+import Spinner from '../layout/Spinner';
+import { Button } from '@mui/material';
 
-const PostItem = ({
-  deletePost,
-  auth,
-  sports,
-  post: { _id, text, name, avatar, user, date, location, availability, sport },
-  showActions
-}) => (
-  <div className="post bg-white p-1 my-1">
-    <div>
-      <Link to={`/profile/${user}`}>
-        <img className="round-img" src={avatar} alt="" />
-        <h4>{name}</h4>
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+import MeetupItem from './MeetupItem';
+import PostItem from '../posts/PostItem';
+import { getMeetups, addMeetup } from '../../actions/meetup';
+import { getPost } from '../../actions/post';
+
+const Post = ({ getMeetups, addMeetup, meetup: { meetups }, getPost, post: { post, loading } }) => {
+  const { id } = useParams();
+  useEffect(() => {
+    getMeetups();
+    getPost(id);
+  }, [getMeetups, getPost, id]);
+
+  const [date, setDate] = useState('');
+
+  return loading || post === null ? (
+    <Spinner />
+  ) : (
+    <section className="container">
+      <Link to="/posts" className="btn">
+        Back To Posts
       </Link>
-    </div>
-    <div>
-      <p className="my-1">
-        <span className="" style={{ color: 'var(--primary-color)' }}>
-          Description:{' '}
-        </span>
-        {text ? text : 'there is no description'}
-      </p>
-      <p className="my-1">
-        <span className="" style={{ color: 'var(--primary-color)' }}>
-          Availability:{' '}
-        </span>
-        {availability ? availability : 'not specified'}
-      </p>
-      <p className="post-date">Posted on {formatDate(date)}</p>
-    </div>
-    <div>
-      <p className="my-1">
-        <span className="" style={{ color: 'var(--primary-color)' }}>
-          Sport:{' '}
-        </span>
-        {sport && sports && sports[sport]
-          ? sports[sport].name
-          : 'not specified'}
-      </p>
-      <p className="my-1">
-        <span className="" style={{ color: 'var(--primary-color)' }}>
-          Location:{' '}
-        </span>
-        {location ? location : 'not specified'}
-      </p>
+      <PostItem post={post} showActions={false} />
 
-      {showActions && (
-        <Fragment>
-          {/* <button
-            onClick={() => addLike(_id)}
-            type="button"
-            className="btn btn-light"
-          >
-            <i className="fas fa-thumbs-up" />{' '}
-            <span>{likes.length > 0 && <span>{likes.length}</span>}</span>
-          </button>
-          <button
-            onClick={() => removeLike(_id)}
-            type="button"
-            className="btn btn-light"
-          > 
-            <i className="fas fa-thumbs-down" />
-          </button> */}
-          {auth.isAuthenticated && (
-            <Link to={`/posts/${_id}`} className="btn btn-primary">
-              Meet
-            </Link>
-          )}
-          {auth.isAuthenticated && !auth.loading && user === auth.user._id && (
-            <button
-              onClick={() => deletePost(_id)}
-              type="button"
-              className="btn btn-danger"
-            >
-              <i className="fas fa-times" />
-            </button>
-          )}
-        </Fragment>
-      )}
-    </div>
-  </div>
-);
+      <section className="container">
+    <DatePicker
+      selected={date}
+      onChange={(newDate) => setDate(newDate)}
+      showTimeSelect
+      dateFormat="MMMM d, yyyy h:mm aa"
+    />
 
-PostItem.defaultProps = {
-  showActions: true
+        <button className="btn btn-primary" onClick={() => { addMeetup({...post, date: date, location: ""}); }}>Create meet</button>
+      </section>
+
+      <div className="comments">
+        {meetups.map((meetup) => (
+          <MeetupItem key={meetup._id} meetup={meetup} />
+        ))}
+      </div>
+    </section>
+  );
 };
 
-PostItem.propTypes = {
+Post.propTypes = {
+  getMeetups: PropTypes.func.isRequired,
+  meetup: PropTypes.object.isRequired,
+  getPost: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired,
-  sports: PropTypes.object.isRequired,
-  addLike: PropTypes.func.isRequired,
-  removeLike: PropTypes.func.isRequired,
-  deletePost: PropTypes.func.isRequired,
-  showActions: PropTypes.bool
+  addMeetup: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
-  auth: state.auth,
-  sports: state.staticData.sports
+  meetup: state.meetup,
+  post: state.post
 });
 
-export default connect(mapStateToProps, { addLike, removeLike, deletePost })(
-  PostItem
-);
+export default connect(mapStateToProps, { getMeetups, getPost, addMeetup })(Post);

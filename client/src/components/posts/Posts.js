@@ -12,7 +12,7 @@ const Posts = ({ getPosts, post: { posts } }) => {
   }, [getPosts]);
 
   return (
-    <section className="container">
+    <section className="container ">
       <h1 className="large text-primary">Posts</h1>
       <p className="lead">
         <i className="fas fa-user" /> Welcome to the community
@@ -21,9 +21,9 @@ const Posts = ({ getPosts, post: { posts } }) => {
         </Link>
       </p>
       <div className="posts">
-        {posts.map((post) => (
-          <PostItem key={post._id} post={post} />
-        ))}
+        {posts.map((post) => {
+          return <PostItem key={post._id} post={post} />;
+        })}
       </div>
     </section>
   );
