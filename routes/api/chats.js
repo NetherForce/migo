@@ -134,6 +134,10 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
       return res.status(401).json({ msg: 'User not authorized' });
     }
 
+    // Delete userToChat
+    const usertochats = await UserToChat.find({ chat: chat._id });
+    usertochats.map(async (chat) => {await chat.remove()});
+
     await chat.remove();
 
     res.json({ msg: 'Chat deleted' });

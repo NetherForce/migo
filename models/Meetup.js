@@ -2,70 +2,52 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MeetupSchema = new Schema({
-  user: {
-    type: Schema.Types.ObjectId
-  },
-  text: {
-    type: String,
-    required: true
-  },
+  users: [
+    {
+      type: Schema.Types.ObjectId,
+      required: true
+    }
+  ],
   name: {
     type: String
   },
   avatar: {
     type: String
   },
-  location: {
-    type: String
-  },
   date: {
     type: Date,
-    min: Date.now,
+    default: Date.now,
     required: true
   },
-  postDate: {
-    type: Date,
-    default: Date.now
-  },
-  sport: {
+  user: {
     type: Schema.Types.ObjectId
   },
-  likes: [
-    {
-      user: {
-        type: Schema.Types.ObjectId
-      }
-    }
-  ],
-  comments: [
-    {
-      user: {
-        type: Schema.Types.ObjectId
-      },
-      text: {
-        type: String,
-        required: true
-      },
-      name: {
-        type: String
-      },
-      avatar: {
-        type: String
-      },
-      date: {
-        type: Date,
-        default: Date.now
-      }
-    }
-  ],
-  date: {
-    type: Date,
-    default: Date.now
+  postUser: {
+    type: Schema.Types.ObjectId
   },
-  chatId: {
+  post: {
+    type: Schema.Types.ObjectId
+  },
+  chat: {
     type: Schema.Types.ObjectId,
     required: true
-  }
+  },
+  text: {
+    type: String,
+    required: true
+  },
+  location: {
+    longitude: {
+      type: String
+    },
+    latitude: {
+      type: String
+    }
+  },
+  sport: {
+    type: Schema.Types.ObjectId,
+    required: true
+  },
 });
 
 module.exports = mongoose.model('meetup', MeetupSchema);

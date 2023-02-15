@@ -4,7 +4,9 @@ const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 
 const Meetup = require('../../models/Meetup');
+const UserToMeetup = require('../../models/UserToMeetup');
 const User = require('../../models/User');
+const Post = require('../../models/Post');
 const checkObjectId = require('../../middleware/checkObjectId');
 
 // @route    POST api/meetups
@@ -13,11 +15,15 @@ const checkObjectId = require('../../middleware/checkObjectId');
 router.post(
   '/',
   auth,
+  check('chat', 'Chat id is required').notEmpty(),
+  check('sport', 'Sport id is required').notEmpty(),
+  check('location', 'Location id is required').notEmpty(),
+  check('name', 'Name id is required').notEmpty(),
+  check('avatar', 'Avatar id is required').notEmpty(),
+  check('date', 'Date is required').notEmpty(),
   check('text', 'Text is required').notEmpty(),
-  check('sport', 'Sport is required').notEmpty(),
-  check('chatId', 'Chat id is required').notEmpty(),
+  checkObjectId('chat'),
   checkObjectId('sport'),
-  checkObjectId('chatId'),
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -25,22 +31,28 @@ router.post(
     }
 
     try {
-      const user = await User.findById(req.user.id).select('-password');
+      const { chat, post, date, sport, location, text } = req.body;
 
-      const { description, location, date, sport, expLevel, chatId } = req.body;
+      const thePost = await Post.findById(post);
+      if(!thePost){
+        return res.status(404).json({ msg: 'Post not found' });
+      }
+
+      const users = [req.user.id, post.user];
 
       const newMeetup = new Meetup({
-        text: req.body.text,
-        name: user.name,
-        avatar: user.avatar,
+        chat: chat,
+        post: post,
         user: req.user.id,
-        location: location,
+        postUser: thePost.user,
         date: date,
         sport: sport,
-        chatId: chatId
+        location: location,
+        text: text,
+        users: users
       });
 
-      const meetup = await newMeetup.save();
+      let meetup = await newMeetup.save();
 
       res.json(meetup);
     } catch (err) {
@@ -51,11 +63,32 @@ router.post(
 );
 
 // @route    GET api/meetups
-// @desc     Get all meetups
+// @desc     Get my meetups
 // @access   Private
 router.get('/', auth, async (req, res) => {
   try {
-    const meetups = await Meetup.find().sort({ date: -1 });
+    const usertomeetup = await UserToMeetup.find({ user: req.user.id });
+    let meetups = [];
+
+    for (let index in usertomeetup) {
+      let currMeetup = await Chat.findById(usertomeetup[index].chat);
+      if (currMeetup && currMeetup !== null) meetups.push(currMeetup);
+    }
+
+    res.json(meetups);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    GET api/meetups
+// @desc     Get post meetups
+// @access   Public
+router.get('/post/:id', async (req, res) => {
+  try {
+    let meetups = await Meetup.find({post: req.params.id});
+
     res.json(meetups);
   } catch (err) {
     console.error(err.message);
@@ -94,9 +127,13 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
     }
 
     // Check user
-    if (meetup.user.toString() !== req.user.id) {
+    if (meetup.user.toString() !== req.user.id && meetup.postUser.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'User not authorized' });
     }
+
+    // Delete userToMeetup
+    const usertomeetups = await UserToMeetup.find({ meetup: meetup._id });
+    usertomeetups.map(async (meetup) => {await meetup.remove()});
 
     await meetup.remove();
 
@@ -105,125 +142,6 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
     console.error(err.message);
 
     res.status(500).send('Server Error');
-  }
-});
-
-// @route    PUT api/meetups/like/:id
-// @desc     Like a meetup
-// @access   Private
-router.put('/like/:id', auth, checkObjectId('id'), async (req, res) => {
-  try {
-    const meetup = await Meetup.findById(req.params.id);
-
-    // Check if the meetup has already been liked
-    if (meetup.likes.some((like) => like.user.toString() === req.user.id)) {
-      return res.status(400).json({ msg: 'Meetup already liked' });
-    }
-
-    meetup.likes.unshift({ user: req.user.id });
-
-    await meetup.save();
-
-    return res.json(meetup.likes);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-// @route    PUT api/meetups/unlike/:id
-// @desc     Unlike a meetup
-// @access   Private
-router.put('/unlike/:id', auth, checkObjectId('id'), async (req, res) => {
-  try {
-    const meetup = await Meetup.findById(req.params.id);
-
-    // Check if the meetup has not yet been liked
-    if (!meetup.likes.some((like) => like.user.toString() === req.user.id)) {
-      return res.status(400).json({ msg: 'Meetup has not yet been liked' });
-    }
-
-    // remove the like
-    meetup.likes = meetup.likes.filter(
-      ({ user }) => user.toString() !== req.user.id
-    );
-
-    await meetup.save();
-
-    return res.json(meetup.likes);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-// @route    POST api/meetups/comment/:id
-// @desc     Comment on a meetup
-// @access   Private
-router.post(
-  '/comment/:id',
-  auth,
-  checkObjectId('id'),
-  check('text', 'Text is required').notEmpty(),
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    try {
-      const user = await User.findById(req.user.id).select('-password');
-      const meetup = await Meetup.findById(req.params.id);
-
-      const newComment = {
-        text: req.body.text,
-        name: user.name,
-        avatar: user.avatar,
-        user: req.user.id
-      };
-
-      meetup.comments.unshift(newComment);
-
-      await meetup.save();
-
-      res.json(meetup.comments);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
-  }
-);
-
-// @route    DELETE api/meetups/comment/:id/:comment_id
-// @desc     Delete comment
-// @access   Private
-router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
-  try {
-    const meetup = await Meetup.findById(req.params.id);
-
-    // Pull out comment
-    const comment = meetup.comments.find(
-      (comment) => comment.id === req.params.comment_id
-    );
-    // Make sure comment exists
-    if (!comment) {
-      return res.status(404).json({ msg: 'Comment does not exist' });
-    }
-    // Check user
-    if (comment.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'User not authorized' });
-    }
-
-    meetup.comments = meetup.comments.filter(
-      ({ id }) => id !== req.params.comment_id
-    );
-
-    await meetup.save();
-
-    return res.json(meetup.comments);
-  } catch (err) {
-    console.error(err.message);
-    return res.status(500).send('Server Error');
   }
 });
 

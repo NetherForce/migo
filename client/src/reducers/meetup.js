@@ -1,5 +1,6 @@
 import {
-  GET_MEETUPS,
+  GET_MY_MEETUPS,
+  GET_POST_MEETUPS,
   MEETUP_ERROR,
   UPDATE_LIKES,
   DELETE_MEETUP,
@@ -10,18 +11,25 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  meetups: []
+  myMeetups: [],
+  postMeetups: [],
 };
 
 function meetupReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
-    case GET_MEETUPS:
+    case GET_MY_MEETUPS:
       return {
         ...state,
-        meetups: payload,
+        myMeetups: payload,
         loading: false
       };
+      case GET_POST_MEETUPS:
+        return {
+          ...state,
+          postMeetups: payload,
+          loading: false
+        };
     case GET_MEETUP:
       return {
         ...state,
@@ -31,46 +39,19 @@ function meetupReducer(state = initialState, action) {
     case ADD_MEETUP:
       return {
         ...state,
-        meetups: [payload, ...state.meetups],
+        myMeetups: [payload, ...state.myMeetups],
         loading: false
       };
     case DELETE_MEETUP:
       return {
         ...state,
-        meetups: state.meetups.filter((meetup) => meetup._id !== payload),
+        myMeetups: state.myMeetups.filter((meetup) => meetup._id !== payload),
         loading: false
       };
     case MEETUP_ERROR:
       return {
         ...state,
         error: payload,
-        loading: false
-      };
-    case UPDATE_LIKES:
-      return {
-        ...state,
-        meetups: state.meetups.map((meetup) =>
-          meetup._id === payload.id
-            ? { ...meetup, likes: payload.likes }
-            : meetup
-        ),
-        loading: false
-      };
-    case ADD_COMMENT:
-      return {
-        ...state,
-        meetup: { ...state.meetup, comments: payload },
-        loading: false
-      };
-    case REMOVE_COMMENT:
-      return {
-        ...state,
-        meetup: {
-          ...state.meetup,
-          comments: state.meetup.comments.filter(
-            (comment) => comment._id !== payload
-          )
-        },
         loading: false
       };
     default:

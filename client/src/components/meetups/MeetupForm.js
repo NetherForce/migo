@@ -10,22 +10,23 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import MeetupItem from './MeetupItem';
 import PostItem from '../posts/PostItem';
-import { getMeetups, addMeetup } from '../../actions/meetup';
+import { getPostMeetups, addMeetup } from '../../actions/meetup';
 import { getPost } from '../../actions/post';
 import { createChat } from '../../actions/chat';
 
-const Post = ({ getMeetups, addMeetup, createChat, meetup: { meetups }, getPost, post: { post, loading } }) => {
+const Post = ({ getPostMeetups, addMeetup, createChat, meetup: { postMeetups }, getPost, post: { post, loading } }) => {
   const { id } = useParams();
   useEffect(() => {
-    getMeetups();
+    getPostMeetups(id);
     getPost(id);
-  }, [getMeetups, getPost, id]);
+  }, [getPostMeetups, getPost, id]);
 
   const [date, setDate] = useState('');
 
   const onClick = async () => {
-    const chatId = await createChat([post.user], "lol");
-    addMeetup({...post, date: date, location: "", chatId: chatId});
+    const chatId = await createChat([post.user], post.text);
+    console.log(post);
+    addMeetup({ ...post, date: date, chat: chatId, post: post._id });
   }
 
   return loading || post === null ? (
@@ -38,18 +39,18 @@ const Post = ({ getMeetups, addMeetup, createChat, meetup: { meetups }, getPost,
       <PostItem post={post} showActions={false} />
 
       <section className="container">
-    <DatePicker
-      selected={date}
-      onChange={(newDate) => setDate(newDate)}
-      showTimeSelect
-      dateFormat="MMMM d, yyyy h:mm aa"
-    />
+        <DatePicker
+          selected={date}
+          onChange={(newDate) => setDate(newDate)}
+          showTimeSelect
+          dateFormat="MMMM d, yyyy h:mm aa"
+        />
 
         <button className="btn btn-primary" onClick={onClick}>Create meet</button>
       </section>
 
       <div className="comments">
-        {meetups.map((meetup) => (
+        {postMeetups.map((meetup) => (
           <MeetupItem key={meetup._id} meetup={meetup} />
         ))}
       </div>
@@ -58,7 +59,7 @@ const Post = ({ getMeetups, addMeetup, createChat, meetup: { meetups }, getPost,
 };
 
 Post.propTypes = {
-  getMeetups: PropTypes.func.isRequired,
+  getPostMeetups: PropTypes.func.isRequired,
   meetup: PropTypes.object.isRequired,
   getPost: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
@@ -71,4 +72,4 @@ const mapStateToProps = (state) => ({
   post: state.post
 });
 
-export default connect(mapStateToProps, { getMeetups, getPost, addMeetup, createChat })(Post);
+export default connect(mapStateToProps, { getPostMeetups, getPost, addMeetup, createChat })(Post);

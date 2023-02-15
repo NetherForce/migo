@@ -4,8 +4,6 @@ import { Link, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import MeetupItem from '../meetups/MeetupItem';
-import CommentForm from '../meetup/CommentForm';
-import CommentItem from '../meetup/CommentItem';
 import { getMeetup } from '../../actions/meetup';
 
 const Meetup = ({ getMeetup, meetup: { meetup, loading } }) => {
@@ -22,16 +20,6 @@ const Meetup = ({ getMeetup, meetup: { meetup, loading } }) => {
         Back To Meetup
       </Link>
       <MeetupItem meetup={meetup} showActions={false} />
-      <CommentForm meetupId={meetup._id} />
-      <div className="comments">
-        {meetup.comments.map((comment) => (
-          <CommentItem
-            key={comment._id}
-            comment={comment}
-            meetupId={meetup._id}
-          />
-        ))}
-      </div>
     </section>
   );
 };
