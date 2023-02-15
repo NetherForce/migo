@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
 import SportsAutocomplete from '../sports/SportsAutocomplete';
 import { Link } from 'react-router-dom';
-import Map, { Marker, Popup } from 'react-map-gl';
+import Map, { Marker } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 const initialState = {
