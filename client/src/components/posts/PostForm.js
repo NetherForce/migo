@@ -4,13 +4,15 @@ import { connect } from 'react-redux';
 import { addPost } from '../../actions/post';
 import SportsAutocomplete from '../sports/SportsAutocomplete';
 import { Link } from 'react-router-dom';
-import Map, { Marker } from 'react-map-gl';
+import { Box } from '@mui/material';
+import Map, { Marker, NavigationControl } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 const initialState = {
   text: '',
-  availability: '',
+  title: '',
   location: { longitude: '', latitude: '' },
+  address: '',
   sport: ''
 };
 
@@ -40,10 +42,10 @@ const PostForm = ({ addPost, sports }) => {
     setFormData({ ...formData, sport: newValue });
   };
 
-  const onLocationChange = (e) => {
+  const onAddressChange = (e) => {
     setFormData({
       ...formData,
-      location: { ...currentLocation, [e.target.name]: e.target.value }
+      address: e.target.value
     });
   };
 
@@ -53,14 +55,36 @@ const PostForm = ({ addPost, sports }) => {
     setFormData('');
   };
 
-  const [currentLocation, setCurrentLocation] = useState(null);
-
   const handleAddClick = (e) => {
-    setCurrentLocation({
-      latitude: e.lngLat.lat,
-      longitude: e.lngLat.lng
-    });
+    const url =
+      'https://api.mapbox.com/geocoding/v5/mapbox.places/' +
+      e.lngLat.lng +
+      ',' +
+      e.lngLat.lat +
+      '.json?access_token=' +
+      MAPBOX_TOKEN;
+    fetch(url)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          //TODO error
+        }
+      })
+      .then((response) => {
+        setFormData({
+          ...formData,
+          location: {
+            latitude: e.lngLat.lat,
+            longitude: e.lngLat.lng
+          },
+          address: response.features[0].place_name
+        });
+      });
   };
+
+  const MAPBOX_TOKEN =
+    'pk.eyJ1IjoicGFuY2FrZWJveSIsImEiOiJjbGUyajU0dncxbXo3M3BwNmdkYXNwZzdlIn0.v1N4CI0aULZ7M6S12iW5Kg';
 
   return (
     <section className="container">
@@ -70,6 +94,16 @@ const PostForm = ({ addPost, sports }) => {
         Give some information for your post
       </p>
       <form className="form" onSubmit={onSubmit}>
+        <div className="form-group">
+          <small className="form-text">Give your post a title</small>
+          <input
+            type="text"
+            placeholder="Title"
+            name="title"
+            value={formData.title || ''}
+            onChange={onChange}
+          />
+        </div>
         <div className="post-form">
           <small className="form-text">What is your post about</small>
           <textarea
@@ -93,76 +127,59 @@ const PostForm = ({ addPost, sports }) => {
             />
           </div>
         </div>
-        <div className="form-group">
-          <small className="form-text">
-            Say when you have time to do the sport
-          </small>
-          <input
-            type="text"
-            placeholder="Availability"
-            name="availability"
-            value={formData.availability || ''}
-            onChange={onChange}
-          />
-        </div>
+
         <div className="form-group">
           <small className="form-text">Location</small>
           <div>
-            <Map
-              initialViewState={{
-                longitude: 23.3219,
-                latitude: 42.6977,
-                zoom: 7
-              }}
-              style={{
+            <Box
+              sx={{
                 width: '70vw',
-                height: '40vh',
-                overflow: 'hidden'
+                height: '40vh'
               }}
-              mapStyle="mapbox://styles/mapbox/outdoors-v12"
-              mapboxAccessToken="pk.eyJ1IjoicGFuY2FrZWJveSIsImEiOiJjbGUyajU0dncxbXo3M3BwNmdkYXNwZzdlIn0.v1N4CI0aULZ7M6S12iW5Kg"
-              cursor="auto"
-              onClick={handleAddClick}
             >
-              {currentLocation && (
-                <Marker
-                  longitude={currentLocation.longitude}
-                  latitude={currentLocation.latitude}
-                  style={{ cursor: 'auto' }}
-                ></Marker>
-              )}
-            </Map>
+              <Map
+                initialViewState={{
+                  longitude: 23.3219,
+                  latitude: 42.6977,
+                  zoom: 7
+                }}
+                style={{
+                  overflow: 'hidden'
+                }}
+                mapStyle="mapbox://styles/mapbox/outdoors-v12"
+                mapboxAccessToken={MAPBOX_TOKEN}
+                cursor="auto"
+                onClick={handleAddClick}
+              >
+                {formData.location && (
+                  <Marker
+                    longitude={formData.location.longitude}
+                    latitude={formData.location.latitude}
+                    style={{ cursor: 'auto' }}
+                  ></Marker>
+                )}
+                <NavigationControl position="top-left"></NavigationControl>
+              </Map>
+            </Box>
           </div>
         </div>
         <div className="form-group">
           <input
             type="text"
-            name="longitude"
+            name="address"
             value={
-              currentLocation
-                ? currentLocation.longitude || 'Latitude'
-                : 'Longitude (read-only)'
+              formData.address
+                ? formData.address || 'Address'
+                : 'Address (read-only)'
             }
             disabled
+            onChange={onAddressChange}
           />
         </div>
-        <div className="form-group">
-          <input
-            type="text"
-            name="latitude"
-            value={
-              currentLocation
-                ? currentLocation.latitude || 'Latitude'
-                : 'Latitude (read-only)'
-            }
-            disabled
-          />
-        </div>
-
         <button
           type="submit"
           className="btn btn-primary my-1"
-          onClick={(onSubmit, onLocationChange)}
+          onClick={onSubmit}
         >
           Submit
         </button>

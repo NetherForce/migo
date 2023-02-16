@@ -25,7 +25,8 @@ router.post(
     try {
       const user = await User.findById(req.user.id).select('-password');
 
-      const { description, location, availability, sport, expLevel } = req.body;
+      const { description, location, address, title, sport, expLevel } =
+        req.body;
 
       const newPost = new Post({
         text: req.body.text,
@@ -33,7 +34,8 @@ router.post(
         avatar: user.avatar,
         user: req.user.id,
         location: location,
-        availability: availability,
+        address: address,
+        title: title,
         sport: sport
       });
 

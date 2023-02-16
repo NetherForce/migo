@@ -10,7 +10,7 @@ const MapPopup = ({
   sports,
   currentPlaceId,
   setCurrentPlaceId,
-  post: { _id, user, text, name, avatar, location, availability, sport }
+  post: { _id, user, text, name, avatar, location, title, sport }
 }) => {
   //const [currentPlaceId, setCurrentPlaceId] = useState(null);
   const handleMarkerClick = (id) => {
@@ -38,7 +38,7 @@ const MapPopup = ({
             <details className="unselectable">
               <summary>{sports[sport].name}</summary>
 
-              <label>{availability}</label>
+              <label>{title}</label>
               <br></br>
               <label>Created by {name}</label>
               <br></br>
