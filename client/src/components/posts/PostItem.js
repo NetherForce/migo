@@ -33,7 +33,7 @@ const PostItem = ({
   const words = address.split(' ');
   address = words[words.length - 2] + ' ' + words[words.length - 1];
   return (
-    <Link to={`/posts/${_id}`}>
+    <Link className="" to={`/posts/${_id}`}>
       <div className="post bg-white p-1 my-1">
         <div>
           <Link to={`/profile/${user}`}>

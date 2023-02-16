@@ -11,6 +11,9 @@
   align-items: center;
 }
 
+.post-container {
+}
+
 .post > div:first-child {
   text-align: center;
 }

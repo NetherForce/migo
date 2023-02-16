@@ -12,7 +12,7 @@ const Posts = ({ getPosts, post: { posts } }) => {
   }, [getPosts]);
 
   return (
-    <section className="container ">
+    <section className="container page">
       <h1 className="large text-primary">Posts</h1>
       <p className="lead">
         <i className="fas fa-user" /> Welcome to the community

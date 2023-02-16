@@ -32,8 +32,8 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
   }
 
   return (
-    <section className="container">
-      <h1 className="large text-primary">Sign Up</h1>
+    <section className="container page">
+      <h1 className="large text-primary">Register</h1>
       <p className="lead">
         <i className="fas fa-user" /> Create Your Account
       </p>

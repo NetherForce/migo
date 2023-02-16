@@ -357,6 +357,10 @@ button {
     position: static;
     width: auto;
   }
+
+  .page {
+    padding-top: 60px;
+  }
 }
 
 .alert-wrapper {
