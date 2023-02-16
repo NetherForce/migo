@@ -40,12 +40,14 @@ function meetupReducer(state = initialState, action) {
       return {
         ...state,
         myMeetups: [payload, ...state.myMeetups],
+        postMeetups: [payload, ...state.myMeetups],
         loading: false
       };
     case DELETE_MEETUP:
       return {
         ...state,
         myMeetups: state.myMeetups.filter((meetup) => meetup._id !== payload),
+        postMeetups: state.myMeetups.filter((meetup) => meetup._id !== payload),
         loading: false
       };
     case MEETUP_ERROR:

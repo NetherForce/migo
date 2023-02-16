@@ -22,31 +22,30 @@ const MeetupItem = ({
     name,
     avatar,
     user,
-    likes,
-    comments,
     date,
     postDate,
     location,
-    availability,
     sport,
-    chatId
+    chat
   },
   showActions
 }) => {
   const dispatch = useDispatch();
 
   const onClick = async () => {
-    if(chatId){
-      const chat = await updateChat(chatId);
+    if (chat) {
+      const theChat = await updateChat(chat);
 
-      getMessages(chatId);
+      getMessages(chat);
+
+      console.log(theChat);
 
       dispatch({
         type: SET_CHAT,
-        payload: chat
+        payload: theChat
       });
     }
-  }
+  };
 
   return (
     <div className="meetup bg-white p-1 my-1">
@@ -86,7 +85,18 @@ const MeetupItem = ({
           <span className="" style={{ color: 'var(--primary-color)' }}>
             Location:{' '}
           </span>
-          {location ? location : 'not specified'}
+          <p className="my-1">
+            <span className="" style={{ color: 'var(--primary-color)' }}>
+              Longitude:{' '}
+            </span>
+            {location.longitude ? location.longitude : 'not specified'}
+          </p>
+          <p className="my-1">
+            <span className="" style={{ color: 'var(--primary-color)' }}>
+              Latitude:{' '}
+            </span>
+            {location.latitude ? location.latitude : 'not specified'}
+          </p>
         </p>
 
         {showActions && (
@@ -141,9 +151,11 @@ MeetupItem.propTypes = {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  sports: state.staticData.sports,
+  sports: state.staticData.sports
 });
 
-export default connect(mapStateToProps, { updateChat, getMessages, deleteMeetup })(
-  MeetupItem
-);
+export default connect(mapStateToProps, {
+  updateChat,
+  getMessages,
+  deleteMeetup
+})(MeetupItem);

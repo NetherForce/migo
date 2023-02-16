@@ -13,7 +13,7 @@ import {
 export const getMyMeetups = () => async (dispatch) => {
   try {
     const res = await api.get('/meetups');
-
+    
     dispatch({
       type: GET_MY_MEETUPS,
       payload: res.data
@@ -66,7 +66,7 @@ export const deleteMeetup = (id) => async (dispatch) => {
 export const addMeetup = (formData) => async (dispatch) => {
   try {
     const res = await api.post('/meetups', formData);
-
+    
     dispatch({
       type: ADD_MEETUP,
       payload: res.data

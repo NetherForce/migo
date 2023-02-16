@@ -12,7 +12,7 @@ const Chat = ({ getChats }) => {
   }, [getChats]);
   return (
     <section className="chatConteiner height-100">
-      <section className="bg-white width-30 height-100">
+      <section className="bg-white width-30 height-100" style={{ overflow: "auto" }}>
         <ChatList />
       </section>
       <section className="bg-white width-70 height-100">

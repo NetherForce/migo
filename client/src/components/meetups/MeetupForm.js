@@ -25,7 +25,7 @@ const Post = ({ getPostMeetups, addMeetup, createChat, meetup: { postMeetups }, 
 
   const onClick = async () => {
     const chatId = await createChat([post.user], post.text);
-    console.log(post);
+    
     addMeetup({ ...post, date: date, chat: chatId, post: post._id });
   }
 

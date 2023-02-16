@@ -31,28 +31,42 @@ router.post(
     }
 
     try {
-      const { chat, post, date, sport, location, text } = req.body;
+      const { chat, post, user, date, sport, location, text, avatar, name } =
+        req.body;
 
-      const thePost = await Post.findById(post);
-      if(!thePost){
-        return res.status(404).json({ msg: 'Post not found' });
+      const theUser = await User.findById(req.user.id).select('-password');
+      if (!theUser) {
+        return res.status(404).json({ msg: 'User not found' });
       }
 
-      const users = [req.user.id, post.user];
+      const users = [req.user.id, user];
 
       const newMeetup = new Meetup({
         chat: chat,
         post: post,
         user: req.user.id,
-        postUser: thePost.user,
+        postUser: user,
         date: date,
         sport: sport,
         location: location,
         text: text,
-        users: users
+        users: users,
+        avatar: theUser.avatar,
+        name: theUser.name
       });
 
       let meetup = await newMeetup.save();
+
+      for (let index in users) {
+        let user = users[index];
+
+        let newUserToMeetup = new UserToMeetup({
+          user: user,
+          meetup: meetup._id
+        });
+
+        newUserToMeetup.save();
+      }
 
       res.json(meetup);
     } catch (err) {
@@ -71,7 +85,7 @@ router.get('/', auth, async (req, res) => {
     let meetups = [];
 
     for (let index in usertomeetup) {
-      let currMeetup = await Chat.findById(usertomeetup[index].chat);
+      let currMeetup = await Meetup.findById(usertomeetup[index].meetup);
       if (currMeetup && currMeetup !== null) meetups.push(currMeetup);
     }
 
@@ -87,7 +101,7 @@ router.get('/', auth, async (req, res) => {
 // @access   Public
 router.get('/post/:id', async (req, res) => {
   try {
-    let meetups = await Meetup.find({post: req.params.id});
+    let meetups = await Meetup.find({ post: req.params.id });
 
     res.json(meetups);
   } catch (err) {
@@ -127,13 +141,18 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
     }
 
     // Check user
-    if (meetup.user.toString() !== req.user.id && meetup.postUser.toString() !== req.user.id) {
+    if (
+      meetup.user.toString() !== req.user.id &&
+      meetup.postUser.toString() !== req.user.id
+    ) {
       return res.status(401).json({ msg: 'User not authorized' });
     }
 
     // Delete userToMeetup
     const usertomeetups = await UserToMeetup.find({ meetup: meetup._id });
-    usertomeetups.map(async (meetup) => {await meetup.remove()});
+    usertomeetups.map(async (meetup) => {
+      await meetup.remove();
+    });
 
     await meetup.remove();
 

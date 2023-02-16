@@ -47,8 +47,8 @@ const ChatDisplay = ({
   let lastDate = null;
 
   return (
-    <section className="height-100" style={{ overflow: 'clip' }}>
-      <section className="height-90" style={{ overflow: 'auto' }}>
+    <section className="container" style={{ padding: "0", overflow: 'clip' }}>
+      <section className="height-90" style={{ boxSizing: "border-box", overflow: 'auto' }}>
         {messages.map((message) => {
           let currUser = currChat.users.find(
             (user) => user.id === message.from
@@ -70,7 +70,7 @@ const ChatDisplay = ({
           );
         })}
       </section>
-      <section className="height-10">
+      <section className="height-10" style={{ boxSizing: "border-box"}}>
         <form className="message-form" onSubmit={onSend}>
           <textarea
             name="text"

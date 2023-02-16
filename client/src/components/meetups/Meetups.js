@@ -18,9 +18,11 @@ const Meetups = ({ getMyMeetups, meetup: { myMeetups } }) => {
         <i className="fas fa-user" /> Welcome to the community
       </p>
       <div className="meetups">
-        {myMeetups.map((meetup) => (
+        {myMeetups.map((meetup) => {
+          
+          return (
           <MeetupItem key={meetup._id} meetup={meetup} />
-        ))}
+        )})}
       </div>
     </section>
   );
