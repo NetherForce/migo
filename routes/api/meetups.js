@@ -39,7 +39,7 @@ router.post(
         return res.status(404).json({ msg: 'User not found' });
       }
 
-      const users = [req.user.id, user];
+      const users = req.user.id.toString() !== user.toString() ? [req.user.id, user] : [user];
 
       const newMeetup = new Meetup({
         chat: chat,

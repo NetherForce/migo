@@ -19,10 +19,10 @@ const Meetups = ({ getMyMeetups, meetup: { myMeetups } }) => {
       </p>
       <div className="meetups">
         {myMeetups.map((meetup) => {
-          
           return (
-          <MeetupItem key={meetup._id} meetup={meetup} />
-        )})}
+            <MeetupItem key={meetup._id} meetup={meetup} />
+          )
+        })}
       </div>
     </section>
   );

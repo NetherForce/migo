@@ -47,7 +47,7 @@ const ChatDisplay = ({
   let lastDate = null;
 
   return (
-    <section className="container" style={{ padding: "0", overflow: 'clip' }}>
+    <section className="height-100" style={{ padding: "0", paddingTop: "auto", overflow: 'clip' }}>
       <section className="height-90" style={{ boxSizing: "border-box", overflow: 'auto' }}>
         {messages.map((message) => {
           let currUser = currChat.users.find(

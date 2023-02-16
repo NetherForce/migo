@@ -25,6 +25,7 @@ const MeetupItem = ({
     date,
     postDate,
     location,
+    postUser,
     sport,
     chat
   },
@@ -119,7 +120,7 @@ const MeetupItem = ({
             <Link to={`/chat`} onClick={onClick} className="btn btn-primary">
               Message
             </Link>
-            {!auth.loading && user === auth.user._id && (
+            {!auth.loading && (user === auth.user._id || postUser === auth.user._id) && (
               <button
                 onClick={() => deleteMeetup(_id)}
                 type="button"
