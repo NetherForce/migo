@@ -23,7 +23,10 @@ const PostSchema = new Schema({
       type: String
     }
   },
-  availability: {
+  address: {
+    type: String
+  },
+  title: {
     type: String
   },
   sport: {

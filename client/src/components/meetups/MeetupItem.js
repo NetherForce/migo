@@ -27,24 +27,27 @@ const MeetupItem = ({
     date,
     postDate,
     location,
-    availability,
+    title,
     sport
   },
   showActions
 }) => {
-
   const onClick = async () => {
     await getChats();
     chats.map((chat) => {
       if (chat.users.lenght === 2) {
-        if ((chat.users[0].id === user._id || chat.users[0].id === auth.user._id) && (chat.users[1].id === user._id || chat.users[1].id === auth.user._id)) {
+        if (
+          (chat.users[0].id === user._id ||
+            chat.users[0].id === auth.user._id) &&
+          (chat.users[1].id === user._id || chat.users[1].id === auth.user._id)
+        ) {
           getMessages(chat._id);
         } else {
-          createChat([user._id], "" + user.name + " & " + auth.user.name);
+          createChat([user._id], '' + user.name + ' & ' + auth.user.name);
         }
       }
-    })
-  }
+    });
+  };
 
   return (
     <div className="meetup bg-white p-1 my-1">
@@ -145,6 +148,9 @@ const mapStateToProps = (state) => ({
   chat: state.chat
 });
 
-export default connect(mapStateToProps, { getChats, createChat, getMessages, deleteMeetup })(
-  MeetupItem
-);
+export default connect(mapStateToProps, {
+  getChats,
+  createChat,
+  getMessages,
+  deleteMeetup
+})(MeetupItem);
