@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getPosts } from '../../actions/post';
@@ -17,17 +16,10 @@ const MapPage = ({ getPosts, post: { posts } }) => {
   }, []);
 
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
-  const [currentLocation, setCurrentLocation] = useState(null);
 
   return (
     <>
-      <Box
-        sx={{
-          width: '100vw',
-          height: '100vh',
-          paddingTop: '60px'
-        }}
-      >
+      <Box sx={{}}>
         <Map
           initialViewState={{
             longitude: 23.3219,
@@ -35,7 +27,9 @@ const MapPage = ({ getPosts, post: { posts } }) => {
             zoom: 12
           }}
           style={{
-            overflow: 'hidden'
+            overflow: 'hidden',
+            width: '100vw',
+            height: '100vh'
           }}
           mapStyle="mapbox://styles/mapbox/outdoors-v12"
           mapboxAccessToken={MAPBOX_TOKEN}
