@@ -7,14 +7,18 @@ import formatDate from '../../utils/formatDate';
 const Experience = ({ experience, deleteExperience, sports }) => {
   const experiences = experience.map((exp) => (
     <tr key={exp._id}>
-      <td>{sports[exp.sport].name}</td>
+      <td>
+        {console.log(exp.sport, ' ', sports) &&
+          sports[exp.sport] &&
+          sports[exp.sport].name}
+      </td>
       <td>{exp.expLevel}</td>
-      <td className="hide-sm">{exp.description || "No description"}</td>
+      <td className="hide-sm">{exp.description || 'No description'}</td>
       <td>
         {formatDate(exp.from)} - {exp.to ? formatDate(exp.to) : 'Now'}
       </td>
-      <td>{exp.location || "No location"}</td>
-      <td>{exp.club || "No club"}</td>
+      <td>{exp.location || 'No location'}</td>
+      <td>{exp.club || 'No club'}</td>
       <td>
         <button
           onClick={() => deleteExperience(exp._id)}
