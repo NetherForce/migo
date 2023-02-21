@@ -12,7 +12,7 @@ const Meetups = ({ getMeetups, meetup: { meetups } }) => {
   }, [getMeetups]);
 
   return (
-    <section className="container">
+    <section className="container page">
       <h1 className="large text-primary">Meetups</h1>
       <p className="lead">
         <i className="fas fa-user" /> Welcome to the community
