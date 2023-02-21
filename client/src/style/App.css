@@ -349,6 +349,12 @@ button {
     margin-bottom: 0.2rem;
   }
 
+  .page {
+    padding-top: 60px;
+  }
+}
+
+@media (max-width: 1000px) {
   .navbar ul:first-of-type {
     position: static;
   }
@@ -356,10 +362,6 @@ button {
   .navbar ul:first-of-type li {
     position: static;
     width: auto;
-  }
-
-  .page {
-    padding-top: 60px;
   }
 }
 

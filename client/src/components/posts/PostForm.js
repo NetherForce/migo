@@ -87,7 +87,7 @@ const PostForm = ({ addPost, sports }) => {
     'pk.eyJ1IjoicGFuY2FrZWJveSIsImEiOiJjbGUyajU0dncxbXo3M3BwNmdkYXNwZzdlIn0.v1N4CI0aULZ7M6S12iW5Kg';
 
   return (
-    <section className="container">
+    <section className="container page">
       <h1 className="large text-primary">Create Post</h1>
       <p className="lead">
         <i className="fas fa-user" />

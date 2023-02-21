@@ -13,17 +13,19 @@ const Posts = ({ getPosts, post: { posts } }) => {
 
   return (
     <section className="container page">
-      <h1 className="large text-primary">Posts</h1>
-      <p className="lead">
-        <i className="fas fa-user" /> Welcome to the community
-        <Link to="/create-post" className="btn btn-primary right">
-          Create Post
-        </Link>
-      </p>
-      <div className="posts">
-        {posts.map((post) => {
-          return <PostItem key={post._id} post={post} />;
-        })}
+      <div className="posts-page">
+        <h1 className="large text-primary">Posts</h1>
+        <p className="lead">
+          <i className="fas fa-user" /> Welcome to the community
+          <Link to="/create-post" className="btn btn-primary right post-btn">
+            Create Post
+          </Link>
+        </p>
+        <div className="posts">
+          {posts.map((post) => {
+            return <PostItem key={post._id} post={post} />;
+          })}
+        </div>
       </div>
     </section>
   );

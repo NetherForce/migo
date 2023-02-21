@@ -49,7 +49,7 @@ const MeetupItem = ({
   };
 
   return (
-    <div className="meetup bg-white p-1 my-1">
+    <div className="post-container bg-white p-1 my-1">
       <div>
         <Link to={`/profile/${user}`}>
           <img className="round-img" src={avatar} alt="" />
