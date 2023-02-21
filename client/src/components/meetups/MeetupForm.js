@@ -14,7 +14,7 @@ import { getPostMeetups, addMeetup } from '../../actions/meetup';
 import { getPost } from '../../actions/post';
 import { createChat } from '../../actions/chat';
 
-const Post = ({ getPostMeetups, addMeetup, createChat, meetup: { postMeetups }, getPost, post: { post, loading } }) => {
+const Post = ({ auth: { user }, getPostMeetups, addMeetup, createChat, meetup: { postMeetups }, getPost, post: { post, loading } }) => {
   const { id } = useParams();
   useEffect(() => {
     getPostMeetups(id);
@@ -24,7 +24,7 @@ const Post = ({ getPostMeetups, addMeetup, createChat, meetup: { postMeetups }, 
   const [date, setDate] = useState('');
 
   const onClick = async () => {
-    const chatId = await createChat([post.user], post.text);
+    const chatId = await createChat([post.user], post.name + " & " + user.name);
     
     addMeetup({ ...post, date: date, chat: chatId, post: post._id });
   }
@@ -39,6 +39,7 @@ const Post = ({ getPostMeetups, addMeetup, createChat, meetup: { postMeetups }, 
       <PostItem post={post} showActions={false} />
 
       <section className="container">
+        <p>Pick a date and time for the meetup</p>
         <DatePicker
           selected={date}
           onChange={(newDate) => setDate(newDate)}
@@ -63,13 +64,15 @@ Post.propTypes = {
   meetup: PropTypes.object.isRequired,
   getPost: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
   addMeetup: PropTypes.func.isRequired,
   createChat: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
   meetup: state.meetup,
-  post: state.post
+  post: state.post,
+  auth: state.auth
 });
 
 export default connect(mapStateToProps, { getPostMeetups, getPost, addMeetup, createChat })(Post);

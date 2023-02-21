@@ -53,7 +53,7 @@ const AddExperience = ({ addExperience, sports }) => {
         className="form"
         onSubmit={(e) => {
           e.preventDefault();
-          addExperience({ ...formData, sport: formData.sport._id }, navigate);
+          addExperience({ ...formData, sport: formData.sport._id.replace(/\s/g, '') }, navigate);
           setFormData(initialState);
         }}
       >

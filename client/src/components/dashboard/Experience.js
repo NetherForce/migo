@@ -8,9 +8,7 @@ const Experience = ({ experience, deleteExperience, sports }) => {
   const experiences = experience.map((exp) => (
     <tr key={exp._id}>
       <td>
-        {console.log(exp.sport, ' ', sports) &&
-          sports[exp.sport] &&
-          sports[exp.sport].name}
+        {sports[exp.sport] ? sports[exp.sport].name : "No sport"}
       </td>
       <td>{exp.expLevel}</td>
       <td className="hide-sm">{exp.description || 'No description'}</td>
