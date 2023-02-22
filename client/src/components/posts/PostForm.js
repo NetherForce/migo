@@ -68,7 +68,7 @@ const PostForm = ({ addPost, sports }) => {
         if (response.ok) {
           return response.json();
         } else {
-          console.log(response.error)
+          console.log(response.error);
         }
       })
       .then((response) => {

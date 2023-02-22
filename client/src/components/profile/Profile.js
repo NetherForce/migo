@@ -15,7 +15,7 @@ const Profile = ({ getProfileById, profile: { profile }, auth, sports }) => {
   }, [getProfileById, id]);
 
   return (
-    <section className="container">
+    <section className="container page">
       {profile === null ? (
         <Spinner />
       ) : (
