@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const TimeslotSchema = new Schema({
   postId: {
-    type: Schema.Types.ObjectId
+    type: Schema.Types.ObjectId,
+    isRequired: true
   },
   positive: {
     type: Boolean,
