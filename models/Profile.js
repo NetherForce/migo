@@ -6,10 +6,22 @@ const EXPERIENCE_LEVELS = {
   EXPERT: 'Expert'
 }
 
+const PROFILE_TYPES = {
+  USER: 'Beginner',
+  TEACHER: 'Teacher',
+  ORGANIZATION: 'Organization'
+}
+
 const ProfileSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user'
+  },
+  type:{
+    type: String,
+    enum: Object.values(PROFILE_TYPES),
+    default: PROFILE_TYPES.USER,
+    isRequired: true
   },
   location: {
     type: String
