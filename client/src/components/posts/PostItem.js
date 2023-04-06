@@ -71,13 +71,21 @@ const PostItem = ({
               {auth.isAuthenticated &&
                 !auth.loading &&
                 user === auth.user._id && (
-                  <button
-                    onClick={() => deletePost(_id)}
-                    type="button"
-                    className="btn btn-danger"
-                  >
-                    <i className="fas fa-times" />
-                  </button>
+                  <>
+                    <Link
+                      to={`/meetups/create/${_id}`}
+                      className="btn btn-primary"
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      onClick={() => deletePost(_id)}
+                      type="button"
+                      className="btn btn-danger"
+                    >
+                      <i className="fas fa-times" />
+                    </button>
+                  </>
                 )}
             </Fragment>
           )}

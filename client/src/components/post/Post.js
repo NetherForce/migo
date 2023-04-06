@@ -18,7 +18,7 @@ const Post = ({ getPost, post: { post, loading } }) => {
     <Spinner />
   ) : (
     <section className="container">
-      <Link to="/posts" className="btn">
+      <Link to="/posts" className="btn backBtn">
         Back To Posts
       </Link>
       <PostItemOpened post={post} showActions={false} />

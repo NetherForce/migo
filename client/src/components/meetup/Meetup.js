@@ -16,7 +16,7 @@ const Meetup = ({ getMeetup, meetup: { meetup, loading } }) => {
     <Spinner />
   ) : (
     <section className="container">
-      <Link to="/meetups" className="btn">
+      <Link to="/meetups" className="btn backBtn">
         Back To Meetup
       </Link>
       <MeetupItem meetup={meetup} showActions={false} />
