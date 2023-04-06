@@ -15,12 +15,20 @@ export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const CLEAR_PROFILE = 'CLEAR_PROFILE';
 export const PROFILE_ERROR = 'PROFILE_ERROR';
 export const ACCOUNT_DELETED = 'ACCOUNT_DELETED';
+
 export const GET_POSTS = 'GET_POSTS';
 export const GET_POST = 'GET_POST';
 export const POST_ERROR = 'POST_ERROR';
 export const UPDATE_LIKES = 'UPDATE_LIKES';
 export const DELETE_POST = 'DELETE_POST';
 export const ADD_POST = 'ADD_POST';
+
+export const GET_TIMESLOTS = 'GET_TIMESLOTS';
+export const GET_TIMESLOT = 'GET_TIMESLOT';
+export const TIMESLOT_ERROR = 'TIMESLOT_ERROR';
+export const DELETE_TIMESLOT = 'DELETE_TIMESLOT';
+export const ADD_TIMESLOT = 'ADD_TIMESLOT';
+
 export const GET_MY_MEETUPS = 'GET_MY_MEETUPS';
 export const GET_POST_MEETUPS = 'GET_POST_MEETUPS';
 export const GET_MEETUP = 'GET_MEETUP';
@@ -29,6 +37,7 @@ export const DELETE_MEETUP = 'DELETE_MEETUP';
 export const ADD_MEETUP = 'ADD_MEETUP';
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const REMOVE_COMMENT = 'REMOVE_COMMENT';
+
 export const SET_SPORTS = 'SET_SPORTS';
 
 export const GET_CHATS = 'GET_CHATS';
