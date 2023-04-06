@@ -8,6 +8,7 @@ const TimeslotSchema = new Schema({
   },
   positive: {
     type: Boolean,
+    isRequired: true,
     default: true
   },
   startDate: {
@@ -21,11 +22,11 @@ const TimeslotSchema = new Schema({
     required: true
   },
   startTime: [{
-    type: Integer,
+    type: Number,
     isRequired: true
   }],
   duration: {
-    type: Integer,
+    type: Number,
     isRequired: true
   },
   day: {

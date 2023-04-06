@@ -5,6 +5,7 @@ const auth = require('../../middleware/auth');
 
 const Post = require('../../models/Post');
 const User = require('../../models/User');
+const Timeslot = require('../../models/Timeslot');
 const checkObjectId = require('../../middleware/checkObjectId');
 
 // @route    POST api/posts
@@ -96,6 +97,11 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
     if (post.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'User not authorized' });
     }
+
+    // Delete all timeslots
+    const timeslots = await Timeslot.find({ postId: req.params.id });
+    
+    timeslots.map(async (timeslot) => {await timeslot.remove()});
 
     await post.remove();
 

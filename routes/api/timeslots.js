@@ -4,11 +4,11 @@ const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 
 const Post = require('../../models/Post');
-const User = require('../../models/User');
+const Timeslot = require('../../models/Timeslot');
 const checkObjectId = require('../../middleware/checkObjectId');
 
-// @route    POST api/posts
-// @desc     Create a post
+// @route    POST api/timeslots
+// @desc     Create a timeslot
 // @access   Private
 router.post(
   '/',
@@ -24,25 +24,33 @@ router.post(
     }
 
     try {
-      const user = await User.findById(req.user.id).select('-password');
+      const post = await Post.findById(req.body.postId);
+  
+      if (!post) {
+        return res.status(404).json({ msg: 'Post not found' });
+      }
+  
+      // Check user
+      if (post.user.toString() !== req.user.id) {
+        return res.status(401).json({ msg: 'User not authorized' });
+      }
 
-      const { description, location, address, title, sport, expLevel } =
+      const { postId, positive, startDate, endDate, startTime, duration, day } =
         req.body;
 
-      const newPost = new Post({
-        text: req.body.text,
-        name: user.name,
-        avatar: user.avatar,
-        user: req.user.id,
-        location: location,
-        address: address,
-        title: title,
-        sport: sport
+      const newTimeslot = new Timeslot({
+        postId: postId,
+        positive: positive,
+        startDate: startDate,
+        endDate: endDate,
+        startTime: startTime,
+        duration: duration,
+        day: day
       });
 
-      const post = await newPost.save();
+      const timeslot = await newTimeslot.save();
 
-      res.json(post);
+      res.json(timeslot);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -50,18 +58,18 @@ router.post(
   }
 );
 
-// @route    GET api/posts/:id
-// @desc     Get post by ID
+// @route    GET api/timeslots/one/:id
+// @desc     Get timeslots by postId
 // @access   Public
-router.get('/:id', checkObjectId('id'), async (req, res) => {
+router.get('/one/:id', checkObjectId('id'), async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const timeslot = await Timeslot.findById(req.params.id);
 
-    if (!post) {
-      return res.status(404).json({ msg: 'Post not found' });
+    if (!timeslot) {
+      return res.status(404).json({ msg: 'Timeslot not found' });
     }
 
-    res.json(post);
+    res.json(timeslot);
   } catch (err) {
     console.error(err.message);
 
@@ -69,15 +77,36 @@ router.get('/:id', checkObjectId('id'), async (req, res) => {
   }
 });
 
-// @route    DELETE api/posts/:id
-// @desc     Delete a post
+// @route    GET api/timeslots/:id
+// @desc     Get timeslots by postId
+// @access   Public
+router.get('/:id', checkObjectId('id'), async (req, res) => {
+  try {
+    const timeslots = await Timeslot.find({ postId: req.params.id });
+
+    res.json(timeslots);
+  } catch (err) {
+    console.error(err.message);
+
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route    DELETE api/timeslots/:id
+// @desc     Delete a timeslot
 // @access   Private
 router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const timeslot = await Timeslot.findById(req.params.id);
+
+    if (!timeslot) {
+      return res.status(404).json({ msg: 'Timeslot not found' });
+    }
+    
+    const post = await Post.findById(timeslot.postId);
 
     if (!post) {
-      return res.status(404).json({ msg: 'Post not found' });
+      return res.status(404).json({ msg: 'Timeslot has no post' });
     }
 
     // Check user
@@ -85,132 +114,13 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
       return res.status(401).json({ msg: 'User not authorized' });
     }
 
-    await post.remove();
+    await timeslot.remove();
 
-    res.json({ msg: 'Post removed' });
+    res.json({ msg: 'Timeslot removed' });
   } catch (err) {
     console.error(err.message);
 
     res.status(500).send('Server Error');
-  }
-});
-
-// @route    PUT api/posts/like/:id
-// @desc     Like a post
-// @access   Private
-router.put('/like/:id', auth, checkObjectId('id'), async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-
-    // Check if the post has already been liked
-    if (post.likes.some((like) => like.user.toString() === req.user.id)) {
-      return res.status(400).json({ msg: 'Post already liked' });
-    }
-
-    post.likes.unshift({ user: req.user.id });
-
-    await post.save();
-
-    return res.json(post.likes);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-// @route    PUT api/posts/unlike/:id
-// @desc     Unlike a post
-// @access   Private
-router.put('/unlike/:id', auth, checkObjectId('id'), async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-
-    // Check if the post has not yet been liked
-    if (!post.likes.some((like) => like.user.toString() === req.user.id)) {
-      return res.status(400).json({ msg: 'Post has not yet been liked' });
-    }
-
-    // remove the like
-    post.likes = post.likes.filter(
-      ({ user }) => user.toString() !== req.user.id
-    );
-
-    await post.save();
-
-    return res.json(post.likes);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
-// @route    POST api/posts/comment/:id
-// @desc     Comment on a post
-// @access   Private
-router.post(
-  '/comment/:id',
-  auth,
-  checkObjectId('id'),
-  check('text', 'Text is required').notEmpty(),
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    try {
-      const user = await User.findById(req.user.id).select('-password');
-      const post = await Post.findById(req.params.id);
-
-      const newComment = {
-        text: req.body.text,
-        name: user.name,
-        avatar: user.avatar,
-        user: req.user.id
-      };
-
-      post.comments.unshift(newComment);
-
-      await post.save();
-
-      res.json(post.comments);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
-  }
-);
-
-// @route    DELETE api/posts/comment/:id/:comment_id
-// @desc     Delete comment
-// @access   Private
-router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-
-    // Pull out comment
-    const comment = post.comments.find(
-      (comment) => comment.id === req.params.comment_id
-    );
-    // Make sure comment exists
-    if (!comment) {
-      return res.status(404).json({ msg: 'Comment does not exist' });
-    }
-    // Check user
-    if (comment.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: 'User not authorized' });
-    }
-
-    post.comments = post.comments.filter(
-      ({ id }) => id !== req.params.comment_id
-    );
-
-    await post.save();
-
-    return res.json(post.comments);
-  } catch (err) {
-    console.error(err.message);
-    return res.status(500).send('Server Error');
   }
 });
 
