@@ -7,6 +7,7 @@ import chat from './chat';
 import message from './message';
 import staticData from './staticData';
 import meetup from './meetup';
+import timeslot from './timeslot';
 
 export default combineReducers({
   alert,
@@ -16,5 +17,6 @@ export default combineReducers({
   chat,
   message,
   staticData,
-  meetup
+  meetup,
+  timeslot
 });

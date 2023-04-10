@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { updatePost, getPost } from '../../actions/post';
 import SportsAutocomplete from '../sports/SportsAutocomplete';
+import TimeslotDisplay from '../timeslots/TimeslotDisplay';
 import { Link, useParams } from 'react-router-dom';
 import { Box } from '@mui/material';
 import Map, { Marker, NavigationControl } from 'react-map-gl';
@@ -173,6 +174,7 @@ const EditPost = ({ getPost, updatePost, post: { post }, sports }) => {
             </Box>
           </div>
         </div>
+
         <div className="form-group">
           <input
             type="text"
@@ -186,6 +188,12 @@ const EditPost = ({ getPost, updatePost, post: { post }, sports }) => {
             onChange={onAddressChange}
           />
         </div>
+
+        <div>
+          <TimeslotDisplay postId={id} />
+        </div>
+
+
         <button
           type="submit"
           className="btn btn-primary my-1"

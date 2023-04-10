@@ -13,32 +13,32 @@ const initialState = {
   error: {}
 };
 
-function postReducer(state = initialState, action) {
+function timeslotReducer(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
     case GET_TIMESLOTS:
       return {
         ...state,
-        posts: payload,
+        timeslots: payload,
         loading: false
       };
     case GET_TIMESLOT:
       return {
         ...state,
-        post: payload,
+        timeslot: payload,
         loading: false
       };
     case ADD_TIMESLOT:
       return {
         ...state,
-        posts: [payload, ...state.posts],
+        timeslots: [payload, ...state.timeslots],
         loading: false
       };
     case DELETE_TIMESLOT:
       return {
         ...state,
-        posts: state.posts.filter((post) => post._id !== payload),
+        timeslots: state.timeslots.filter((timeslot) => timeslot._id !== payload),
         loading: false
       };
     case TIMESLOT_ERROR:
@@ -52,4 +52,4 @@ function postReducer(state = initialState, action) {
   }
 }
 
-export default postReducer;
+export default timeslotReducer;
