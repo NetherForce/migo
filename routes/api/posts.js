@@ -57,22 +57,27 @@ router.put(
   '/:id',
   auth,
   check('text', 'Text is required').notEmpty(),
-  check('sport', 'Sport is required').notEmpty(),
-  checkObjectId('sport'),
+  //check('sport', 'Sport is required').notEmpty(),
+  //checkObjectId('sport'),
   async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     try {
       const post = await Post.findById(req.params.id);
+      const user = await User.findById(req.user.id).select('-password');
+      const { text, location, address, title, sport } = req.body;
 
-      // Check if the post has already been liked
-      if (post.likes.some((like) => like.user.toString() === req.user.id)) {
-        return res.status(400).json({ msg: 'Post already liked' });
-      }
-
-      post.likes.unshift({ user: req.user.id });
-
+      post.text = text;
+      post.title = title;
+      post.location = location;
+      post.address = address;
+      //post.sport = sport;
       await post.save();
 
-      return res.json(post.likes);
+      res.json(post);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');

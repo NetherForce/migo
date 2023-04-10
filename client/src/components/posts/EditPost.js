@@ -24,13 +24,12 @@ const EditPost = ({ getPost, updatePost, post: { post }, sports }) => {
 
   useEffect(() => {
     if (post && post._id === id) {
-      setFormData(post);
+      setFormData({ ...post, sport: sports[post.sport] });
     } else {
       getPost(id);
     }
   }, [getPost, id, post]);
 
-  console.log(post);
   const options = sports
     ? Object.keys(sports).map((key) => {
         return { ...sports[key], id: key, key: key };
