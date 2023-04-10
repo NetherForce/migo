@@ -72,10 +72,7 @@ const PostItem = ({
                 !auth.loading &&
                 user === auth.user._id && (
                   <>
-                    <Link
-                      to={`/meetups/create/${_id}`}
-                      className="btn btn-primary"
-                    >
+                    <Link to={`/posts/edit/${_id}`} className="btn btn-primary">
                       Edit
                     </Link>
                     <button

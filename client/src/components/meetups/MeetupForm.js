@@ -14,7 +14,7 @@ import { getPostMeetups, addMeetup } from '../../actions/meetup';
 import { getPost } from '../../actions/post';
 import { createChat } from '../../actions/chat';
 
-const Post = ({
+const MeetupForm = ({
   auth: { user },
   getPostMeetups,
   addMeetup,
@@ -68,7 +68,7 @@ const Post = ({
   );
 };
 
-Post.propTypes = {
+MeetupForm.propTypes = {
   getPostMeetups: PropTypes.func.isRequired,
   meetup: PropTypes.object.isRequired,
   getPost: PropTypes.func.isRequired,
@@ -89,4 +89,4 @@ export default connect(mapStateToProps, {
   getPost,
   addMeetup,
   createChat
-})(Post);
+})(MeetupForm);

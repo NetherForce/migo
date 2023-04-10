@@ -13,6 +13,7 @@ import Profiles from './components/profiles/Profiles';
 import Profile from './components/profile/Profile';
 import Posts from './components/posts/Posts';
 import Post from './components/post/Post';
+import EditPost from './components/posts/EditPost';
 import PostForm from './components/posts/PostForm';
 import Meetups from './components/meetups/Meetups';
 import Meetup from './components/meetup/Meetup';
@@ -68,6 +69,10 @@ const App = () => {
           <Route path="profile/:id" element={<Profile />} />
           <Route path="posts" element={<Posts />} />
           <Route path="posts/:id" element={<Post />} />
+          <Route
+            path="posts/edit/:id"
+            element={<PrivateRoute component={EditPost} />}
+          />
           <Route
             path="dashboard"
             element={<PrivateRoute component={Dashboard} />}

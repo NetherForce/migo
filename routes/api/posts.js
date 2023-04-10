@@ -50,6 +50,36 @@ router.post(
   }
 );
 
+// @route    PUT api/posts/:id
+// @desc     Update a post
+// @access   Private
+router.put(
+  '/:id',
+  auth,
+  check('text', 'Text is required').notEmpty(),
+  check('sport', 'Sport is required').notEmpty(),
+  checkObjectId('sport'),
+  async (req, res) => {
+    try {
+      const post = await Post.findById(req.params.id);
+
+      // Check if the post has already been liked
+      if (post.likes.some((like) => like.user.toString() === req.user.id)) {
+        return res.status(400).json({ msg: 'Post already liked' });
+      }
+
+      post.likes.unshift({ user: req.user.id });
+
+      await post.save();
+
+      return res.json(post.likes);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
 // @route    GET api/posts
 // @desc     Get all posts
 // @access   Public
@@ -100,8 +130,10 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
 
     // Delete all timeslots
     const timeslots = await Timeslot.find({ postId: req.params.id });
-    
-    timeslots.map(async (timeslot) => {await timeslot.remove()});
+
+    timeslots.map(async (timeslot) => {
+      await timeslot.remove();
+    });
 
     await post.remove();
 
