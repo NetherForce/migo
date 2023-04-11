@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addPost } from '../../actions/post';
+import { updatePost, getPost } from '../../actions/post';
 import SportsAutocomplete from '../sports/SportsAutocomplete';
-import { Link } from 'react-router-dom';
+import TimeslotDisplay from '../timeslots/TimeslotDisplay';
+import { Link, useParams } from 'react-router-dom';
 import { Box } from '@mui/material';
 import Map, { Marker, NavigationControl } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -16,8 +17,18 @@ const initialState = {
   sport: ''
 };
 
-const PostForm = ({ addPost, sports }) => {
+const EditPost = ({ getPost, updatePost, post: { post }, sports }) => {
   const [formData, setFormData] = useState(initialState);
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (post && post._id === id) {
+      setFormData({ ...post, sport: sports[post.sport] });
+    } else {
+      getPost(id);
+    }
+  }, [getPost, id, post]);
 
   const options = sports
     ? Object.keys(sports).map((key) => {
@@ -51,8 +62,7 @@ const PostForm = ({ addPost, sports }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addPost({ ...formData, sport: formData.sport.id });
-    setFormData('');
+    updatePost({ ...formData, sport: formData.sport.id });
   };
 
   const handleAddClick = (e) => {
@@ -88,14 +98,14 @@ const PostForm = ({ addPost, sports }) => {
 
   return (
     <section className="container page">
-      <h1 className="large text-primary">Create Post</h1>
+      <h1 className="large text-primary">Edit your post</h1>
       <p className="lead">
         <i className="fas fa-user" />
-        Give some information for your post
+        Change information for your post
       </p>
       <form className="form" onSubmit={onSubmit}>
         <div className="form-group">
-          <small className="form-text">Give your post a title</small>
+          <small className="form-text">Change the title</small>
           <input
             type="text"
             placeholder="Title"
@@ -105,7 +115,7 @@ const PostForm = ({ addPost, sports }) => {
           />
         </div>
         <div className="post-form">
-          <small className="form-text">What is your post about</small>
+          <small className="form-text">Change your description</small>
           <textarea
             name="text"
             cols="30"
@@ -117,7 +127,7 @@ const PostForm = ({ addPost, sports }) => {
           />
         </div>
         <div className="autocomplete form-group">
-          <small className="form-text">Which sport do you want to do</small>
+          <small className="form-text">Change the sport</small>
           <div style={{ marginTop: '-15px' }}>
             <SportsAutocomplete
               options={options}
@@ -129,7 +139,7 @@ const PostForm = ({ addPost, sports }) => {
         </div>
 
         <div className="form-group">
-          <small className="form-text">Location</small>
+          <small className="form-text">Change the location</small>
           <div>
             <Box
               sx={{
@@ -163,6 +173,7 @@ const PostForm = ({ addPost, sports }) => {
             </Box>
           </div>
         </div>
+
         <div className="form-group">
           <input
             type="text"
@@ -176,12 +187,18 @@ const PostForm = ({ addPost, sports }) => {
             onChange={onAddressChange}
           />
         </div>
+
+        <div>
+          <TimeslotDisplay postId={id} />
+        </div>
+
+
         <button
           type="submit"
           className="btn btn-primary my-1"
           onClick={onSubmit}
         >
-          Submit
+          Confirm changes
         </button>
         <Link className="btn btn-light my-1" to="/posts">
           Go Back
@@ -191,13 +208,16 @@ const PostForm = ({ addPost, sports }) => {
   );
 };
 
-PostForm.propTypes = {
+EditPost.propTypes = {
   sports: PropTypes.object,
-  addPost: PropTypes.func.isRequired
+  post: PropTypes.object.isRequired,
+  updatePost: PropTypes.func.isRequired,
+  getPost: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
-  sports: state.staticData.sports
+  sports: state.staticData.sports,
+  post: state.post
 });
 
-export default connect(mapStateToProps, { addPost })(PostForm);
+export default connect(mapStateToProps, { getPost, updatePost })(EditPost);

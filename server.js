@@ -19,6 +19,7 @@ app.use('/api/sports', require('./routes/api/sports'));
 app.use('/api/chats', require('./routes/api/chats'));
 app.use('/api/messages', require('./routes/api/messages'));
 app.use('/api/meetups', require('./routes/api/meetups'));
+app.use('/api/timeslots', require('./routes/api/timeslots'));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {

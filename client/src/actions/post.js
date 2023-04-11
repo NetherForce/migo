@@ -6,6 +6,7 @@ import {
   UPDATE_LIKES,
   DELETE_POST,
   ADD_POST,
+  UPDATE_POST,
   GET_POST,
   ADD_COMMENT,
   REMOVE_COMMENT
@@ -15,7 +16,7 @@ import {
 export const getPosts = () => async (dispatch) => {
   try {
     const res = await api.get('/posts');
-    
+
     dispatch({
       type: GET_POSTS,
       payload: res.data
@@ -104,11 +105,31 @@ export const addPost = (formData) => async (dispatch) => {
 export const getPost = (id) => async (dispatch) => {
   try {
     const res = await api.get(`/posts/${id}`);
-    
+    //console.log('The post: ', res.data);
+
     dispatch({
       type: GET_POST,
       payload: res.data
     });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Update post
+export const updatePost = (formData) => async (dispatch) => {
+  try {
+    const res = await api.put(`/posts/${formData._id}`, formData);
+
+    dispatch({
+      type: UPDATE_POST,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Post Updated', 'success'));
   } catch (err) {
     dispatch({
       type: POST_ERROR,

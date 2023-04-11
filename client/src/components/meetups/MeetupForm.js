@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import { Button } from '@mui/material';
 
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import MeetupItem from './MeetupItem';
 import PostItem from '../posts/PostItem';
@@ -14,7 +14,15 @@ import { getPostMeetups, addMeetup } from '../../actions/meetup';
 import { getPost } from '../../actions/post';
 import { createChat } from '../../actions/chat';
 
-const Post = ({ auth: { user }, getPostMeetups, addMeetup, createChat, meetup: { postMeetups }, getPost, post: { post, loading } }) => {
+const MeetupForm = ({
+  auth: { user },
+  getPostMeetups,
+  addMeetup,
+  createChat,
+  meetup: { postMeetups },
+  getPost,
+  post: { post, loading }
+}) => {
   const { id } = useParams();
   useEffect(() => {
     getPostMeetups(id);
@@ -24,42 +32,43 @@ const Post = ({ auth: { user }, getPostMeetups, addMeetup, createChat, meetup: {
   const [date, setDate] = useState('');
 
   const onClick = async () => {
-    const chatId = await createChat([post.user], post.name + " & " + user.name);
-    
+    const chatId = await createChat([post.user], post.name + ' & ' + user.name);
+
     addMeetup({ ...post, date: date, chat: chatId, post: post._id });
-  }
+  };
 
   return loading || post === null ? (
     <Spinner />
   ) : (
-    <section className="container">
-      <Link to="/posts" className="btn">
+    <section className="container page form">
+      <Link to="/posts" className="btn backBtn">
         Back To Posts
       </Link>
-      <PostItem post={post} showActions={false} />
+      <h1 className="large text-primary">Organize a meetup</h1>
 
-      <section className="container">
+      <div className="form-group">
+        <small className="form-text">Original post</small>
+        <PostItem post={post} showActions={false} />
+      </div>
+
+      <div className="form-group">
         <p>Pick a date and time for the meetup</p>
         <DatePicker
           selected={date}
           onChange={(newDate) => setDate(newDate)}
           showTimeSelect
-          dateFormat="MMMM d, yyyy h:mm aa"
+          dateFormat="d MMMM, yyyy h:mm aa"
+          placeholderText="DD/MM/YYYY"
         />
-
-        <button className="btn btn-primary" onClick={onClick}>Create meet</button>
-      </section>
-
-      <div className="comments">
-        {postMeetups.map((meetup) => (
-          <MeetupItem key={meetup._id} meetup={meetup} />
-        ))}
       </div>
+      <button className="btn btn-primary" onClick={onClick}>
+        Create meet
+      </button>
     </section>
   );
 };
 
-Post.propTypes = {
+MeetupForm.propTypes = {
   getPostMeetups: PropTypes.func.isRequired,
   meetup: PropTypes.object.isRequired,
   getPost: PropTypes.func.isRequired,
@@ -75,4 +84,9 @@ const mapStateToProps = (state) => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { getPostMeetups, getPost, addMeetup, createChat })(Post);
+export default connect(mapStateToProps, {
+  getPostMeetups,
+  getPost,
+  addMeetup,
+  createChat
+})(MeetupForm);

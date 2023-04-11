@@ -43,7 +43,7 @@ const AddExperience = ({ addExperience, sports }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   return (
-    <section className="container">
+    <section className="container page">
       <h1 className="large text-primary">Add Experience</h1>
       <p className="lead">
         <i className="fas fa-running" /> Add any sport that you have done in the
@@ -53,7 +53,10 @@ const AddExperience = ({ addExperience, sports }) => {
         className="form"
         onSubmit={(e) => {
           e.preventDefault();
-          addExperience({ ...formData, sport: formData.sport._id.replace(/\s/g, '') }, navigate);
+          addExperience(
+            { ...formData, sport: formData.sport._id.replace(/\s/g, '') },
+            navigate
+          );
           setFormData(initialState);
         }}
       >

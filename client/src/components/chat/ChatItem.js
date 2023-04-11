@@ -5,37 +5,35 @@ import { getMessages } from '../../actions/message';
 import { Button } from '@mui/material';
 import { SET_CHAT } from '../../actions/types';
 
-const ChatItem =
-  ({ getMessages, chat }) => {
-    const dispatch = useDispatch();
+const ChatItem = ({ getMessages, chat }) => {
+  const dispatch = useDispatch();
 
-    return (
-      <div className="chat bg-white p-1 my-1">
-        <div>
-          <Button
-            onClick={() => {
-              getMessages(chat._id);
+  return (
+    <div className="chat bg-white p-1 my-1">
+      <div>
+        <Button
+          onClick={() => {
+            getMessages(chat._id);
 
-              dispatch({
-                type: SET_CHAT,
-                payload: chat
-              });
-            }}
-          >
-            <img
-              className="round-img width-30"
-              src={chat.users[0].avatar}
-              alt=""
-            />
-            <h4 className="width-70" style={{ color: 'var(--primary-color)' }}>
-              {chat.name}
-            </h4>
-          </Button>
-        </div>
+            dispatch({
+              type: SET_CHAT,
+              payload: chat
+            });
+          }}
+        >
+          <img
+            className="round-img width-30"
+            src={chat.users[0].avatar}
+            alt=""
+          />
+          <h4 className="width-70" style={{ color: 'var(--primary-color)' }}>
+            {chat.name}
+          </h4>
+        </Button>
       </div>
-    );
-  };
-
+    </div>
+  );
+};
 
 ChatItem.propTypes = {
   getMessages: PropTypes.func.isRequired

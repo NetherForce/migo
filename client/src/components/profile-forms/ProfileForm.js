@@ -63,7 +63,7 @@ const ProfileForm = ({
   };
 
   return (
-    <section className="container">
+    <section className="container page">
       <h1 className="large text-primary">
         {creatingProfile ? 'Create Your Profile' : 'Edit Your Profile'}
       </h1>

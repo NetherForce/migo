@@ -4,6 +4,7 @@ import {
   UPDATE_LIKES,
   DELETE_POST,
   ADD_POST,
+  UPDATE_POST,
   GET_POST,
   ADD_COMMENT,
   REMOVE_COMMENT
@@ -42,6 +43,12 @@ function postReducer(state = initialState, action) {
       return {
         ...state,
         posts: state.posts.filter((post) => post._id !== payload),
+        loading: false
+      };
+    case UPDATE_POST:
+      return {
+        ...state,
+        post: payload,
         loading: false
       };
     case POST_ERROR:

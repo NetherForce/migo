@@ -15,12 +15,12 @@ const Profile = ({ getProfileById, profile: { profile }, auth, sports }) => {
   }, [getProfileById, id]);
 
   return (
-    <section className="container">
+    <section className="container page">
       {profile === null ? (
         <Spinner />
       ) : (
         <Fragment>
-          <Link to="/profiles" className="btn btn-light">
+          <Link to="/profiles" className="btn btn-light backBtn">
             Back To Profiles
           </Link>
           {auth.isAuthenticated &&

@@ -5,6 +5,7 @@ const auth = require('../../middleware/auth');
 
 const Post = require('../../models/Post');
 const User = require('../../models/User');
+const Timeslot = require('../../models/Timeslot');
 const checkObjectId = require('../../middleware/checkObjectId');
 
 // @route    POST api/posts
@@ -40,6 +41,41 @@ router.post(
       });
 
       const post = await newPost.save();
+
+      res.json(post);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
+// @route    PUT api/posts/:id
+// @desc     Update a post
+// @access   Private
+router.put(
+  '/:id',
+  auth,
+  check('text', 'Text is required').notEmpty(),
+  //check('sport', 'Sport is required').notEmpty(),
+  //checkObjectId('sport'),
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      const post = await Post.findById(req.params.id);
+      const user = await User.findById(req.user.id).select('-password');
+      const { text, location, address, title, sport } = req.body;
+
+      post.text = text;
+      post.title = title;
+      post.location = location;
+      post.address = address;
+      //post.sport = sport;
+      await post.save();
 
       res.json(post);
     } catch (err) {
@@ -96,6 +132,13 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
     if (post.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'User not authorized' });
     }
+
+    // Delete all timeslots
+    const timeslots = await Timeslot.find({ postId: req.params.id });
+
+    timeslots.map(async (timeslot) => {
+      await timeslot.remove();
+    });
 
     await post.remove();
 
