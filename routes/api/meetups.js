@@ -96,20 +96,6 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// @route    GET api/meetups
-// @desc     Get post meetups
-// @access   Public
-router.get('/post/:id', async (req, res) => {
-  try {
-    let meetups = await Meetup.find({ post: req.params.id });
-
-    res.json(meetups);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
-
 // @route    GET api/meetups/:id
 // @desc     Get meetup by ID
 // @access   Private

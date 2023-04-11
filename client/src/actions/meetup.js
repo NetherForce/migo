@@ -1,12 +1,12 @@
 import api from '../utils/api';
 import { setAlert } from './alert';
 import {
+  GET_MEETUP,
   GET_MY_MEETUPS,
   GET_POST_MEETUPS,
   MEETUP_ERROR,
   DELETE_MEETUP,
-  ADD_MEETUP,
-  GET_MEETUP
+  ADD_MEETUP
 } from './types';
 
 // Get my meetups
@@ -85,7 +85,7 @@ export const addMeetup = (formData) => async (dispatch) => {
 export const getMeetup = (id) => async (dispatch) => {
   try {
     const res = await api.get(`/meetup/${id}`);
-
+    console.log(res.data);
     dispatch({
       type: GET_MEETUP,
       payload: res.data

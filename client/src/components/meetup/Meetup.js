@@ -6,9 +6,10 @@ import Spinner from '../layout/Spinner';
 import MeetupItem from '../meetups/MeetupItem';
 import { getMeetup } from '../../actions/meetup';
 
-const Meetup = ({ getMeetup, meetup: { meetup, loading } }) => {
+const Meetup = ({ getMeetup, meetup: {meetup, loading} }) => {
   const { id } = useParams();
   useEffect(() => {
+    console.log(meetup);
     getMeetup(id);
   }, [getMeetup, id]);
 

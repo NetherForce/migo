@@ -1,3 +1,4 @@
+import { getBottomNavigationActionUtilityClass } from '@mui/material';
 import {
   GET_MY_MEETUPS,
   GET_POST_MEETUPS,
@@ -13,11 +14,19 @@ import {
 const initialState = {
   myMeetups: [],
   postMeetups: [],
+  meetup: null,
+  loading: true
 };
 
 function meetupReducer(state = initialState, action) {
   const { type, payload } = action;
   switch (type) {
+    case GET_MEETUP:
+      return {
+        ...state,
+        meetup: payload,
+        loading: false
+      };
     case GET_MY_MEETUPS:
       return {
         ...state,

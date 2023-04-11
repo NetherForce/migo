@@ -49,60 +49,61 @@ const MeetupItem = ({
   };
 
   return (
-    <div className="post-container bg-white p-1 my-1">
-      <div>
-        <Link to={`/profile/${user}`}>
-          <img className="round-img" src={avatar} alt="" />
-          <h4>{name}</h4>
-        </Link>
-      </div>
-      <div>
-        <p className="my-1">
-          <span className="" style={{ color: 'var(--primary-color)' }}>
-            Description:{' '}
-          </span>
-          {text ? text : 'there is no description'}
-        </p>
-        <p className="my-1">
-          <span className="" style={{ color: 'var(--primary-color)' }}>
-            Date:{' '}
-          </span>
-          {date ? formatDate(date) : 'not specified'}
-        </p>
-        <p className="post-date">
-          Posted on {postDate ? formatDate(postDate) : 'not specified'}
-        </p>
-      </div>
-      <div>
-        <p className="my-1">
-          <span className="" style={{ color: 'var(--primary-color)' }}>
-            Sport:{' '}
-          </span>
-          {sport && sports && sports[sport]
-            ? sports[sport].name
-            : 'not specified'}
-        </p>
-        <p className="my-1">
-          <span className="" style={{ color: 'var(--primary-color)' }}>
-            Location:{' '}
-          </span>
+    <Link className="" to={`/meetups/${_id}`}>
+      <div className="post-container bg-white p-1 my-1">
+        <div>
+          <Link to={`/profile/${user}`}>
+            <img className="round-img" src={avatar} alt="" />
+            <h4>{name}</h4>
+          </Link>
+        </div>
+        <div>
           <p className="my-1">
             <span className="" style={{ color: 'var(--primary-color)' }}>
-              Longitude:{' '}
+              Description:{' '}
             </span>
-            {location.longitude ? location.longitude : 'not specified'}
+            {text ? text : 'there is no description'}
           </p>
           <p className="my-1">
             <span className="" style={{ color: 'var(--primary-color)' }}>
-              Latitude:{' '}
+              Date:{' '}
             </span>
-            {location.latitude ? location.latitude : 'not specified'}
+            {date ? formatDate(date) : 'not specified'}
           </p>
-        </p>
+          <p className="post-date">
+            Posted on {postDate ? formatDate(postDate) : 'not specified'}
+          </p>
+        </div>
+        <div>
+          <p className="my-1">
+            <span className="" style={{ color: 'var(--primary-color)' }}>
+              Sport:{' '}
+            </span>
+            {sport && sports && sports[sport]
+              ? sports[sport].name
+              : 'not specified'}
+          </p>
+          <p className="my-1">
+            <span className="" style={{ color: 'var(--primary-color)' }}>
+              Location:{' '}
+            </span>
+            <p className="my-1">
+              <span className="" style={{ color: 'var(--primary-color)' }}>
+                Longitude:{' '}
+              </span>
+              {location.longitude ? location.longitude : 'not specified'}
+            </p>
+            <p className="my-1">
+              <span className="" style={{ color: 'var(--primary-color)' }}>
+                Latitude:{' '}
+              </span>
+              {location.latitude ? location.latitude : 'not specified'}
+            </p>
+          </p>
 
-        {showActions && (
-          <Fragment>
-            {/* <button
+          {showActions && (
+            <Fragment>
+              {/* <button
             onClick={() => addLike(_id)}
             type="button"
             className="btn btn-light"
@@ -117,22 +118,24 @@ const MeetupItem = ({
           > 
             <i className="fas fa-thumbs-down" />
           </button> */}
-            <Link to={`/chat`} onClick={onClick} className="btn btn-primary">
-              Message
-            </Link>
-            {!auth.loading && (user === auth.user._id || postUser === auth.user._id) && (
-              <button
-                onClick={() => deleteMeetup(_id)}
-                type="button"
-                className="btn btn-danger"
-              >
-                <i className="fas fa-times" />
-              </button>
-            )}
-          </Fragment>
-        )}
+              <Link to={`/chat`} onClick={onClick} className="btn btn-primary">
+                Message
+              </Link>
+              {!auth.loading &&
+                (user === auth.user._id || postUser === auth.user._id) && (
+                  <button
+                    onClick={() => deleteMeetup(_id)}
+                    type="button"
+                    className="btn btn-danger"
+                  >
+                    <i className="fas fa-times" />
+                  </button>
+                )}
+            </Fragment>
+          )}
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
