@@ -2,8 +2,15 @@ import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteTimeslot, getTimeslots } from '../../actions/timeslot';
+import { Link } from 'react-router-dom';
+import formatDate from '../../utils/formatDate';
 
-const TimeslotDisplay = ({ postId, timeslot: { timeslots }, getTimeslots, deleteTimeslot }) => {
+const TimeslotDisplay = ({
+  postId,
+  timeslot: { timeslots },
+  getTimeslots,
+  deleteTimeslot
+}) => {
   useEffect(() => {
     getTimeslots(postId);
   }, [getTimeslots, postId]);
@@ -20,19 +27,37 @@ const TimeslotDisplay = ({ postId, timeslot: { timeslots }, getTimeslots, delete
       }
     }
     return string;
-  }
+  };
 
   const newTimeslots = timeslots.map((ts) => (
     <tr key={ts._id}>
       <td>
-        {ts.positive ? <i className="fa fa-plus" /> : <i className="fa fa-minus" />}
+        {ts.positive ? (
+          <i className="fa fa-plus" />
+        ) : (
+          <i className="fa fa-minus" />
+        )}
       </td>
-      <td>{ts.startDate}</td>
-      <td>{ts.endDate}</td>
+      <td>{formatDate(ts.startDate)}</td>
+      <td>{formatDate(ts.endDate)}</td>
       <td>
-        {ts.startTime.join(', ')}
+        {ts.startTime
+          .map((time) => {
+            return (
+              '' +
+              Math.floor(time / 60) +
+              ':' +
+              (time % 60 === 0 ? '00' : time % 60)
+            );
+          })
+          .join(', ')}
       </td>
-      <td>{('' + Math.floor(ts.duration / 60) + ':' + (ts.duration % 60 === 0 ? '00' : ts.duration % 60))}</td>
+      <td>
+        {'' +
+          Math.floor(ts.duration / 60) +
+          ':' +
+          (ts.duration % 60 === 0 ? '00' : ts.duration % 60)}
+      </td>
       <td>{getDaysString(ts.day)}</td>
       <td>
         <button
@@ -47,7 +72,15 @@ const TimeslotDisplay = ({ postId, timeslot: { timeslots }, getTimeslots, delete
 
   return (
     <Fragment>
-      <h2 className="my-2">Timeslots</h2>
+      <h2 className="my-2">
+        Timeslots{' '}
+        <Link
+          to={`/timeslots/create/${postId}`}
+          className="btn btn-primary right post-btn"
+        >
+          Create Timeslot
+        </Link>
+      </h2>
       <table className="table">
         <thead>
           <tr>
@@ -76,4 +109,6 @@ const mapStateToProps = (state) => ({
   timeslot: state.timeslot
 });
 
-export default connect(mapStateToProps, { getTimeslots, deleteTimeslot })(TimeslotDisplay);
+export default connect(mapStateToProps, { getTimeslots, deleteTimeslot })(
+  TimeslotDisplay
+);

@@ -21,6 +21,7 @@ import MeetupForm from './components/meetups/MeetupForm';
 import NotFound from './components/layout/NotFound';
 import PrivateRoute from './components/routing/PrivateRoute';
 import Chat from './components/chat/Chat';
+import TimeslotForm from './components/timeslots/TimeslotForm';
 import { LOGOUT } from './actions/types';
 
 // Redux
@@ -106,6 +107,7 @@ const App = () => {
             path="meetups/create/:id"
             element={<PrivateRoute component={MeetupForm} />}
           />
+          <Route path="timeslots/create/:id" element={<TimeslotForm />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </Router>
