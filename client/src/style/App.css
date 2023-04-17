@@ -125,6 +125,18 @@ img {
 .my-3 {
   margin: 3rem 0;
 }
+.m-top {
+  margin-top: 0.5rem;
+}
+.m-top-1 {
+  margin-top: 1rem;
+}
+.m-top-2 {
+  margin-top: 2rem;
+}
+.m-top-3 {
+  margin-top: 3rem;
+}
 
 .btn {
   display: inline-block;
