@@ -6,14 +6,15 @@ import {
   GET_POST_MEETUPS,
   MEETUP_ERROR,
   DELETE_MEETUP,
-  ADD_MEETUP
+  ADD_MEETUP,
+  UPDATE_MEETUP
 } from './types';
 
 // Get my meetups
 export const getMyMeetups = () => async (dispatch) => {
   try {
     const res = await api.get('/meetups');
-    
+
     dispatch({
       type: GET_MY_MEETUPS,
       payload: res.data
@@ -66,7 +67,7 @@ export const deleteMeetup = (id) => async (dispatch) => {
 export const addMeetup = (formData) => async (dispatch) => {
   try {
     const res = await api.post('/meetups', formData);
-    
+
     dispatch({
       type: ADD_MEETUP,
       payload: res.data
@@ -84,12 +85,31 @@ export const addMeetup = (formData) => async (dispatch) => {
 // Get meetup
 export const getMeetup = (id) => async (dispatch) => {
   try {
-    const res = await api.get(`/meetup/${id}`);
+    const res = await api.get(`/meetups/${id}`);
     console.log(res.data);
     dispatch({
       type: GET_MEETUP,
       payload: res.data
     });
+  } catch (err) {
+    dispatch({
+      type: MEETUP_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Update meetup
+export const updateMeetup = (formData) => async (dispatch) => {
+  try {
+    const res = await api.put(`/meetups/${formData._id}`, formData);
+
+    dispatch({
+      type: UPDATE_MEETUP,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Meetup Updated', 'success'));
   } catch (err) {
     dispatch({
       type: MEETUP_ERROR,

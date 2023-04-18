@@ -17,6 +17,7 @@ import EditPost from './components/posts/EditPost';
 import PostForm from './components/posts/PostForm';
 import Meetups from './components/meetups/Meetups';
 import Meetup from './components/meetup/Meetup';
+import EditMeetup from './components/meetups/EditMeetup';
 import MeetupForm from './components/meetups/MeetupForm';
 import NotFound from './components/layout/NotFound';
 import PrivateRoute from './components/routing/PrivateRoute';
@@ -103,6 +104,10 @@ const App = () => {
           <Route
             path="meetups/:id"
             element={<PrivateRoute component={Meetup} />}
+          />
+          <Route
+            path="meetups/edit/:id"
+            element={<PrivateRoute component={EditMeetup} />}
           />
           <Route
             path="meetups/create/:id"

@@ -123,13 +123,21 @@ const MeetupItem = ({
               </Link>
               {!auth.loading &&
                 (user === auth.user._id || postUser === auth.user._id) && (
-                  <button
-                    onClick={() => deleteMeetup(_id)}
-                    type="button"
-                    className="btn btn-danger"
-                  >
-                    <i className="fas fa-times" />
-                  </button>
+                  <>
+                    <Link
+                      to={`/meetups/edit/${_id}`}
+                      className="btn btn-primary"
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      onClick={() => deleteMeetup(_id)}
+                      type="button"
+                      className="btn btn-danger"
+                    >
+                      <i className="fas fa-times" />
+                    </button>
+                  </>
                 )}
             </Fragment>
           )}

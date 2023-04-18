@@ -33,6 +33,7 @@ export const ADD_TIMESLOT = 'ADD_TIMESLOT';
 export const GET_MY_MEETUPS = 'GET_MY_MEETUPS';
 export const GET_POST_MEETUPS = 'GET_POST_MEETUPS';
 export const GET_MEETUP = 'GET_MEETUP';
+export const UPDATE_MEETUP = 'UPDATE_MEETUP';
 export const MEETUP_ERROR = 'MEETUP_ERROR';
 export const DELETE_MEETUP = 'DELETE_MEETUP';
 export const ADD_MEETUP = 'ADD_MEETUP';

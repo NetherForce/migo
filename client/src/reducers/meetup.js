@@ -7,6 +7,7 @@ import {
   DELETE_MEETUP,
   ADD_MEETUP,
   GET_MEETUP,
+  UPDATE_MEETUP,
   ADD_COMMENT,
   REMOVE_COMMENT
 } from '../actions/types';
@@ -33,13 +34,19 @@ function meetupReducer(state = initialState, action) {
         myMeetups: payload,
         loading: false
       };
-      case GET_POST_MEETUPS:
-        return {
-          ...state,
-          postMeetups: payload,
-          loading: false
-        };
+    case GET_POST_MEETUPS:
+      return {
+        ...state,
+        postMeetups: payload,
+        loading: false
+      };
     case GET_MEETUP:
+      return {
+        ...state,
+        meetup: payload,
+        loading: false
+      };
+    case UPDATE_MEETUP:
       return {
         ...state,
         meetup: payload,

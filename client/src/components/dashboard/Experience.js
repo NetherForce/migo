@@ -7,9 +7,7 @@ import formatDate from '../../utils/formatDate';
 const Experience = ({ experience, deleteExperience, sports }) => {
   const experiences = experience.map((exp) => (
     <tr key={exp._id}>
-      <td>
-        {sports[exp.sport] ? sports[exp.sport].name : "No sport"}
-      </td>
+      <td>{sports[exp.sport] ? sports[exp.sport].name : 'No sport'}</td>
       <td>{exp.expLevel}</td>
       <td className="hide-sm">{exp.description || 'No description'}</td>
       <td>
@@ -30,7 +28,7 @@ const Experience = ({ experience, deleteExperience, sports }) => {
 
   return (
     <Fragment>
-      <h2 className="my-2">Experience Credentials</h2>
+      <h3 className="m-top-2">Experience Credentials</h3>
       <table className="table">
         <thead>
           <tr>

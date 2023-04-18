@@ -200,3 +200,26 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
 });
 
 module.exports = router;
+
+// @route    PUT api/meetups/:id
+// @desc     Update a meetup
+// @access   Private
+router.put('/:id', auth, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const meetup = await Meetup.findById(req.params.id);
+    const { date } = req.body;
+
+    meetup.date = date;
+    await meetup.save();
+
+    res.json(meetup);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});

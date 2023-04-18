@@ -2,7 +2,12 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { Link, useMatch, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createProfile, getCurrentProfile } from '../../actions/profile';
+import {
+  createProfile,
+  getCurrentProfile,
+  deleteAccount
+} from '../../actions/profile';
+import Experience from '../dashboard/Experience';
 
 /*
   NOTE: declare initialState outside of component
@@ -96,15 +101,15 @@ const ProfileForm = ({
           <small className="form-text">Tell us a little about yourself</small>
         </div>
 
-        <div className="my-2">
+        <div>
           <button
             onClick={() => toggleSocialInputs(!displaySocialInputs)}
             type="button"
-            className="btn btn-light"
+            className="btn btn-light backBtn"
           >
             Add Social Network Links
           </button>
-          <span>Optional</span>
+          <span>*optional</span>
         </div>
 
         {displaySocialInputs && (
@@ -165,9 +170,15 @@ const ProfileForm = ({
             </div>
           </Fragment>
         )}
-
         <input type="submit" className="btn btn-primary my-1" />
-        <Link className="btn btn-light my-1" to="/dashboard">
+        <Experience experience={profile.experience} />
+
+        <div className="my-2">
+          <button className="btn btn-danger" onClick={() => deleteAccount()}>
+            <i className="fas fa-user-minus" /> Delete My Account
+          </button>
+        </div>
+        <Link className="btn btn-light backBtn my-1" to="/dashboard">
           Go Back
         </Link>
       </form>
@@ -178,13 +189,16 @@ const ProfileForm = ({
 ProfileForm.propTypes = {
   createProfile: PropTypes.func.isRequired,
   getCurrentProfile: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired
+  profile: PropTypes.object.isRequired,
+  deleteAccount: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
   profile: state.profile
 });
 
-export default connect(mapStateToProps, { createProfile, getCurrentProfile })(
-  ProfileForm
-);
+export default connect(mapStateToProps, {
+  createProfile,
+  getCurrentProfile,
+  deleteAccount
+})(ProfileForm);
