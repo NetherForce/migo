@@ -7,7 +7,28 @@ const Meetup = require('../../models/Meetup');
 const UserToMeetup = require('../../models/UserToMeetup');
 const User = require('../../models/User');
 const Post = require('../../models/Post');
+const Timeslot = require('../../models/Timeslot');
 const checkObjectId = require('../../middleware/checkObjectId');
+
+const daysOfTheWeek = [
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday'
+];
+
+const days = {
+  monday: false,
+  tuesday: false,
+  wednesday: false,
+  thursday: false,
+  friday: false,
+  saturday: false,
+  sunday: false
+}
 
 // @route    POST api/meetups
 // @desc     Create a meetup
@@ -31,12 +52,30 @@ router.post(
     }
 
     try {
-      const { chat, post, user, date, sport, location, text, avatar, name } =
+      const { chat, post, user, date, sport, location, text, duration, avatar, name } =
         req.body;
 
       const theUser = await User.findById(req.user.id).select('-password');
       if (!theUser) {
         return res.status(404).json({ msg: 'User not found' });
+      }
+
+      let timeslotId;
+
+      if(duration){
+        let newTimeslot = new Timeslot({
+          postId: post,
+          positive: false,
+          startDate: date,
+          endDate: date,
+          startTime: [new Date(date).getHours() * 60 + new Date(date).getMinutes()],
+          duration: duration,
+          day: days[daysOfTheWeek[new Date(date).getDay()]]
+        });
+
+        let timeslot = await newTimeslot.save();
+
+        timeslotId = timeslot._id;
       }
 
       const users = req.user.id.toString() !== user.toString() ? [req.user.id, user] : [user];
@@ -52,7 +91,8 @@ router.post(
         text: text,
         users: users,
         avatar: theUser.avatar,
-        name: theUser.name
+        name: theUser.name,
+        timeslot: timeslotId
       });
 
       let meetup = await newMeetup.save();
@@ -132,6 +172,15 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
       meetup.postUser.toString() !== req.user.id
     ) {
       return res.status(401).json({ msg: 'User not authorized' });
+    }
+
+    // Delete timeslot
+    if(meetup.timeslot){
+      const timeslot = await Timeslot.findById(req.params.id);
+
+      if(timeslot){
+        await timeslot.remove();
+      }
     }
 
     // Delete userToMeetup

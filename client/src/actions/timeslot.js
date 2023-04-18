@@ -14,6 +14,7 @@ export const getTimeslots = (id) => async (dispatch) => {
     const res = await api.get(`/timeslots/${id}`);
     
     dispatch({
+      postId: id,
       type: GET_TIMESLOTS,
       payload: res.data
     });
@@ -31,6 +32,7 @@ export const deleteTimeslot = (id) => async (dispatch) => {
     await api.delete(`/timeslots/${id}`);
 
     dispatch({
+      postId: id,
       type: DELETE_TIMESLOT,
       payload: id
     });
@@ -50,6 +52,7 @@ export const addTimeslot = (formData) => async (dispatch) => {
     const res = await api.post('/timeslots', formData);
 
     dispatch({
+      postId: formData.postId,
       type: ADD_TIMESLOT,
       payload: res.data
     });
@@ -69,6 +72,7 @@ export const getTimeslot = (id) => async (dispatch) => {
     const res = await api.get(`/timeslots/one/${id}`);
     
     dispatch({
+      postId: id,
       type: GET_TIMESLOT,
       payload: res.data
     });

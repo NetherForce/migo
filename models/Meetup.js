@@ -48,6 +48,9 @@ const MeetupSchema = new Schema({
     type: Schema.Types.ObjectId,
     required: true
   },
+  timeslot: {
+    type: Schema.Types.ObjectId
+  }
 });
 
 module.exports = mongoose.model('meetup', MeetupSchema);

@@ -13,7 +13,7 @@ const TimeslotDisplay = ({
 }) => {
   useEffect(() => {
     getTimeslots(postId);
-  }, [getTimeslots, postId]);
+  }, [getTimeslots, postId, timeslots]);
 
   const getDaysString = (days) => {
     let string = '';
@@ -29,7 +29,7 @@ const TimeslotDisplay = ({
     return string;
   };
 
-  const newTimeslots = timeslots.map((ts) => (
+  const newTimeslots = (timeslots[postId] ? timeslots[postId] : []).map((ts) => (
     <tr key={ts._id}>
       <td>
         {ts.positive ? (

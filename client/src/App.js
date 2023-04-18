@@ -38,6 +38,7 @@ import './style/Meetups.css';
 import './style/Profile.css';
 import './style/Chat.css';
 import './style/Message.css';
+import './style/Timeslot.css';
 
 const App = () => {
   useEffect(() => {

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import formatDate from '../../utils/formatDate';
 import { connect } from 'react-redux';
 import { addLike, removeLike, deletePost } from '../../actions/post';
+import TimeslotHolder from '../timeslots/TimeslotHolder';
 
 const PostItem = ({
   deletePost,
@@ -87,6 +88,22 @@ const PostItem = ({
             </Fragment>
           )}
         </div>
+        {showActions &&<TimeslotHolder
+          post={{
+            _id,
+            text,
+            name,
+            avatar,
+            user,
+            likes,
+            comments,
+            date,
+            location,
+            address,
+            title,
+            sport
+          }}
+        />}
       </div>
     </Link>
   );

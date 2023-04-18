@@ -7,20 +7,20 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  timeslots: [],
+  timeslots: {},
   timeslot: null,
   loading: true,
   error: {}
 };
 
 function timeslotReducer(state = initialState, action) {
-  const { type, payload } = action;
+  const { postId, type, payload } = action;
 
   switch (type) {
     case GET_TIMESLOTS:
       return {
         ...state,
-        timeslots: payload,
+        timeslots: {...state.timeslots, [postId]: (payload ? payload : [])},
         loading: false
       };
     case GET_TIMESLOT:
@@ -32,13 +32,13 @@ function timeslotReducer(state = initialState, action) {
     case ADD_TIMESLOT:
       return {
         ...state,
-        timeslots: [payload, ...state.timeslots],
+        timeslots: {...state.timeslots, [postId]: [payload, ...state.timeslots[postId]]},
         loading: false
       };
     case DELETE_TIMESLOT:
       return {
         ...state,
-        timeslots: state.timeslots.filter((timeslot) => timeslot._id !== payload),
+        timeslots: {...state.timeslots, [postId]: state.timeslots[postId].filter((timeslot) => timeslot._id !== payload)},
         loading: false
       };
     case TIMESLOT_ERROR:
