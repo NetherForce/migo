@@ -72,6 +72,10 @@ export const addMeetup = (formData) => async (dispatch) => {
       type: ADD_MEETUP,
       payload: res.data
     });
+    
+    if(res.data.timeslot){
+      window.location.replace(window.location.protocol + '//' + window.location.host + '/meetups/' + res.data._id);
+    }
 
     dispatch(setAlert('Meetup Created', 'success'));
   } catch (err) {

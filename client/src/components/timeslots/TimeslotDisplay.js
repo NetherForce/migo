@@ -29,46 +29,48 @@ const TimeslotDisplay = ({
     return string;
   };
 
-  const newTimeslots = (timeslots[postId] ? timeslots[postId] : []).map((ts) => (
-    <tr key={ts._id}>
-      <td>
-        {ts.positive ? (
-          <i className="fa fa-plus" />
-        ) : (
-          <i className="fa fa-minus" />
-        )}
-      </td>
-      <td>{formatDate(ts.startDate)}</td>
-      <td>{formatDate(ts.endDate)}</td>
-      <td>
-        {ts.startTime
-          .map((time) => {
-            return (
-              '' +
-              Math.floor(time / 60) +
-              ':' +
-              (time % 60 === 0 ? '00' : time % 60)
-            );
-          })
-          .join(', ')}
-      </td>
-      <td>
-        {'' +
-          Math.floor(ts.duration / 60) +
-          ':' +
-          (ts.duration % 60 === 0 ? '00' : ts.duration % 60)}
-      </td>
-      <td>{getDaysString(ts.day)}</td>
-      <td>
-        <button
-          onClick={() => deleteTimeslot(ts._id)}
-          className="btn btn-danger"
-        >
-          Delete
-        </button>
-      </td>
-    </tr>
-  ));
+  const newTimeslots = (timeslots[postId] ? timeslots[postId] : [])
+    .filter((ts) => ts.visible === true)
+    .map((ts) => (
+      <tr key={ts._id}>
+        <td>
+          {ts.positive ? (
+            <i className="fa fa-plus" />
+          ) : (
+            <i className="fa fa-minus" />
+          )}
+        </td>
+        <td>{formatDate(ts.startDate)}</td>
+        <td>{formatDate(ts.endDate)}</td>
+        <td>
+          {ts.startTime
+            .map((time) => {
+              return (
+                '' +
+                Math.floor(time / 60) +
+                ':' +
+                (time % 60 === 0 ? '00' : time % 60)
+              );
+            })
+            .join(', ')}
+        </td>
+        <td>
+          {'' +
+            Math.floor(ts.duration / 60) +
+            ':' +
+            (ts.duration % 60 === 0 ? '00' : ts.duration % 60)}
+        </td>
+        <td>{getDaysString(ts.day)}</td>
+        <td>
+          <button
+            onClick={() => deleteTimeslot(ts._id)}
+            className="btn btn-danger"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    ));
 
   return (
     <Fragment>
@@ -81,20 +83,24 @@ const TimeslotDisplay = ({
           Create Timeslot
         </Link>
       </h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th />
-            <th className="hide-sm">Valid from</th>
-            <th className="hide-sm">Valid to</th>
-            <th className="hide-sm">Start time</th>
-            <th className="hide-sm">Duration</th>
-            <th className="hide-sm">Days</th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>{newTimeslots}</tbody>
-      </table>
+      {newTimeslots.length === 0 ? (
+        <p>There are no timeslots</p>
+      ) : (
+        <table className="table">
+          <thead>
+            <tr>
+              <th />
+              <th className="hide-sm">Valid from</th>
+              <th className="hide-sm">Valid to</th>
+              <th className="hide-sm">Start time</th>
+              <th className="hide-sm">Duration</th>
+              <th className="hide-sm">Days</th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>{newTimeslots}</tbody>
+        </table>
+      )}
     </Fragment>
   );
 };

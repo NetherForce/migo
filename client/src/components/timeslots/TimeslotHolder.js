@@ -54,8 +54,8 @@ const TimeslotHolder = ({ post, timeslot: { timeslots }, getTimeslots }) => {
       let timeslot = theTimeslots[index];
       if (timeslot.positive) {
         if (
-          currDateInt > removeTime(new Date(timeslot.startDate)).getTime() &&
-          currDateInt < removeTime(new Date(timeslot.endDate)).getTime() &&
+          currDateInt >= removeTime(new Date(timeslot.startDate)).getTime() &&
+          currDateInt <= removeTime(new Date(timeslot.endDate)).getTime() &&
           timeslot.day[theDay]
         ) {
           for (let st in timeslot.startTime) {
@@ -67,8 +67,8 @@ const TimeslotHolder = ({ post, timeslot: { timeslots }, getTimeslots }) => {
         }
       } else {
         if (
-          currDateInt > removeTime(new Date(timeslot.startDate)).getTime() &&
-          currDateInt < removeTime(new Date(timeslot.endDate)).getTime() &&
+          currDateInt >= removeTime(new Date(timeslot.startDate)).getTime() &&
+          currDateInt <= removeTime(new Date(timeslot.endDate)).getTime() &&
           timeslot.day[theDay]
         ) {
           for (let st in timeslot.startTime) {
@@ -87,10 +87,10 @@ const TimeslotHolder = ({ post, timeslot: { timeslots }, getTimeslots }) => {
         let element = elements[i];
 
         if (
-          (element.startTime < timeslot.startTime &&
-            element.startTime + element.duration > timeslot.startTime) ||
-          (element.startTime < timeslot.startTime + timeslot.duration &&
-            element.startTime + element.duration >
+          (element.startTime <= timeslot.startTime &&
+            element.startTime + element.duration >= timeslot.startTime) ||
+          (element.startTime <= timeslot.startTime + timeslot.duration &&
+            element.startTime + element.duration >=
               timeslot.startTime + timeslot.duration)
         ) {
           elements.splice(i, 1);

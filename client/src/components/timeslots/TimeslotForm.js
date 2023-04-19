@@ -13,7 +13,8 @@ import { getPost } from '../../actions/post';
 import { addTimeslot } from '../../actions/timeslot';
 
 const initialState = {
-  isPositive: true,
+  positive: true,
+  visible: true,
   startDate: '',
   endDate: '',
   startTime: [0],
@@ -43,10 +44,9 @@ const TimeslotForm = ({ getPost, addTimeslot, post: { post, loading } }) => {
   };
 
   const onClick = async () => {
-    setFormData(initialState);
+    addTimeslot({...formData, postId: id});
 
-    // const chatId = await createChat([post.user], post.name + ' & ' + user.name);
-    // addMeetup({ ...post, date: date, chat: chatId, post: post._id });
+    setFormData(initialState);
   };
 
   return loading || post === null ? (
@@ -67,13 +67,13 @@ const TimeslotForm = ({ getPost, addTimeslot, post: { post, loading } }) => {
         <p>
           Is the timeslot adding or removing an event
           <Switch
-            checked={formData.isPositive}
+            checked={formData.positive}
             onChange={(e) =>
-              setFormData({ ...formData, isPositive: e.target.checked })
+              setFormData({ ...formData, positive: e.target.checked })
             }
             inputProps={{ 'aria-label': 'controlled' }}
           />{' '}
-          {formData.isPositive ? 'Adding' : 'Removing'}
+          {formData.positive ? 'Adding' : 'Removing'}
         </p>
       </div>
       <div className="form-group">

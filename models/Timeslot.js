@@ -11,6 +11,11 @@ const TimeslotSchema = new Schema({
     isRequired: true,
     default: true
   },
+  visible: {
+    type: Boolean,
+    isRequired: true,
+    default: true
+  },
   startDate: {
     type: Date,
     default: Date.now,

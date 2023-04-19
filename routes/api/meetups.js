@@ -66,6 +66,7 @@ router.post(
         let newTimeslot = new Timeslot({
           postId: post,
           positive: false,
+          visible: false,
           startDate: date,
           endDate: date,
           startTime: [new Date(date).getHours() * 60 + new Date(date).getMinutes()],
@@ -176,7 +177,7 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
 
     // Delete timeslot
     if(meetup.timeslot){
-      const timeslot = await Timeslot.findById(req.params.id);
+      const timeslot = await Timeslot.findById(meetup.timeslot);
 
       if(timeslot){
         await timeslot.remove();
