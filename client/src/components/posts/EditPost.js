@@ -28,7 +28,7 @@ const EditPost = ({ getPost, updatePost, post: { post }, sports }) => {
     } else {
       getPost(id);
     }
-  }, [getPost, id, post]);
+  }, [getPost, id, post, sports]);
 
   const options = sports
     ? Object.keys(sports).map((key) => {

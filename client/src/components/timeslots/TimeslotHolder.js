@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import { connect } from 'react-redux';
@@ -9,18 +9,7 @@ import { getTimeslots } from '../../actions/timeslot';
 import TimeslotItem from './TimeslotItem';
 
 const TimeslotHolder = ({ post, timeslot: { timeslots }, getTimeslots }) => {
-  const ref = useRef(null);
-  const daysOfTheWeek = [
-    'monday',
-    'tuesday',
-    'wednesday',
-    'thursday',
-    'friday',
-    'saturday',
-    'sunday'
-  ];
-
-  useEffect(async () => {
+  useEffect(() => {
     const handleClick = (event) => {
       event.preventDefault();
       let elements = document.getElementsByClassName('react-datepicker-popper');
@@ -33,10 +22,28 @@ const TimeslotHolder = ({ post, timeslot: { timeslots }, getTimeslots }) => {
     ReactDOM.findDOMNode(element).addEventListener('click', handleClick);
 
     getTimeslots(post._id);
-  }, [getTimeslots]);
+  }, [getTimeslots, post._id]);
 
-  const getTimeslotElements = (theTimeslots, date) => {
-    let currDateInt = new Date().getTime();
+  const ref = useRef(null);
+
+  const removeTime = (date = new Date()) => {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  };
+
+  const getTimeslotElements = useCallback((theTimeslots, date) => {
+    let daysOfTheWeek = [
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+      'sunday'
+    ];
+
+    let currDateInt = removeTime(new Date()).getTime();
+
+    if (removeTime(new Date(date)).getTime() < currDateInt) return [];
 
     let elements = [];
     let negativeTimeslots = [];
@@ -47,8 +54,8 @@ const TimeslotHolder = ({ post, timeslot: { timeslots }, getTimeslots }) => {
       let timeslot = theTimeslots[index];
       if (timeslot.positive) {
         if (
-          currDateInt > new Date(timeslot.startDate).getTime() &&
-          currDateInt < new Date(timeslot.endDate).getTime() &&
+          currDateInt > removeTime(new Date(timeslot.startDate)).getTime() &&
+          currDateInt < removeTime(new Date(timeslot.endDate)).getTime() &&
           timeslot.day[theDay]
         ) {
           for (let st in timeslot.startTime) {
@@ -60,8 +67,8 @@ const TimeslotHolder = ({ post, timeslot: { timeslots }, getTimeslots }) => {
         }
       } else {
         if (
-          currDateInt > new Date(timeslot.startDate).getTime() &&
-          currDateInt < new Date(timeslot.endDate).getTime() &&
+          currDateInt > removeTime(new Date(timeslot.startDate)).getTime() &&
+          currDateInt < removeTime(new Date(timeslot.endDate)).getTime() &&
           timeslot.day[theDay]
         ) {
           for (let st in timeslot.startTime) {
@@ -98,14 +105,18 @@ const TimeslotHolder = ({ post, timeslot: { timeslots }, getTimeslots }) => {
     });
 
     return elements;
-  };
+  }, []);
 
   const [date, setDate] = useState(new Date());
   const [timeslotElements, setTimeslots] = useState(
-    getTimeslotElements(timeslots[post._id], date)
+    getTimeslotElements(timeslots, date)
   );
   const [currBatch, setBatch] = useState(0);
   const batchSize = 6;
+
+  useEffect(() => {
+    setTimeslots(getTimeslotElements(timeslots, date));
+  }, [getTimeslotElements, date, timeslots]);
 
   return (
     <section
@@ -133,7 +144,7 @@ const TimeslotHolder = ({ post, timeslot: { timeslots }, getTimeslots }) => {
           onClick={(e) => {
             e.preventDefault();
             setDate(new Date(date.getTime() - 86400000));
-            setTimeslots(getTimeslotElements(timeslots[post._id], date));
+            setTimeslots(getTimeslotElements(timeslots, date));
             setBatch(0);
           }}
         >
@@ -144,7 +155,7 @@ const TimeslotHolder = ({ post, timeslot: { timeslots }, getTimeslots }) => {
           selected={date}
           onChange={(newDate) => {
             setDate(newDate);
-            setTimeslots(getTimeslotElements(timeslots[post._id], date));
+            setTimeslots(getTimeslotElements(timeslots, date));
             setBatch(0);
           }}
           dateFormat="d MMMM, yyyy"
@@ -156,7 +167,7 @@ const TimeslotHolder = ({ post, timeslot: { timeslots }, getTimeslots }) => {
           onClick={(e) => {
             e.preventDefault();
             setDate(new Date(date.getTime() + 86400000));
-            setTimeslots(getTimeslotElements(timeslots[post._id], date));
+            setTimeslots(getTimeslotElements(timeslots, date));
             setBatch(0);
           }}
         >
@@ -181,19 +192,11 @@ const TimeslotHolder = ({ post, timeslot: { timeslots }, getTimeslots }) => {
             }}
             onClick={(e) => {
               e.preventDefault();
-              if (currBatch == 0) {
+              if (currBatch === 0) {
                 setBatch(Math.floor(timeslotElements.length / batchSize));
               } else {
                 setBatch(currBatch - 1);
               }
-              console.log(e.target.parentElement);
-              console.log(e.target.parentElement.style.height);
-              console.log(e.target.parentElement.parentElement);
-              console.log(e.target.parentElement.parentElement.style.height);
-              console.log(e.target.parentElement.parentElement.parentElement);
-              console.log(
-                e.target.parentElement.parentElement.parentElement.style.height
-              );
             }}
           >
             <i className="fa fa-arrow-left" />
@@ -210,8 +213,11 @@ const TimeslotHolder = ({ post, timeslot: { timeslots }, getTimeslots }) => {
           {timeslotElements.length === 0 ? (
             <p>There are no available events</p>
           ) : (
-            timeslotElements.map((timeslot, index) => {
-              if (Math.floor(index / batchSize) == currBatch)
+            timeslotElements
+              .filter(
+                (timeslot, index) => Math.floor(index / batchSize) === currBatch
+              )
+              .map((timeslot, index) => {
                 return (
                   <TimeslotItem
                     key={index}
@@ -221,7 +227,7 @@ const TimeslotHolder = ({ post, timeslot: { timeslots }, getTimeslots }) => {
                     date={date}
                   />
                 );
-            })
+              })
           )}
         </div>
         {Math.floor(timeslotElements.length / batchSize) > 0 ? (
@@ -232,7 +238,7 @@ const TimeslotHolder = ({ post, timeslot: { timeslots }, getTimeslots }) => {
             onClick={(e) => {
               e.preventDefault();
               if (
-                currBatch == Math.floor(timeslotElements.length / batchSize)
+                currBatch === Math.floor(timeslotElements.length / batchSize)
               ) {
                 setBatch(0);
               } else {

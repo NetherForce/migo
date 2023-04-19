@@ -1,15 +1,11 @@
-import { getBottomNavigationActionUtilityClass } from '@mui/material';
 import {
   GET_MY_MEETUPS,
   GET_POST_MEETUPS,
   MEETUP_ERROR,
-  UPDATE_LIKES,
   DELETE_MEETUP,
   ADD_MEETUP,
   GET_MEETUP,
-  UPDATE_MEETUP,
-  ADD_COMMENT,
-  REMOVE_COMMENT
+  UPDATE_MEETUP
 } from '../actions/types';
 
 const initialState = {
@@ -38,12 +34,6 @@ function meetupReducer(state = initialState, action) {
       return {
         ...state,
         postMeetups: payload,
-        loading: false
-      };
-    case GET_MEETUP:
-      return {
-        ...state,
-        meetup: payload,
         loading: false
       };
     case UPDATE_MEETUP:

@@ -131,7 +131,10 @@ const MeetupItem = ({
                       Edit
                     </Link>
                     <button
-                      onClick={() => deleteMeetup(_id)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        deleteMeetup(_id);
+                      }}
                       type="button"
                       className="btn btn-danger"
                     >

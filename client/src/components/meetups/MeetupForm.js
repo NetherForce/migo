@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import { Link, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
-import { Button } from '@mui/material';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import MeetupItem from './MeetupItem';
 import PostItem from '../posts/PostItem';
 import { getPostMeetups, addMeetup } from '../../actions/meetup';
 import { getPost } from '../../actions/post';
@@ -19,7 +17,6 @@ const MeetupForm = ({
   getPostMeetups,
   addMeetup,
   createChat,
-  meetup: { postMeetups },
   getPost,
   post: { post, loading }
 }) => {

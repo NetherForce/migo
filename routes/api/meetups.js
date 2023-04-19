@@ -62,7 +62,7 @@ router.post(
 
       let timeslotId;
 
-      if(duration){
+      if(duration !== undefined && duration !== null){
         let newTimeslot = new Timeslot({
           postId: post,
           positive: false,
@@ -70,7 +70,7 @@ router.post(
           endDate: date,
           startTime: [new Date(date).getHours() * 60 + new Date(date).getMinutes()],
           duration: duration,
-          day: days[daysOfTheWeek[new Date(date).getDay()]]
+          day: { ...days, [daysOfTheWeek[new Date(date).getDay()]]: true }
         });
 
         let timeslot = await newTimeslot.save();

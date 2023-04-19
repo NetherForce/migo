@@ -13,7 +13,7 @@ const MAPBOX_TOKEN =
 const MapPage = ({ getPosts, post: { posts } }) => {
   useEffect(() => {
     getPosts();
-  }, []);
+  }, [getPosts]);
 
   const [currentPlaceId, setCurrentPlaceId] = useState(null);
 

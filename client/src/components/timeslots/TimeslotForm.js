@@ -42,12 +42,7 @@ const TimeslotForm = ({ getPost, addTimeslot, post: { post, loading } }) => {
     return parseInt(time[0]) * 60 + parseInt(time[1]);
   };
 
-  const timeIntToString = (timeInt) => {
-    return '' + Math.floor(timeInt / 60) + ':' + (timeInt % 60);
-  };
-
   const onClick = async () => {
-    const timeslot = await addTimeslot({ ...formData, postId: id });
     setFormData(initialState);
 
     // const chatId = await createChat([post.user], post.name + ' & ' + user.name);

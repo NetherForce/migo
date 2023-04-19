@@ -1,10 +1,9 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import formatDate from '../../utils/formatDate';
 import { connect } from 'react-redux';
 import { addLike, removeLike, deletePost } from '../../actions/post';
-import TimeslotHolder from '../timeslots/TimeslotHolder';
 
 const PostItem = ({
   deletePost,
@@ -26,10 +25,6 @@ const PostItem = ({
   },
   showActions
 }) => {
-  useEffect(() => {
-    // console.log(auth);
-  });
-
   //<Navigate to="/posts/${_id}" />;
   const words = address.split(' ');
   address = words[words.length - 2] + ' ' + words[words.length - 1];
@@ -88,22 +83,6 @@ const PostItem = ({
             </Fragment>
           )}
         </div>
-        {showActions &&<TimeslotHolder
-          post={{
-            _id,
-            text,
-            name,
-            avatar,
-            user,
-            likes,
-            comments,
-            date,
-            location,
-            address,
-            title,
-            sport
-          }}
-        />}
       </div>
     </Link>
   );

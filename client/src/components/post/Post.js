@@ -7,6 +7,7 @@ import PostItemOpened from '../posts/PostItemOpened';
 import CommentForm from '../post/CommentForm';
 import CommentItem from '../post/CommentItem';
 import { getPost } from '../../actions/post';
+import TimeslotHolder from '../timeslots/TimeslotHolder';
 
 const Post = ({ getPost, post: { post, loading } }) => {
   const { id } = useParams();
@@ -22,6 +23,9 @@ const Post = ({ getPost, post: { post, loading } }) => {
         Back To Posts
       </Link>
       <PostItemOpened post={post} showActions={false} />
+      <TimeslotHolder
+          post={post}
+        />
       <CommentForm postId={post._id} />
       <div className="comments">
         {post.comments.map((comment) => (

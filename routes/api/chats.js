@@ -226,7 +226,7 @@ router.delete(
         }
       }
 
-      if (theIndex == null) {
+      if (theIndex === null) {
         return res.status(400).json({ msg: 'User is not a part of the chat' });
       }
 

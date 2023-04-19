@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import MeetupItem from './MeetupItem.js';
 import { getMyMeetups } from '../../actions/meetup';
-import { Link } from 'react-router-dom';
-// import { connect } from 'react-redux';
 
 const Meetups = ({ getMyMeetups, meetup: { myMeetups } }) => {
   useEffect(() => {
