@@ -87,6 +87,27 @@ const PostItem = ({
             </Fragment>
           )}
         </div>
+<<<<<<< Updated upstream
+=======
+        {showActions && (
+          <TimeslotHolder
+            post={{
+              _id,
+              text,
+              name,
+              avatar,
+              user,
+              likes,
+              comments,
+              date,
+              location,
+              address,
+              title,
+              sport
+            }}
+          />
+        )}
+>>>>>>> Stashed changes
       </div>
     </Link>
   );
