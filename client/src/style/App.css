@@ -138,6 +138,9 @@ img {
   margin-top: 3rem;
 }
 
+.invisible {
+  display: none;
+}
 .btn {
   display: inline-block;
   background: var(--light-color);

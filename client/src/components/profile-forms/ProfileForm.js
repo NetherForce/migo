@@ -61,6 +61,15 @@ const ProfileForm = ({
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  let avatarName;
+  const onAvatarChange = (e) => {
+    const filePath = e.target.value;
+    const splitFilePath = filePath.split('\\');
+    avatarName = splitFilePath[2];
+    //console.log(splitFilePath[2]);
+    //console.log(profile.user.avatar);
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
     createProfile(formData, navigate, profile ? true : false);
@@ -81,12 +90,14 @@ const ProfileForm = ({
           : ' Add some changes to your profile'}
       </p>
       <span>Change your profile picture</span>
+      <iframe name="dummyframe" id="dummyframe" className="invisible"></iframe>
       <form
         action="/api/media/upload"
         method="POST"
         encType="multipart/form-data"
+        target="dummyframe"
       >
-        <input type="file" name="image" />
+        <input type="file" name="image" onChange={onAvatarChange} />
         <button type="submit" className="btn btn-primary">
           Upload
         </button>
