@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const Landing = ({ isAuthenticated }) => {
   if (isAuthenticated) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/posts" />;
   }
 
   return (

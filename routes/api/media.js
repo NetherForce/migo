@@ -20,11 +20,11 @@ router.get('/:id', [], async (req, res) => {
   }
 });
 
-// @route    POST api/media/:id
+// @route    POST api/media/upload
 // @desc     Upload image
 // @access   Private
-router.post('/:id', [], async (req, res) => {
-  const id = req.params.id;
+router.post('/upload', [], async (req, res) => {
+  const { image } = req.files;
   if (idFormat.test(id)) {
     const filePath = path.join(__dirname, '..', '..', 'media', id);
     var filestream = fs.createWritetream(filePath);

@@ -36,7 +36,6 @@ const ProfileForm = ({
   const [displaySocialInputs, toggleSocialInputs] = useState(false);
 
   const navigate = useNavigate();
-
   useEffect(() => {
     // if there is no profile, attempt to fetch one
     if (!profile) getCurrentProfile();
@@ -69,6 +68,9 @@ const ProfileForm = ({
 
   return (
     <section className="container page">
+      <Link className="btn btn-light backBtn" to="/dashboard">
+        Go Back
+      </Link>
       <h1 className="large text-primary">
         {creatingProfile ? 'Create Your Profile' : 'Edit Your Profile'}
       </h1>
@@ -78,6 +80,13 @@ const ProfileForm = ({
           ? ` Let's get some info`
           : ' Add some changes to your profile'}
       </p>
+      <span>Change your profile picture</span>
+      <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" />
+        <button type="submit" className="btn btn-primary">
+          Upload
+        </button>
+      </form>
       <form className="form" onSubmit={onSubmit}>
         <div className="form-group">
           <input
@@ -86,6 +95,7 @@ const ProfileForm = ({
             name="location"
             value={location}
             onChange={onChange}
+            className="m-top-1"
           />
           <small className="form-text">
             City & state suggested (eg. Boston, MA)
@@ -178,9 +188,6 @@ const ProfileForm = ({
             <i className="fas fa-user-minus" /> Delete My Account
           </button>
         </div>
-        <Link className="btn btn-light backBtn my-1" to="/dashboard">
-          Go Back
-        </Link>
       </form>
     </section>
   );

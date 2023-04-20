@@ -11,7 +11,7 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
   }, [getProfiles]);
 
   return (
-    <section className="container">
+    <section className="container page">
       {loading ? (
         <Spinner />
       ) : (

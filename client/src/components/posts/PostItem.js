@@ -32,7 +32,7 @@ const PostItem = ({
     <Link className="" to={`/posts/${_id}`}>
       <div className="post-container bg-white p-1 my-1 ">
         <div>
-          <Link to={`/profile/${user}`}>
+          <Link to={`/profile/${user._id}`}>
             <img
               className="round-img"
               src={'/api/media/' + user.avatar}
