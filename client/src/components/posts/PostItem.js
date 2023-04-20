@@ -70,7 +70,7 @@ const PostItem = ({
               )}
               {auth.isAuthenticated &&
                 !auth.loading &&
-                user === auth.user._id && (
+                user._id === auth.user._id && (
                   <>
                     <Link to={`/posts/edit/${_id}`} className="btn btn-primary">
                       Edit
