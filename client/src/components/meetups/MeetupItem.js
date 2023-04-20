@@ -123,7 +123,7 @@ const MeetupItem = ({
                 Message
               </Link>
               {auth.isAuthenticated &&
-                (user._id._id === auth.user._id || postUser === auth.user._id) && (
+                (user._id === auth.user._id || postUser === auth.user._id) && (
                   <>
                     <Link
                       to={`/meetups/edit/${_id}`}
