@@ -20,6 +20,7 @@
     "config": "^3.3.3",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
+    "express-fileupload": "^1.4.0",
     "express-validator": "^6.8.1",
     "geojson": "^0.5.0",
     "gravatar": "^1.8.1",
