@@ -38,8 +38,6 @@ const MeetupItem = ({
 
       getMessages(chat);
 
-      console.log(theChat);
-
       dispatch({
         type: SET_CHAT,
         payload: theChat
@@ -124,8 +122,8 @@ const MeetupItem = ({
               <Link to={`/chat`} onClick={onClick} className="btn btn-primary">
                 Message
               </Link>
-              {!auth.loading &&
-                (user === auth.user._id || postUser === auth.user._id) && (
+              {auth.isAuthenticated &&
+                (user._id === auth.user._id || postUser === auth.user._id) && (
                   <>
                     <Link
                       to={`/meetups/edit/${_id}`}

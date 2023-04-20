@@ -29,7 +29,7 @@ const MeetupForm = ({
   const [date, setDate] = useState('');
 
   const onClick = async () => {
-    const chatId = await createChat([post.user], post.name + ' & ' + user.name);
+    const chatId = await createChat([post.user._id], post.name + ' & ' + user.name);
 
     addMeetup({ ...post, date: date, chat: chatId, post: post._id });
   };
