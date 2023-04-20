@@ -33,7 +33,7 @@ const PostItemOpened = ({
     <div className="post-container bg-white p-1 my-1">
       <div>
         <Link to={`/profile/${user}`}>
-          <img className="round-img" src={avatar} alt="" />
+          <img className="round-img" src={'/api/media/' + avatar} alt="" />
           <h4 className="">{name}</h4>
         </Link>
       </div>

@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const PostSchema = new Schema({
+const PostSchema = new mongoose.Schema({
   user: {
-    type: Schema.Types.ObjectId
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user'
   },
   text: {
     type: String,
@@ -30,19 +31,19 @@ const PostSchema = new Schema({
     type: String
   },
   sport: {
-    type: Schema.Types.ObjectId
+    type: mongoose.Schema.Types.ObjectId
   },
   likes: [
     {
       user: {
-        type: Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId
       }
     }
   ],
   comments: [
     {
       user: {
-        type: Schema.Types.ObjectId
+        type: mongoose.Schema.Types.ObjectId
       },
       text: {
         type: String,
