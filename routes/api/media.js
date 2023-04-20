@@ -9,7 +9,7 @@ const idFormat = new RegExp('^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$');
 // @route    GET api/media/:id
 // @desc     Get image
 // @access   Private
-router.get('/:id', [], async (req, res) => {
+router.get('/:id', async (req, res) => {
   const id = req.params.id;
   if (idFormat.test(id)) {
     const filePath = path.join(__dirname, '..', '..', 'media', id);
@@ -23,7 +23,8 @@ router.get('/:id', [], async (req, res) => {
 // @route    POST api/media/upload
 // @desc     Upload image
 // @access   Private
-router.post('/upload', [], async (req, res) => {
+router.post('/upload', async (req, res) => {
+  /*
   const { image } = req.files;
   if (idFormat.test(id)) {
     const filePath = path.join(__dirname, '..', '..', 'media', id);
@@ -31,7 +32,21 @@ router.post('/upload', [], async (req, res) => {
     filestream.pipe(res);
   } else {
     res.status(404).send('Not found');
+  }*/
+
+  const { image } = req.files;
+
+  if (!image) return res.sendStatus(400);
+
+  const fileType = image.mimetype;
+  const fileTypeArray = fileType.split('/');
+  if (fileTypeArray[0] != 'image') {
+    return res.sendStatus(400);
   }
+
+  const filePath = path.join(__dirname, '..', '..', 'media', image.name);
+  //image.mv(filePath);
+  res.sendStatus(200);
 });
 
 module.exports = router;

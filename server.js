@@ -4,11 +4,22 @@ const path = require('path');
 
 const app = express();
 
+const fileUpload = require('express-fileupload');
+
 // Connect Database
 connectDB();
 
 // Init Middleware
 app.use(express.json());
+
+app.use(
+  fileUpload({
+    limits: {
+      fileSize: 10000000 // Around 10MB
+    },
+    abortOnLimit: true
+  })
+);
 
 // Define Routes
 app.use('/api/users', require('./routes/api/users'));

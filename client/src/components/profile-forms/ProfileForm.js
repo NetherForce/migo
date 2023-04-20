@@ -81,7 +81,11 @@ const ProfileForm = ({
           : ' Add some changes to your profile'}
       </p>
       <span>Change your profile picture</span>
-      <form action="/upload" method="POST" enctype="multipart/form-data">
+      <form
+        action="/api/media/upload"
+        method="POST"
+        encType="multipart/form-data"
+      >
         <input type="file" name="image" />
         <button type="submit" className="btn btn-primary">
           Upload
