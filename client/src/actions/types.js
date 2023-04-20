@@ -55,3 +55,6 @@ export const GET_MESSAGES = 'GET_MESSAGES';
 export const SEND_MESSAGE = 'SEND_MESSAGE';
 export const DELETE_MESSAGE = 'DELETE_MESSAGE';
 export const MESSAGE_ERROR = 'MESSAGE_ERROR';
+
+export const GET_MEDIA = 'GET_MEDIA';
+export const MEDIA_ERROR = 'MEDIA_ERROR';

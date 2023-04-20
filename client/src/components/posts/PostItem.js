@@ -32,12 +32,17 @@ const PostItem = ({
   //<Navigate to="/posts/${_id}" />;
   const words = address.split(' ');
   address = words[words.length - 2] + ' ' + words[words.length - 1];
+  console.log(avatar);
   return (
     <Link className="" to={`/posts/${_id}`}>
       <div className="post-container bg-white p-1 my-1 ">
         <div>
           <Link to={`/profile/${user}`}>
-            <img className="round-img" src={avatar} alt="" />
+            <img
+              className="round-img"
+              src={'/api/media/' + user.avatar}
+              alt=""
+            />
             <h4 className="">{name}</h4>
           </Link>
         </div>
@@ -87,27 +92,6 @@ const PostItem = ({
             </Fragment>
           )}
         </div>
-<<<<<<< Updated upstream
-=======
-        {showActions && (
-          <TimeslotHolder
-            post={{
-              _id,
-              text,
-              name,
-              avatar,
-              user,
-              likes,
-              comments,
-              date,
-              location,
-              address,
-              title,
-              sport
-            }}
-          />
-        )}
->>>>>>> Stashed changes
       </div>
     </Link>
   );
