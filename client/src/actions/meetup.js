@@ -72,9 +72,15 @@ export const addMeetup = (formData) => async (dispatch) => {
       type: ADD_MEETUP,
       payload: res.data
     });
-    
-    if(res.data.timeslot){
-      window.location.replace(window.location.protocol + '//' + window.location.host + '/meetups/' + res.data._id);
+
+    if (res.data.timeslot) {
+      window.location.replace(
+        window.location.protocol +
+          '//' +
+          window.location.host +
+          '/meetups/' +
+          res.data._id
+      );
     }
 
     dispatch(setAlert('Meetup Created', 'success'));
@@ -90,7 +96,6 @@ export const addMeetup = (formData) => async (dispatch) => {
 export const getMeetup = (id) => async (dispatch) => {
   try {
     const res = await api.get(`/meetups/${id}`);
-    console.log(res.data);
     dispatch({
       type: GET_MEETUP,
       payload: res.data

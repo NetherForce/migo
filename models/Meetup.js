@@ -20,10 +20,12 @@ const MeetupSchema = new Schema({
     required: true
   },
   user: {
-    type: Schema.Types.ObjectId
+    type: Schema.Types.ObjectId,
+    ref: 'user'
   },
   postUser: {
-    type: Schema.Types.ObjectId
+    type: Schema.Types.ObjectId,
+    ref: 'user'
   },
   post: {
     type: Schema.Types.ObjectId

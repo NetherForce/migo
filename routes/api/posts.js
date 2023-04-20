@@ -105,7 +105,9 @@ router.get('/', async (req, res) => {
 // @access   Public
 router.get('/:id', checkObjectId('id'), async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate('user', [
+      'avatar'
+    ]);
 
     if (!post) {
       return res.status(404).json({ msg: 'Post not found' });

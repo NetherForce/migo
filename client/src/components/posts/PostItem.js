@@ -28,7 +28,6 @@ const PostItem = ({
   //<Navigate to="/posts/${_id}" />;
   const words = address.split(' ');
   address = words[words.length - 2] + ' ' + words[words.length - 1];
-  console.log(avatar);
   return (
     <Link className="" to={`/posts/${_id}`}>
       <div className="post-container bg-white p-1 my-1 ">

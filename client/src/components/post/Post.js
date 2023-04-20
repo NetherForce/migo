@@ -23,13 +23,16 @@ const Post = ({ getPost, post: { post, loading } }) => {
         Back To Posts
       </Link>
       <PostItemOpened post={post} showActions={false} />
-      <TimeslotHolder
-          post={post}
-        />
+      <TimeslotHolder post={post} />
       <CommentForm postId={post._id} />
       <div className="comments">
         {post.comments.map((comment) => (
-          <CommentItem key={comment._id} comment={comment} postId={post._id} />
+          <CommentItem
+            key={comment._id}
+            comment={comment}
+            postId={post._id}
+            avatar={post.user.avatar}
+          />
         ))}
       </div>
     </section>

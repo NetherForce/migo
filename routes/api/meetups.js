@@ -28,7 +28,7 @@ const days = {
   friday: false,
   saturday: false,
   sunday: false
-}
+};
 
 // @route    POST api/meetups
 // @desc     Create a meetup
@@ -52,8 +52,18 @@ router.post(
     }
 
     try {
-      const { chat, post, user, date, sport, location, text, duration, avatar, name } =
-        req.body;
+      const {
+        chat,
+        post,
+        user,
+        date,
+        sport,
+        location,
+        text,
+        duration,
+        avatar,
+        name
+      } = req.body;
 
       const theUser = await User.findById(req.user.id).select('-password');
       if (!theUser) {
@@ -62,14 +72,16 @@ router.post(
 
       let timeslotId;
 
-      if(duration !== undefined && duration !== null){
+      if (duration !== undefined && duration !== null) {
         let newTimeslot = new Timeslot({
           postId: post,
           positive: false,
           visible: false,
           startDate: date,
           endDate: date,
-          startTime: [new Date(date).getHours() * 60 + new Date(date).getMinutes()],
+          startTime: [
+            new Date(date).getHours() * 60 + new Date(date).getMinutes()
+          ],
           duration: duration,
           day: { ...days, [daysOfTheWeek[new Date(date).getDay()]]: true }
         });
@@ -79,7 +91,10 @@ router.post(
         timeslotId = timeslot._id;
       }
 
-      const users = req.user.id.toString() !== user.toString() ? [req.user.id, user] : [user];
+      const users =
+        req.user.id.toString() !== user.toString()
+          ? [req.user.id, user]
+          : [user];
 
       const newMeetup = new Meetup({
         chat: chat,
@@ -122,11 +137,15 @@ router.post(
 // @access   Private
 router.get('/', auth, async (req, res) => {
   try {
-    const usertomeetup = await UserToMeetup.find({ user: req.user.id });
+    const usertomeetup = await UserToMeetup.find({
+      user: req.user.id
+    });
     let meetups = [];
 
     for (let index in usertomeetup) {
-      let currMeetup = await Meetup.findById(usertomeetup[index].meetup);
+      let currMeetup = await Meetup.findById(
+        usertomeetup[index].meetup
+      ).populate('user', ['avatar']);
       if (currMeetup && currMeetup !== null) meetups.push(currMeetup);
     }
 
@@ -142,7 +161,9 @@ router.get('/', auth, async (req, res) => {
 // @access   Private
 router.get('/:id', auth, checkObjectId('id'), async (req, res) => {
   try {
-    const meetup = await Meetup.findById(req.params.id);
+    const meetup = await Meetup.findById(req.params.id).populate('user', [
+      'avatar'
+    ]);
 
     if (!meetup) {
       return res.status(404).json({ msg: 'Meetup not found' });
@@ -176,10 +197,10 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
     }
 
     // Delete timeslot
-    if(meetup.timeslot){
+    if (meetup.timeslot) {
       const timeslot = await Timeslot.findById(meetup.timeslot);
 
-      if(timeslot){
+      if (timeslot) {
         await timeslot.remove();
       }
     }
