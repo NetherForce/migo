@@ -10,15 +10,13 @@ const ProfileItem = ({
   }
 }) => {
   return (
-    <div className='profile bg-light'>
-      <img src={avatar} alt='' className='round-img' />
+    <div className="profile bg-light">
+      <img className="round-img" src={'/api/media/' + avatar} alt="" />
       <div>
         <h2>{name}</h2>
-        <p>
-          {bio}
-        </p>
-        <p className='my-1'>{location && <span>{location}</span>}</p>
-        <Link to={`/profile/${_id}`} className='btn btn-primary'>
+        <p>{bio}</p>
+        <p className="my-1">{location && <span>{location}</span>}</p>
+        <Link to={`/profile/${_id}`} className="btn btn-primary">
           View Profile
         </Link>
       </div>
