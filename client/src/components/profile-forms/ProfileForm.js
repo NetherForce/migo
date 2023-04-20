@@ -8,6 +8,7 @@ import {
   deleteAccount
 } from '../../actions/profile';
 import Experience from '../dashboard/Experience';
+import { loadUser } from '../../actions/auth';
 
 /*
   NOTE: declare initialState outside of component
@@ -61,15 +62,6 @@ const ProfileForm = ({
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  let avatarName;
-  const onAvatarChange = (e) => {
-    const filePath = e.target.value;
-    const splitFilePath = filePath.split('\\');
-    avatarName = splitFilePath[2];
-    //console.log(splitFilePath[2]);
-    //console.log(profile.user.avatar);
-  };
-
   const onSubmit = (e) => {
     e.preventDefault();
     createProfile(formData, navigate, profile ? true : false);
@@ -92,12 +84,15 @@ const ProfileForm = ({
       <span>Change your profile picture</span>
       <iframe name="dummyframe" id="dummyframe" className="invisible"></iframe>
       <form
-        action="/api/media/upload"
+        action={
+          '/api/media/upload?token=' +
+          encodeURIComponent(localStorage.getItem('token'))
+        }
         method="POST"
         encType="multipart/form-data"
         target="dummyframe"
       >
-        <input type="file" name="image" onChange={onAvatarChange} />
+        <input type="file" name="image" />
         <button type="submit" className="btn btn-primary">
           Upload
         </button>
