@@ -28,13 +28,6 @@ const PostItemOpened = ({
   useEffect(() => {
     // console.log(auth);
   });
-  {
-    console.log(
-      auth.isAuthenticated,
-      !auth.loading,
-      user._id === auth.user._id
-    );
-  }
 
   return (
     <div className="post-container bg-white p-1 my-1">
