@@ -36,14 +36,12 @@ const days = {
 router.post(
   '/',
   auth,
-  check('chat', 'Chat id is required').notEmpty(),
   check('sport', 'Sport id is required').notEmpty(),
   check('location', 'Location id is required').notEmpty(),
   check('name', 'Name id is required').notEmpty(),
   check('avatar', 'Avatar id is required').notEmpty(),
   check('date', 'Date is required').notEmpty(),
   check('text', 'Text is required').notEmpty(),
-  checkObjectId('chat'),
   checkObjectId('sport'),
   async (req, res) => {
     const errors = validationResult(req);
@@ -221,8 +219,6 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
   }
 });
 
-module.exports = router;
-
 // @route    PUT api/meetups/:id
 // @desc     Update a meetup
 // @access   Private
@@ -234,6 +230,19 @@ router.put('/:id', auth, async (req, res) => {
 
   try {
     const meetup = await Meetup.findById(req.params.id);
+
+    if (!meetup) {
+      return res.status(404).json({ msg: 'Meetup not found' });
+    }
+
+    // Check user
+    if (
+      meetup.user.toString() !== req.user.id &&
+      meetup.postUser.toString() !== req.user.id
+    ) {
+      return res.status(401).json({ msg: 'User not authorized' });
+    }
+
     const { date } = req.body;
 
     meetup.date = date;
@@ -245,3 +254,38 @@ router.put('/:id', auth, async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+
+// @route    PUT api/meetups/status/:id
+// @desc     Update meetup status
+// @access   Private
+router.put('/status/:id', auth, async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const meetup = await Meetup.findById(req.params.id);
+
+    if (!meetup) {
+      return res.status(404).json({ msg: 'Meetup not found' });
+    }
+
+    if(req.user.id !== meetup.postUser.toString()){
+      return res.status(401).json({ msg: 'User not authorized' });
+    }
+
+    const { status } = req.body;
+
+    meetup.status = status;
+    await meetup.save();
+
+    res.json(meetup);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+module.exports = router;

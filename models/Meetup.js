@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const MEETUP_STATUSES = {
+  PENDING: 'Pending',
+  APROVED: 'Approved',
+  DECLINED: 'Declined'
+}
+
 const MeetupSchema = new Schema({
   users: [
     {
@@ -10,6 +16,12 @@ const MeetupSchema = new Schema({
   ],
   name: {
     type: String
+  },
+  status: {
+    type: String,
+    enum: Object.values(MEETUP_STATUSES),
+    default: MEETUP_STATUSES.PENDING,
+    isRequired: true
   },
   avatar: {
     type: String
@@ -31,8 +43,7 @@ const MeetupSchema = new Schema({
     type: Schema.Types.ObjectId
   },
   chat: {
-    type: Schema.Types.ObjectId,
-    required: true
+    type: Schema.Types.ObjectId
   },
   text: {
     type: String,

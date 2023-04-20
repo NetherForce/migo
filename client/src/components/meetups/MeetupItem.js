@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import formatDate from '../../utils/formatDate';
 import { connect, useDispatch } from 'react-redux';
-import { deleteMeetup } from '../../actions/meetup';
+import { deleteMeetup, changeMeetupStatus } from '../../actions/meetup';
 
 import { SET_CHAT } from '../../actions/types';
 
@@ -14,11 +14,13 @@ const MeetupItem = ({
   updateChat,
   getMessages,
   deleteMeetup,
+  changeMeetupStatus,
   auth,
   sports,
   meetup: {
     _id,
     text,
+    status,
     name,
     user,
     date,
@@ -123,7 +125,26 @@ const MeetupItem = ({
                 Message
               </Link>
               {auth.isAuthenticated &&
-                (user._id === auth.user._id || postUser === auth.user._id) && (
+                (user._id === auth.user._id || postUser === auth.user._id) && (status === "Pending" && postUser === auth.user._id ? (
+                  <>
+                  <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        changeMeetupStatus(_id, "Approved");
+                      }}
+                      type="button"
+                      className="btn btn-primary"
+                    >Approve</button>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        changeMeetupStatus(_id, "Declined");
+                      }}
+                      type="button"
+                      className="btn btn-danger"
+                    >Decline</button>
+                  </>
+                ) : (
                   <>
                     <Link
                       to={`/meetups/edit/${_id}`}
@@ -142,7 +163,7 @@ const MeetupItem = ({
                       <i className="fas fa-times" />
                     </button>
                   </>
-                )}
+                ))}
             </Fragment>
           )}
         </div>
@@ -160,6 +181,7 @@ MeetupItem.propTypes = {
   auth: PropTypes.object.isRequired,
   sports: PropTypes.object.isRequired,
   deleteMeetup: PropTypes.func.isRequired,
+  changeMeetupStatus: PropTypes.func.isRequired,
   updateChat: PropTypes.func.isRequired,
   getMessages: PropTypes.func.isRequired,
   showActions: PropTypes.bool
@@ -173,5 +195,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   updateChat,
   getMessages,
-  deleteMeetup
+  deleteMeetup,
+  changeMeetupStatus
 })(MeetupItem);

@@ -67,7 +67,7 @@ export const deleteMeetup = (id) => async (dispatch) => {
 export const addMeetup = (formData) => async (dispatch) => {
   try {
     const res = await api.post('/meetups', formData);
-
+    console.log(res.data);
     dispatch({
       type: ADD_MEETUP,
       payload: res.data
@@ -119,6 +119,24 @@ export const updateMeetup = (formData) => async (dispatch) => {
     });
 
     dispatch(setAlert('Meetup Updated', 'success'));
+  } catch (err) {
+    dispatch({
+      type: MEETUP_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+
+// Change meetup status
+export const changeMeetupStatus = (id, newStatus) => async (dispatch) => {
+  try {
+    const res = await api.put(`/meetups/status/${id}`, {status: newStatus});
+
+    dispatch({
+      type: UPDATE_MEETUP,
+      payload: res.data
+    });
   } catch (err) {
     dispatch({
       type: MEETUP_ERROR,

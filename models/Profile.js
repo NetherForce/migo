@@ -7,7 +7,7 @@ const EXPERIENCE_LEVELS = {
 }
 
 const PROFILE_TYPES = {
-  USER: 'Beginner',
+  USER: 'User',
   TEACHER: 'Teacher',
   ORGANIZATION: 'Organization'
 }

@@ -17,8 +17,6 @@ const TimeslotItem = ({
   const onClick = async (e) => {
     e.preventDefault();
 
-    const chatId = await createChat([post.user], post.name + ' & ' + user.name);
-
     let meetupDate = new Date(date);
     meetupDate.setHours(Math.floor(startTime / 60));
     meetupDate.setMinutes(startTime % 60);
@@ -26,7 +24,6 @@ const TimeslotItem = ({
     addMeetup({
       ...post,
       date: meetupDate,
-      chat: chatId,
       post: post._id,
       duration: duration
     });
