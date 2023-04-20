@@ -28,11 +28,18 @@ const PostItemOpened = ({
   useEffect(() => {
     // console.log(auth);
   });
+  {
+    console.log(
+      auth.isAuthenticated,
+      !auth.loading,
+      user._id === auth.user._id
+    );
+  }
 
   return (
     <div className="post-container bg-white p-1 my-1">
       <div>
-        <Link to={`/profile/${user}`}>
+        <Link to={`/profile/${user._id}`}>
           <img className="round-img" src={'/api/media/' + user.avatar} alt="" />
           <h4 className="">{name}</h4>
         </Link>
@@ -72,7 +79,7 @@ const PostItemOpened = ({
             )}
             {auth.isAuthenticated &&
               !auth.loading &&
-              user === auth.user._id && (
+              user._id === auth.user._id && (
                 <button
                   onClick={() => deletePost(_id)}
                   type="button"

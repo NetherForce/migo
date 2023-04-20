@@ -51,7 +51,7 @@ const MeetupItem = ({
     <Link className="" to={`/meetups/${_id}`}>
       <div className="post-container bg-white p-1 my-1">
         <div>
-          <Link to={`/profile/${user}`}>
+          <Link to={`/profile/${user._id}`}>
             <img
               className="round-img"
               src={'/api/media/' + user.avatar}
@@ -125,7 +125,7 @@ const MeetupItem = ({
                 Message
               </Link>
               {!auth.loading &&
-                (user === auth.user._id || postUser === auth.user._id) && (
+                (user._id === auth.user._id || postUser === auth.user._id) && (
                   <>
                     <Link
                       to={`/meetups/edit/${_id}`}
