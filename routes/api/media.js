@@ -6,7 +6,7 @@ var path = require('path');
 const auth = require('../../middleware/auth');
 const User = require('../../models/User');
 
-const idFormat = new RegExp('^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+$');
+const idFormat = new RegExp('^[a-zA-Z0-9]+(.[a-zA-Z0-9]+)?$');
 
 // @route    GET api/media/:id
 // @desc     Get image
@@ -15,8 +15,12 @@ router.get('/:id', async (req, res) => {
   const id = req.params.id;
   if (idFormat.test(id)) {
     const filePath = path.join(__dirname, '..', '..', 'media', id);
-    var filestream = fs.createReadStream(filePath);
-    filestream.pipe(res);
+    if (fs.existsSync(filePath)) {
+      var filestream = fs.createReadStream(filePath);
+      filestream.pipe(res);
+    } else {
+      res.status(404).send('Not found');
+    }
   } else {
     res.status(404).send('Not found');
   }
