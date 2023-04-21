@@ -13,12 +13,12 @@ const MessageItem = ({ message, isMine }) => {
         className={'message-container' + (isMine ? ' message-darker' : '')}
       >
         <img
-          src={avatar}
+          src={'/api/media/' + avatar}
           alt="Avatar"
           className={'round-img width-10' + (isMine ? ' message-right' : '')}
         />
         <p style={{ color: 'var(--primary-color)' }}>{name}</p>
-        <p style={{wordWrap: "break-word"}}>{text}</p>
+        <p style={{ wordWrap: 'break-word' }}>{text}</p>
         <span className={isMine ? 'message-time-left' : 'message-time-right'}>
           {new Date(date).toTimeString().substring(0, 5)}
         </span>
