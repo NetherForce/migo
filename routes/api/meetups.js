@@ -232,7 +232,7 @@ router.put('/:id', auth, async (req, res) => {
   }
 
   try {
-    const meetup = await Meetup.findById(req.params.id);
+    const meetup = await Meetup.findById(req.params.id).populate('user', ['avatar']);;
 
     if (!meetup) {
       return res.status(404).json({ msg: 'Meetup not found' });
@@ -268,7 +268,7 @@ router.put('/status/:id', auth, async (req, res) => {
   }
 
   try {
-    const meetup = await Meetup.findById(req.params.id);
+    const meetup = await Meetup.findById(req.params.id).populate('user', ['avatar']);;
 
     if (!meetup) {
       return res.status(404).json({ msg: 'Meetup not found' });
