@@ -39,6 +39,7 @@ function meetupReducer(state = initialState, action) {
     case UPDATE_MEETUP:
       return {
         ...state,
+        myMeetups: state.myMeetups.map(meetup => meetup._id === payload._id ? payload : meetup),
         meetup: payload,
         loading: false
       };

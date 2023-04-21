@@ -49,7 +49,7 @@ const MeetupItem = ({
 
   return (
     <Link className="" to={`/meetups/${_id}`}>
-      <div className="post-container bg-white p-1 my-1">
+      <div className="post-container bg-white p-1 my-1" style={{borderColor: status === "Declined" ? "red" : ''}}>
         <div>
           <Link to={`/profile/${user._id}`}>
             <img
@@ -121,37 +121,50 @@ const MeetupItem = ({
           > 
             <i className="fas fa-thumbs-down" />
           </button> */}
-              <Link to={`/chat`} onClick={onClick} className="btn btn-primary">
-                Message
-              </Link>
+              {status !== 'Declined' && (
+                <Link
+                  to={`/chat`}
+                  onClick={onClick}
+                  className="btn btn-primary"
+                >
+                  Message
+                </Link>
+              )}
               {auth.isAuthenticated &&
-                (user._id === auth.user._id || postUser === auth.user._id) && (status === "Pending" && postUser === auth.user._id ? (
+                (user._id === auth.user._id || postUser === auth.user._id) &&
+                (status === 'Pending' && postUser === auth.user._id ? (
                   <>
-                  <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        changeMeetupStatus(_id, "Approved");
-                      }}
-                      type="button"
-                      className="btn btn-primary"
-                    >Approve</button>
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        changeMeetupStatus(_id, "Declined");
+                        changeMeetupStatus(_id, 'Approved');
+                      }}
+                      type="button"
+                      className="btn btn-primary"
+                    >
+                      Approve
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        changeMeetupStatus(_id, 'Declined');
                       }}
                       type="button"
                       className="btn btn-danger"
-                    >Decline</button>
+                    >
+                      Decline
+                    </button>
                   </>
                 ) : (
                   <>
-                    <Link
-                      to={`/meetups/edit/${_id}`}
-                      className="btn btn-primary"
-                    >
-                      Edit
-                    </Link>
+                    {status !== 'Declined' && (
+                      <Link
+                        to={`/meetups/edit/${_id}`}
+                        className="btn btn-primary"
+                      >
+                        Edit
+                      </Link>
+                    )}
                     <button
                       onClick={(e) => {
                         e.preventDefault();

@@ -18,10 +18,10 @@ const Meetups = ({ getMyMeetups, meetup: { myMeetups }, auth: { user } }) => {
       <div className="meetups">
         {myMeetups
           .filter(
-            (meetup) => meetup.status !== 'Declined' || meetup.user === user._id
+            (meetup) =>
+              meetup.status !== 'Declined' || meetup.user._id === user._id
           )
           .map((meetup) => {
-            console.log(meetup);
             return <MeetupItem key={meetup._id} meetup={meetup} />;
           })}
       </div>
