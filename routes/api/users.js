@@ -8,6 +8,7 @@ const { check, validationResult } = require('express-validator');
 const normalize = require('normalize-url');
 
 const User = require('../../models/User');
+const Profile = require('../../models/Profile');
 
 // @route    POST api/users
 // @desc     Register user
@@ -51,6 +52,13 @@ router.post(
       user.password = await bcrypt.hash(password, salt);
 
       await user.save();
+
+      // Create user profile
+      const newProfile = new Profile({
+        user: user._id
+      });
+
+      const profile = await newProfile.save();
 
       const payload = {
         user: {
