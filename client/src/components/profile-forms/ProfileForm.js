@@ -8,7 +8,6 @@ import {
   deleteAccount
 } from '../../actions/profile';
 import Experience from '../dashboard/Experience';
-import { loadUser } from '../../actions/auth';
 
 /*
   NOTE: declare initialState outside of component
@@ -82,7 +81,12 @@ const ProfileForm = ({
           : ' Add some changes to your profile'}
       </p>
       <span>Change your profile picture</span>
-      <iframe name="dummyframe" id="dummyframe" className="invisible"></iframe>
+      <iframe
+        name="dummyframe"
+        id="dummyframe"
+        className="invisible"
+        title="myFrame"
+      ></iframe>
       <form
         action={
           '/api/media/upload?token=' +
