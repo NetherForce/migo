@@ -35,7 +35,7 @@ const MeetupItem = ({
   const dispatch = useDispatch();
 
   const onClick = async () => {
-    if (chat) {
+    if(chat){
       const theChat = await updateChat(chat);
 
       getMessages(chat);

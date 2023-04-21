@@ -2,10 +2,13 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
+const mongoose = require('mongoose');
 
 const Meetup = require('../../models/Meetup');
 const UserToMeetup = require('../../models/UserToMeetup');
 const User = require('../../models/User');
+const Chat = require('../../models/Chat');
+const UserToChat = require('../../models/UserToChat');
 const Post = require('../../models/Post');
 const Timeslot = require('../../models/Timeslot');
 const checkObjectId = require('../../middleware/checkObjectId');
@@ -271,7 +274,7 @@ router.put('/status/:id', auth, async (req, res) => {
       return res.status(404).json({ msg: 'Meetup not found' });
     }
 
-    if(req.user.id !== meetup.postUser.toString()){
+    if (req.user.id !== meetup.postUser.toString()) {
       return res.status(401).json({ msg: 'User not authorized' });
     }
 
@@ -280,12 +283,59 @@ router.put('/status/:id', auth, async (req, res) => {
     meetup.status = status;
     await meetup.save();
 
+    //create meetup chat
+    let adminUser = await User.findById(meetup.postUser.toString()).select(
+      '-password'
+    );
+    let admin = {
+      name: adminUser.name,
+      avatar: adminUser.avatar,
+      id: adminUser._id
+    };
+    let name = meetup.text + ' - ' + new Date(meetup.date).toDateString();
+
+    let users = [];
+    const userIds = meetup.users;
+    for (let index in userIds) {
+      if (!mongoose.Types.ObjectId.isValid(userIds[index])) continue;
+      let currUser = await User.findById(userIds[index]).select('-password');
+      users.push({
+        name: currUser.name,
+        avatar: currUser.avatar,
+        id: currUser._id
+      });
+    }
+
+    if (users.length <= 1)
+      return res.status(500).send('Not enough people to create a chat');
+
+    let chat = new Chat({
+      admin: admin,
+      users: users,
+      name: name
+    });
+
+    const chatId = chat._id;
+
+    for (let index in userIds) {
+      if (!mongoose.Types.ObjectId.isValid(userIds[index])) continue;
+      let usertochat = new UserToChat({
+        user: userIds[index],
+        chat: chatId
+      });
+      await usertochat.save();
+    }
+
+    chat.save();
+
+    meetup.chat = chatId;
+    meetup.save();
+
     res.json(meetup);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 });
-
 
 module.exports = router;
