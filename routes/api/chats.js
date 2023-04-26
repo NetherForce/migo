@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const Chat = require('../../models/Chat');
 const Message = require('../../models/Message');
 const User = require('../../models/User');
+const Meetup = require('../../models/Meetup');
 const UserToChat = require('../../models/UserToChat');
 
 const checkObjectId = require('../../middleware/checkObjectId');

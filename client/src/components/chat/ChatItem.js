@@ -23,7 +23,7 @@ const ChatItem = ({ getMessages, chat }) => {
         >
           <img
             className="round-img width-30"
-            src={chat.users[0].avatar}
+            src={'/api/media/' + chat.users[0].avatar}
             alt=""
           />
           <h4 className="width-70" style={{ color: 'var(--primary-color)' }}>

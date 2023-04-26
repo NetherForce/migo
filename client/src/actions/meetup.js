@@ -67,7 +67,7 @@ export const deleteMeetup = (id) => async (dispatch) => {
 export const addMeetup = (formData) => async (dispatch) => {
   try {
     const res = await api.post('/meetups', formData);
-    console.log(res.data);
+
     dispatch({
       type: ADD_MEETUP,
       payload: res.data

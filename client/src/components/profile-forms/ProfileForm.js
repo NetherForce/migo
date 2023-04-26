@@ -81,7 +81,21 @@ const ProfileForm = ({
           : ' Add some changes to your profile'}
       </p>
       <span>Change your profile picture</span>
-      <form action="/upload" method="POST" enctype="multipart/form-data">
+      <iframe
+        name="dummyframe"
+        id="dummyframe"
+        className="invisible"
+        title="myFrame"
+      ></iframe>
+      <form
+        action={
+          '/api/media/upload?token=' +
+          encodeURIComponent(localStorage.getItem('token'))
+        }
+        method="POST"
+        encType="multipart/form-data"
+        target="dummyframe"
+      >
         <input type="file" name="image" />
         <button type="submit" className="btn btn-primary">
           Upload

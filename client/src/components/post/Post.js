@@ -9,7 +9,7 @@ import CommentItem from '../post/CommentItem';
 import { getPost } from '../../actions/post';
 import TimeslotHolder from '../timeslots/TimeslotHolder';
 
-const Post = ({ getPost, post: { post, loading } }) => {
+const Post = ({ getPost, post: { post, loading }, auth }) => {
   const { id } = useParams();
   useEffect(() => {
     getPost(id);
@@ -23,8 +23,12 @@ const Post = ({ getPost, post: { post, loading } }) => {
         Back To Posts
       </Link>
       <PostItemOpened post={post} showActions={false} />
-      <TimeslotHolder post={post} />
-      <CommentForm postId={post._id} />
+      {auth.isAuthenticated && (
+        <>
+          <TimeslotHolder post={post} />
+          <CommentForm postId={post._id} />
+        </>
+      )}
       <div className="comments">
         {post.comments.map((comment) => (
           <CommentItem
@@ -41,11 +45,13 @@ const Post = ({ getPost, post: { post, loading } }) => {
 
 Post.propTypes = {
   getPost: PropTypes.func.isRequired,
-  post: PropTypes.object.isRequired
+  post: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
-  post: state.post
+  post: state.post,
+  auth: state.auth
 });
 
 export default connect(mapStateToProps, { getPost })(Post);

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import MeetupItem from './MeetupItem.js';
 import { getMyMeetups } from '../../actions/meetup';
 
-const Meetups = ({ getMyMeetups, meetup: { myMeetups } }) => {
+const Meetups = ({ getMyMeetups, meetup: { myMeetups }, auth: { user } }) => {
   useEffect(() => {
     getMyMeetups();
   }, [getMyMeetups]);
@@ -16,11 +16,14 @@ const Meetups = ({ getMyMeetups, meetup: { myMeetups } }) => {
         <i className="fas fa-user" /> Welcome to the community
       </p>
       <div className="meetups">
-        {myMeetups.map((meetup) => {
-          return (
-            <MeetupItem key={meetup._id} meetup={meetup} />
+        {myMeetups
+          .filter(
+            (meetup) =>
+              meetup.status !== 'Declined' || meetup.user._id === user._id
           )
-        })}
+          .map((meetup) => {
+            return <MeetupItem key={meetup._id} meetup={meetup} />;
+          })}
       </div>
     </section>
   );
@@ -28,11 +31,13 @@ const Meetups = ({ getMyMeetups, meetup: { myMeetups } }) => {
 
 Meetups.propTypes = {
   getMyMeetups: PropTypes.func.isRequired,
-  meetup: PropTypes.object.isRequired
+  meetup: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
-  meetup: state.meetup
+  meetup: state.meetup,
+  auth: state.auth
 });
 
 export default connect(mapStateToProps, { getMyMeetups })(Meetups);
